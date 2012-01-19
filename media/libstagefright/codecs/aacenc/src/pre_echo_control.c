@@ -29,7 +29,11 @@
 
 /*****************************************************************************
 *
+<<<<<<< HEAD
 * function name:InitPreEchoControl 
+=======
+* function name:InitPreEchoControl
+>>>>>>> upstream/master
 * description: init pre echo control parameter
 *
 *****************************************************************************/
@@ -40,13 +44,21 @@ void InitPreEchoControl(Word32 *pbThresholdNm1,
   Word16 pb;
 
   for(pb=0; pb<numPb; pb++) {
+<<<<<<< HEAD
     pbThresholdNm1[pb] = pbThresholdQuiet[pb];                                   
+=======
+    pbThresholdNm1[pb] = pbThresholdQuiet[pb];
+>>>>>>> upstream/master
   }
 }
 
 /*****************************************************************************
 *
+<<<<<<< HEAD
 * function name:PreEchoControl 
+=======
+* function name:PreEchoControl
+>>>>>>> upstream/master
 * description: update shreshold to avoid pre echo
 *			   thr(n) = max(rpmin*thrq(n), min(thrq(n), rpelev*thrq1(n)))
 *
@@ -68,13 +80,18 @@ void PreEchoControl(Word32 *pbThresholdNm1,
   (void)maxAllowedIncreaseFactor;
 
   scaling = ((mdctScale - mdctScalenm1) << 1);
+<<<<<<< HEAD
    
+=======
+
+>>>>>>> upstream/master
   if ( scaling > 0 ) {
     for(i = 0; i < numPb; i++) {
       tmpThreshold1 = pbThresholdNm1[i] >> (scaling-1);
       tmpThreshold2 = L_mpy_ls(pbThreshold[i], minRemainingThresholdFactor);
 
       /* copy thresholds to internal memory */
+<<<<<<< HEAD
       pbThresholdNm1[i] = pbThreshold[i];                                        
 
        
@@ -84,6 +101,17 @@ void PreEchoControl(Word32 *pbThresholdNm1,
        
       if(tmpThreshold2 > pbThreshold[i]) {
         pbThreshold[i] = tmpThreshold2;                                          
+=======
+      pbThresholdNm1[i] = pbThreshold[i];
+
+
+      if(pbThreshold[i] > tmpThreshold1) {
+        pbThreshold[i] = tmpThreshold1;
+      }
+
+      if(tmpThreshold2 > pbThreshold[i]) {
+        pbThreshold[i] = tmpThreshold2;
+>>>>>>> upstream/master
       }
 
     }
@@ -96,6 +124,7 @@ void PreEchoControl(Word32 *pbThresholdNm1,
       tmpThreshold2 = L_mpy_ls(pbThreshold[i], minRemainingThresholdFactor);
 
       /* copy thresholds to internal memory */
+<<<<<<< HEAD
       pbThresholdNm1[i] = pbThreshold[i];                                        
 
        
@@ -105,6 +134,17 @@ void PreEchoControl(Word32 *pbThresholdNm1,
        
       if(tmpThreshold2 > pbThreshold[i]) {
         pbThreshold[i] = tmpThreshold2;                                          
+=======
+      pbThresholdNm1[i] = pbThreshold[i];
+
+
+      if(((pbThreshold[i] >> scaling) > tmpThreshold1)) {
+        pbThreshold[i] = tmpThreshold1 << scaling;
+      }
+
+      if(tmpThreshold2 > pbThreshold[i]) {
+        pbThreshold[i] = tmpThreshold2;
+>>>>>>> upstream/master
       }
 
     }

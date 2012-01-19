@@ -33,6 +33,7 @@
 
 using namespace android;
 
+<<<<<<< HEAD
 #ifdef YAMAHAPLAYER
 namespace android { namespace yamaha { namespace media {
 void InstantiateService(void);
@@ -45,17 +46,22 @@ void instantiate(void);
 } }
 #endif
 
+=======
+>>>>>>> upstream/master
 int main(int argc, char** argv)
 {
     sp<ProcessState> proc(ProcessState::self());
     sp<IServiceManager> sm = defaultServiceManager();
     LOGI("ServiceManager: %p", sm.get());
+<<<<<<< HEAD
 #ifdef YAMAHAPLAYER
     yamaha::media::InstantiateService();
 #endif
 #ifdef SECTVOUT
     SecTVOutService::instantiate();
 #endif
+=======
+>>>>>>> upstream/master
     AudioFlinger::instantiate();
     MediaPlayerService::instantiate();
     CameraService::instantiate();

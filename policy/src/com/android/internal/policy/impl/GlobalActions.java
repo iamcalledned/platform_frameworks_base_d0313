@@ -1,6 +1,9 @@
 /*
  * Copyright (C) 2008 The Android Open Source Project
+<<<<<<< HEAD
  * Copyright (C) 2011 David van Tonder
+=======
+>>>>>>> upstream/master
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,6 +52,7 @@ import com.google.android.collect.Lists;
 import java.util.ArrayList;
 
 /**
+<<<<<<< HEAD
  * Needed for takeScreenshot
  */
 import android.content.ServiceConnection;
@@ -59,6 +63,8 @@ import android.os.RemoteException;
 
 
 /**
+=======
+>>>>>>> upstream/master
  * Helper to show the global actions dialog.  Each item is an {@link Action} that
  * may show depending on whether the keyguard is showing, and whether the device
  * is provisioned.
@@ -190,6 +196,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
                 }
             });
 
+<<<<<<< HEAD
         // next: reboot
         mItems.add(
             new SinglePressAction(com.android.internal.R.drawable.ic_lock_reboot, R.string.global_action_reboot) {
@@ -222,6 +229,8 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
                 }
             });
 
+=======
+>>>>>>> upstream/master
         // next: airplane mode
         mItems.add(mAirplaneModeOn);
 
@@ -230,7 +239,10 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
             mItems.add(mSilentModeAction);
         }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream/master
         mAdapter = new MyAdapter();
 
         final AlertDialog.Builder ab = new AlertDialog.Builder(mContext);
@@ -247,6 +259,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         return dialog;
     }
 
+<<<<<<< HEAD
     /**
      * functions needed for taking screenhots.  
      * This leverages the built in ICS screenshot functionality 
@@ -329,6 +342,8 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         }
     }
     
+=======
+>>>>>>> upstream/master
     private void prepareDialog() {
         final boolean silentModeOn =
                 mAudioManager.getRingerMode() != AudioManager.RINGER_MODE_NORMAL;
@@ -339,9 +354,12 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         } else {
             mDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_DIALOG);
         }
+<<<<<<< HEAD
 
         mDialog.setTitle(R.string.global_actions);
 
+=======
+>>>>>>> upstream/master
         if (SHOW_SILENT_TOGGLE) {
             IntentFilter filter = new IntentFilter(AudioManager.RINGER_MODE_CHANGED_ACTION);
             mContext.registerReceiver(mRingerModeReceiver, filter);

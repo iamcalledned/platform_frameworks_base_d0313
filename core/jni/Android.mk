@@ -222,6 +222,7 @@ ifeq ($(USE_OPENGL_RENDERER),true)
 	LOCAL_SHARED_LIBRARIES += libhwui
 endif
 
+<<<<<<< HEAD
 ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
 ifeq ($(USE_OPENGL_RENDERER),true)
 LOCAL_SHARED_LIBRARIES += libtilerenderer
@@ -230,6 +231,8 @@ LOCAL_C_INCLUDES += hardware/qcom/display/libtilerenderer
 LOCAL_CFLAGS += -DQCOM_HARDWARE
 endif
 
+=======
+>>>>>>> upstream/master
 ifeq ($(BOARD_HAVE_BLUETOOTH),true)
 LOCAL_C_INCLUDES += \
 	external/dbus \
@@ -252,10 +255,13 @@ endif
 
 LOCAL_MODULE:= libandroid_runtime
 
+<<<<<<< HEAD
 ifneq ($(BOARD_MOBILEDATA_INTERFACE_NAME),)
 	LOCAL_CFLAGS += -DMOBILE_IFACE_NAME='$(BOARD_MOBILEDATA_INTERFACE_NAME)'
 endif
 
+=======
+>>>>>>> upstream/master
 include $(BUILD_SHARED_LIBRARY)
 
 include $(call all-makefiles-under,$(LOCAL_PATH))

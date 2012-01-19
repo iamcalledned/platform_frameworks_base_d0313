@@ -29,20 +29,34 @@ extern "C" {
 #pragma pack(push, 4)
 
 /*!* the bit rate the codec supports*/
+<<<<<<< HEAD
 typedef enum { 
 	VOAMRWB_MDNONE		= -1,	/*!< Invalid mode */
 	VOAMRWB_MD66		= 0,	/*!< 6.60kbps   */
 	VOAMRWB_MD885		= 1,    /*!< 8.85kbps   */       
+=======
+typedef enum {
+	VOAMRWB_MDNONE		= -1,	/*!< Invalid mode */
+	VOAMRWB_MD66		= 0,	/*!< 6.60kbps   */
+	VOAMRWB_MD885		= 1,    /*!< 8.85kbps   */
+>>>>>>> upstream/master
 	VOAMRWB_MD1265		= 2,	/*!< 12.65kbps  */
 	VOAMRWB_MD1425		= 3,	/*!< 14.25kbps  */
 	VOAMRWB_MD1585		= 4,	/*!< 15.85bps   */
 	VOAMRWB_MD1825		= 5,	/*!< 18.25bps   */
 	VOAMRWB_MD1985		= 6,	/*!< 19.85kbps  */
 	VOAMRWB_MD2305		= 7,    /*!< 23.05kbps  */
+<<<<<<< HEAD
 	VOAMRWB_MD2385          = 8,    /*!< 23.85kbps> */	
 	VOAMRWB_N_MODES 	= 9,	/*!< Invalid mode */
 	VOAMRWB_MODE_MAX    = VO_MAX_ENUM_VALUE
 	
+=======
+	VOAMRWB_MD2385          = 8,    /*!< 23.85kbps> */
+	VOAMRWB_N_MODES 	= 9,	/*!< Invalid mode */
+	VOAMRWB_MODE_MAX    = VO_MAX_ENUM_VALUE
+
+>>>>>>> upstream/master
 }VOAMRWBMODE;
 
 /*!* the frame format the codec supports*/
@@ -51,6 +65,7 @@ typedef enum {
 	/*One word (2-byte) for sync word (0x6b21)*/
 	/*One word (2-byte) for frame length N.*/
 	/*N words (2-byte) containing N bits (bit 0 = 0x007f, bit 1 = 0x0081).*/
+<<<<<<< HEAD
 	VOAMRWB_ITU         = 1, 
 	/*One word (2-byte) for sync word (0x6b21).*/
 	/*One word (2-byte) to indicate the frame type.*/	
@@ -62,6 +77,19 @@ typedef enum {
 
 
 #define    VO_PID_AMRWB_Module							0x42261000 
+=======
+	VOAMRWB_ITU         = 1,
+	/*One word (2-byte) for sync word (0x6b21).*/
+	/*One word (2-byte) to indicate the frame type.*/
+	/*One word (2-byte) to indicate the mode.*/
+	/*N words  (2-byte) containing N bits (bit 0 = 0xff81, bit 1 = 0x007f).*/
+	VOAMRWB_RFC3267		= 2,	/* see RFC 3267 */
+    VOAMRWB_TMAX        = VO_MAX_ENUM_VALUE
+}VOAMRWBFRAMETYPE;
+
+
+#define    VO_PID_AMRWB_Module							0x42261000
+>>>>>>> upstream/master
 #define    VO_PID_AMRWB_FORMAT                          (VO_PID_AMRWB_Module | 0x0002)
 #define    VO_PID_AMRWB_CHANNELS                        (VO_PID_AMRWB_Module | 0x0003)
 #define    VO_PID_AMRWB_SAMPLERATE                      (VO_PID_AMRWB_Module | 0x0004)

@@ -74,6 +74,7 @@ public abstract class HardwareRenderer {
     static final String RENDER_DIRTY_REGIONS_PROPERTY = "hwui.render_dirty_regions";
     
     /**
+<<<<<<< HEAD
      * System property used to enable or disable tile rendering
      *
      * Possible values:
@@ -86,6 +87,11 @@ public abstract class HardwareRenderer {
      * System property used to enable or disable vsync.
      * The default value of this property is assumed to be false.
      *
+=======
+     * System property used to enable or disable vsync.
+     * The default value of this property is assumed to be false.
+     * 
+>>>>>>> upstream/master
      * Possible values:
      * "true", to disable vsync
      * "false", to enable vsync
@@ -442,6 +448,7 @@ public abstract class HardwareRenderer {
 
         static boolean sDirtyRegions;
         static final boolean sDirtyRegionsRequested;
+<<<<<<< HEAD
         static boolean sTileRendering;
         static {
             String dirtyProperty = SystemProperties.get(RENDER_DIRTY_REGIONS_PROPERTY, "true");
@@ -452,12 +459,21 @@ public abstract class HardwareRenderer {
             sDirtyRegions = RENDER_DIRTY_REGIONS &&
                             ("true".equalsIgnoreCase(dirtyProperty) ||
                              sTileRendering);
+=======
+        static {
+            String dirtyProperty = SystemProperties.get(RENDER_DIRTY_REGIONS_PROPERTY, "true");
+            //noinspection PointlessBooleanExpression,ConstantConditions
+            sDirtyRegions = RENDER_DIRTY_REGIONS && "true".equalsIgnoreCase(dirtyProperty);
+>>>>>>> upstream/master
             sDirtyRegionsRequested = sDirtyRegions;
         }
 
         boolean mDirtyRegionsEnabled;
+<<<<<<< HEAD
         boolean mUpdateDirtyRegions;
 
+=======
+>>>>>>> upstream/master
         final boolean mVsyncDisabled;
 
         final int mGlVersion;
@@ -692,12 +708,15 @@ public abstract class HardwareRenderer {
             
             initCaches();
 
+<<<<<<< HEAD
             enableDirtyRegions();
 
             return mEglContext.getGL();
         }
 
         private void enableDirtyRegions() {
+=======
+>>>>>>> upstream/master
             // If mDirtyRegions is set, this means we have an EGL configuration
             // with EGL_SWAP_BEHAVIOR_PRESERVED_BIT set
             if (sDirtyRegions) {
@@ -713,6 +732,11 @@ public abstract class HardwareRenderer {
                 // configuration (see RENDER_DIRTY_REGIONS)
                 mDirtyRegionsEnabled = GLES20Canvas.isBackBufferPreserved();
             }
+<<<<<<< HEAD
+=======
+
+            return mEglContext.getGL();
+>>>>>>> upstream/master
         }
 
         abstract void initCaches();
@@ -766,9 +790,12 @@ public abstract class HardwareRenderer {
                 if (!createSurface(holder)) {
                     return;
                 }
+<<<<<<< HEAD
 
                 mUpdateDirtyRegions = true;
 
+=======
+>>>>>>> upstream/master
                 if (mCanvas != null) {
                     setEnabled(true);
                 }
@@ -823,12 +850,15 @@ public abstract class HardwareRenderer {
             return mGl != null && mCanvas != null;
         }        
         
+<<<<<<< HEAD
         void startTileRendering(Rect dirty) {
         }
 
         void endTileRendering() {
         }
 
+=======
+>>>>>>> upstream/master
         void onPreDraw(Rect dirty) {
         }
 
@@ -854,9 +884,12 @@ public abstract class HardwareRenderer {
                         dirty = null;
                     }
 
+<<<<<<< HEAD
                     if (sTileRendering)
                         startTileRendering(dirty);
 
+=======
+>>>>>>> upstream/master
                     onPreDraw(dirty);
 
                     HardwareCanvas canvas = mCanvas;
@@ -902,8 +935,11 @@ public abstract class HardwareRenderer {
                     }
 
                     onPostDraw();
+<<<<<<< HEAD
                     if (sTileRendering)
                         endTileRendering();
+=======
+>>>>>>> upstream/master
 
                     attachInfo.mIgnoreDirtyState = false;
 
@@ -939,12 +975,15 @@ public abstract class HardwareRenderer {
                     fallback(true);
                     return SURFACE_STATE_ERROR;
                 } else {
+<<<<<<< HEAD
                     if (SystemProperties.QCOM_HARDWARE ) {
                         if (mUpdateDirtyRegions) {
                             enableDirtyRegions();
                             mUpdateDirtyRegions = false;
                         }
                      }
+=======
+>>>>>>> upstream/master
                     return SURFACE_STATE_UPDATED;
                 }
             }
@@ -1053,6 +1092,7 @@ public abstract class HardwareRenderer {
         }
 
         @Override
+<<<<<<< HEAD
         void startTileRendering(Rect dirty) {
             mGlCanvas.startTileRendering(dirty);
         }
@@ -1063,6 +1103,8 @@ public abstract class HardwareRenderer {
         }
 
         @Override
+=======
+>>>>>>> upstream/master
         void destroy(boolean full) {
             try {
                 super.destroy(full);

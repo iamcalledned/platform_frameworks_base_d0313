@@ -23,10 +23,13 @@
 
 #include <utils/Log.h>
 
+<<<<<<< HEAD
 #ifdef QCOM_HARDWARE
 #include <qcom_ui.h>
 #endif
 
+=======
+>>>>>>> upstream/master
 namespace android {
 
 SurfaceTextureClient::SurfaceTextureClient(
@@ -326,16 +329,21 @@ int SurfaceTextureClient::perform(int operation, va_list args)
         res = dispatchDisconnect(args);
         break;
     default:
+<<<<<<< HEAD
 #ifdef QCOM_HARDWARE
         res = dispatchPerformQcomOperation(operation, args);
 #else
 	res = NAME_NOT_FOUND;
 #endif
+=======
+        res = NAME_NOT_FOUND;
+>>>>>>> upstream/master
         break;
     }
     return res;
 }
 
+<<<<<<< HEAD
 #ifdef QCOM_HARDWARE
 int SurfaceTextureClient::dispatchPerformQcomOperation(int operation,
                                                        va_list args) {
@@ -355,6 +363,8 @@ int SurfaceTextureClient::dispatchPerformQcomOperation(int operation,
 }
 #endif
 
+=======
+>>>>>>> upstream/master
 int SurfaceTextureClient::dispatchConnect(va_list args) {
     int api = va_arg(args, int);
     return connect(api);
@@ -427,6 +437,7 @@ int SurfaceTextureClient::dispatchUnlockAndPost(va_list args) {
     return unlockAndPost();
 }
 
+<<<<<<< HEAD
 #ifdef QCOM_HARDWARE
 int SurfaceTextureClient::performQcomOperation(int operation, int arg1,
                                                int arg2, int arg3) {
@@ -436,6 +447,8 @@ int SurfaceTextureClient::performQcomOperation(int operation, int arg1,
     return err;
 }
 #endif
+=======
+>>>>>>> upstream/master
 
 int SurfaceTextureClient::connect(int api) {
     LOGV("SurfaceTextureClient::connect");

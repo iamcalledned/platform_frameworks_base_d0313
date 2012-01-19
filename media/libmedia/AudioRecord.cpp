@@ -101,6 +101,7 @@ AudioRecord::AudioRecord(
             frameCount, flags, cbf, user, notificationFrames, sessionId);
 }
 
+<<<<<<< HEAD
 #ifdef USE_KINETO_COMPATIBILITY
 // Really dirty hack to give a Froyo-compatible constructor
 extern "C" AudioRecord *_ZN7android11AudioRecordC1EijijijPFviPvS1_ES1_ii(
@@ -133,6 +134,8 @@ extern "C" AudioRecord *_ZN7android11AudioRecordC1EijijijPFviPvS1_ES1_i(
 }
 #endif
 
+=======
+>>>>>>> upstream/master
 AudioRecord::~AudioRecord()
 {
     if (mStatus == NO_ERROR) {

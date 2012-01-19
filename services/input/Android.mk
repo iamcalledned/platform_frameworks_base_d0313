@@ -39,6 +39,7 @@ LOCAL_SHARED_LIBRARIES := \
 LOCAL_C_INCLUDES := \
     external/skia/include/core
 
+<<<<<<< HEAD
 ifeq ($(BOARD_USE_LEGACY_TOUCHSCREEN),true)
 LOCAL_CFLAGS += -DLEGACY_TOUCHSCREEN
 endif
@@ -47,6 +48,8 @@ ifeq ($(BOARD_USE_LEGACY_TRACKPAD),true)
 LOCAL_CFLAGS += -DLEGACY_TRACKPAD
 endif
 
+=======
+>>>>>>> upstream/master
 LOCAL_MODULE:= libinput
 
 LOCAL_MODULE_TAGS := optional

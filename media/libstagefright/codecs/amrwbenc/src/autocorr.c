@@ -70,6 +70,7 @@ void Autocorr(
 		p1 = y;
 		for (i = 0; i < L_WINDOW; i+=4)
 		{
+<<<<<<< HEAD
 			*p1 = vo_shr_r(*p1, shift); 
 			p1++;
 			*p1 = vo_shr_r(*p1, shift); 
@@ -77,12 +78,25 @@ void Autocorr(
 			*p1 = vo_shr_r(*p1, shift);
 			p1++;
 			*p1 = vo_shr_r(*p1, shift); 
+=======
+			*p1 = vo_shr_r(*p1, shift);
+			p1++;
+			*p1 = vo_shr_r(*p1, shift);
+			p1++;
+			*p1 = vo_shr_r(*p1, shift);
+			p1++;
+			*p1 = vo_shr_r(*p1, shift);
+>>>>>>> upstream/master
 			p1++;
 		}
 	}
 
 	/* Compute and normalize r[0] */
+<<<<<<< HEAD
 	L_sum = 1; 
+=======
+	L_sum = 1;
+>>>>>>> upstream/master
 	for (i = 0; i < L_WINDOW; i+=4)
 	{
 		L_sum += vo_L_mult(y[i], y[i]);

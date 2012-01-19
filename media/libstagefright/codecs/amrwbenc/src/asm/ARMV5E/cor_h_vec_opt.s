@@ -51,12 +51,20 @@ LOOPi:
          RSB           r11, r2, #62                      @j=62-pos
 
 LOOPj1:
+<<<<<<< HEAD
 	 LDRSH         r12, [r10], #2  
+=======
+	 LDRSH         r12, [r10], #2
+>>>>>>> upstream/master
 	 LDRSH         r8,  [r9], #2
 	 LDRSH         r14, [r9]
 	 SUBS          r11, r11, #1
          MLA           r5, r12, r8, r5
+<<<<<<< HEAD
          MLA           r6, r12, r14, r6	 
+=======
+         MLA           r6, r12, r14, r6
+>>>>>>> upstream/master
 	 BGE           LOOPj1
 
 	 LDRSH         r12, [r10], #2                     @*p1++
@@ -64,7 +72,11 @@ LOOPj1:
          MLA           r5, r12, r14, r5
          MOV           r14, #0x8000
          MOV           r5, r5, LSL #2                     @L_sum1 = (L_sum1 << 2)
+<<<<<<< HEAD
          ADD           r10, r6, r14         
+=======
+         ADD           r10, r6, r14
+>>>>>>> upstream/master
          ADD           r9, r5, r14
          MOV           r5, r9, ASR #16
          MOV           r6, r10, ASR #16
@@ -76,7 +88,11 @@ LOOPj1:
 	 MUL           r14, r6, r11
 	 MOV           r5, r12, ASR #15
 	 MOV           r6, r14, ASR #15
+<<<<<<< HEAD
 	 LDR           r9,  [r13, #44]                   
+=======
+	 LDR           r9,  [r13, #44]
+>>>>>>> upstream/master
 	 LDR           r12, [r13, #48]
          LDRSH         r10, [r7], #2                      @*p0++
 	 LDRSH         r11, [r8]                          @*p3++
@@ -88,7 +104,11 @@ LOOPj1:
 	 STRH          r6, [r12]
 
          ADD           r2, r2, #4
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> upstream/master
          MOV           r5, #0                            @L_sum1 = 0
 	 MOV           r6, #0                            @L_sum2 = 0
 	 ADD           r9, r1, r2, LSL #1                @p2 = &vec[pos]
@@ -97,12 +117,20 @@ LOOPj1:
 	 ADD           r4, r4, #1                        @i++
 
 LOOPj2:
+<<<<<<< HEAD
 	 LDRSH         r12, [r10], #2  
+=======
+	 LDRSH         r12, [r10], #2
+>>>>>>> upstream/master
 	 LDRSH         r8,  [r9], #2
 	 LDRSH         r14, [r9]
 	 SUBS          r11, r11, #1
          MLA           r5, r12, r8, r5
+<<<<<<< HEAD
          MLA           r6, r12, r14, r6	 
+=======
+         MLA           r6, r12, r14, r6
+>>>>>>> upstream/master
 	 BGE           LOOPj2
 
 	 LDRSH         r12, [r10], #2                     @*p1++
@@ -110,7 +138,11 @@ LOOPj2:
          MLA           r5, r12, r14, r5
          MOV           r14, #0x8000
          MOV           r5, r5, LSL #2                     @L_sum1 = (L_sum1 << 2)
+<<<<<<< HEAD
          ADD           r10, r6, r14        
+=======
+         ADD           r10, r6, r14
+>>>>>>> upstream/master
          ADD           r9, r5, r14
 
          MOV           r5, r9, ASR #16
@@ -123,7 +155,11 @@ LOOPj2:
 	 MUL           r14, r6, r11
 	 MOV           r5, r12, ASR #15
 	 MOV           r6, r14, ASR #15
+<<<<<<< HEAD
 	 LDR           r9,  [r13, #44]                   
+=======
+	 LDR           r9,  [r13, #44]
+>>>>>>> upstream/master
 	 LDR           r12, [r13, #48]
          LDRSH         r10, [r7], #2                      @*p0++
 	 LDRSH         r11, [r8]                          @*p3++
@@ -136,6 +172,7 @@ LOOPj2:
 	 ADD           r4, r4, #1                         @i+1
 	 ADD           r2, r2, #4                         @pos += STEP
 	 CMP           r4, #16
+<<<<<<< HEAD
 	 
 	 BLT           LOOPi
          
@@ -147,5 +184,18 @@ the_end:
         
 	
 	  
+=======
+
+	 BLT           LOOPi
+
+the_end:
+         LDMFD         r13!, {r4 - r12, r15}
+
+         @ENDFUNC
+         .END
+
+
+
+>>>>>>> upstream/master
 
 

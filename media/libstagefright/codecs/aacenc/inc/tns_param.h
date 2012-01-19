@@ -44,7 +44,11 @@ typedef struct{
 }TNS_INFO_TAB;
 
 
+<<<<<<< HEAD
 void GetTnsParam(TNS_CONFIG_TABULATED *tnsConfigTab, 
+=======
+void GetTnsParam(TNS_CONFIG_TABULATED *tnsConfigTab,
+>>>>>>> upstream/master
                  Word32 bitRate, Word16 channels, Word16 blockType);
 
 void GetTnsMaxBands(Word32 samplingRate, Word16 blockType, Word16* tnsMaxSfb);

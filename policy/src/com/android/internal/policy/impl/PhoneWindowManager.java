@@ -18,7 +18,10 @@ package com.android.internal.policy.impl;
 
 import android.app.Activity;
 import android.app.ActivityManagerNative;
+<<<<<<< HEAD
 import android.app.ActivityManager.RunningAppProcessInfo;
+=======
+>>>>>>> upstream/master
 import android.app.IActivityManager;
 import android.app.IUiModeManager;
 import android.app.ProgressDialog;
@@ -49,7 +52,10 @@ import android.os.LocalPowerManager;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.PowerManager;
+<<<<<<< HEAD
 import android.os.Process;
+=======
+>>>>>>> upstream/master
 import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.SystemClock;
@@ -135,7 +141,10 @@ import android.view.KeyCharacterMap.FallbackAction;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+<<<<<<< HEAD
 import android.widget.Toast;
+=======
+>>>>>>> upstream/master
 import android.media.IAudioService;
 import android.media.AudioManager;
 
@@ -145,7 +154,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+<<<<<<< HEAD
 import java.util.List;
+=======
+>>>>>>> upstream/master
 
 /**
  * WindowManagerPolicy implementation for the Android phone UI.  This
@@ -664,6 +676,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         }
     };
 
+<<<<<<< HEAD
     Runnable mBackLongPress = new Runnable() {
         public void run() {
             try {
@@ -692,6 +705,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         }
     };
 
+=======
+>>>>>>> upstream/master
     void showGlobalActionsDialog() {
         if (mGlobalActions == null) {
             mGlobalActions = new GlobalActions(mContext);
@@ -1552,10 +1567,13 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             }
         }
 
+<<<<<<< HEAD
         if (keyCode == KeyEvent.KEYCODE_BACK && !down) {
             mHandler.removeCallbacks(mBackLongPress);
         }
 
+=======
+>>>>>>> upstream/master
         // First we always handle the home key here, so applications
         // can never break it, although if keyguard is on, we do let
         // it handle it, because that gives us the correct 5 second
@@ -1664,6 +1682,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 showOrHideRecentAppsDialog(RECENT_APPS_BEHAVIOR_SHOW_OR_DISMISS);
             }
             return -1;
+<<<<<<< HEAD
         } else if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (Settings.Secure.getInt(mContext.getContentResolver(),
                     Settings.Secure.KILL_APP_LONGPRESS_BACK, 0) == 1) {
@@ -1671,6 +1690,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     mHandler.postDelayed(mBackLongPress, ViewConfiguration.getGlobalActionKeyTimeout());
                 }
             }
+=======
+>>>>>>> upstream/master
         }
 
         // Shortcuts are invoked through Search+key, so intercept those here

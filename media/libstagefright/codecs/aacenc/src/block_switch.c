@@ -52,7 +52,11 @@ CalcWindowEnergy(BLOCK_SWITCHING_CONTROL *blockSwitchingControl,
   IIR high pass coeffs
 */
 Word32 hiPassCoeff[BLOCK_SWITCHING_IIR_LEN] = {
+<<<<<<< HEAD
   0xbec8b439, 0x609d4952  /* -0.5095f, 0.7548f */ 
+=======
+  0xbec8b439, 0x609d4952  /* -0.5095f, 0.7548f */
+>>>>>>> upstream/master
 };
 
 static const Word32 accWindowNrgFac = 0x26666666;                   /* factor for accumulating filtered window energies 0.3 */
@@ -76,8 +80,13 @@ Word16 InitBlockSwitching(BLOCK_SWITCHING_CONTROL *blockSwitchingControl,
                           const Word32 bitRate, const Word16 nChannels)
 {
   /* select attackRatio */
+<<<<<<< HEAD
            
   if ((sub(nChannels,1)==0 && L_sub(bitRate, 24000) > 0) || 
+=======
+
+  if ((sub(nChannels,1)==0 && L_sub(bitRate, 24000) > 0) ||
+>>>>>>> upstream/master
       (sub(nChannels,1)>0 && bitRate > (nChannels * 16000))) {
     blockSwitchingControl->invAttackRatio = invAttackRatioHighBr;
   }
@@ -116,7 +125,11 @@ Word16 BlockSwitching(BLOCK_SWITCHING_CONTROL *blockSwitchingControl,
 
   /* Reset grouping info */
   for (i=0; i<TRANS_FAC; i++) {
+<<<<<<< HEAD
     blockSwitchingControl->groupLen[i] = 0;                                      
+=======
+    blockSwitchingControl->groupLen[i] = 0;
+>>>>>>> upstream/master
   }
 
 
@@ -125,6 +138,7 @@ Word16 BlockSwitching(BLOCK_SWITCHING_CONTROL *blockSwitchingControl,
                                                           &blockSwitchingControl->attackIndex,
                                                           BLOCK_SWITCH_WINDOWS);
 
+<<<<<<< HEAD
   blockSwitchingControl->attackIndex = blockSwitchingControl->lastAttackIndex;   
 
   /* Set grouping info */
@@ -134,12 +148,28 @@ Word16 BlockSwitching(BLOCK_SWITCHING_CONTROL *blockSwitchingControl,
     blockSwitchingControl->groupLen[i] = suggestedGroupingTable[blockSwitchingControl->attackIndex][i];  
   }
 	
+=======
+  blockSwitchingControl->attackIndex = blockSwitchingControl->lastAttackIndex;
+
+  /* Set grouping info */
+  blockSwitchingControl->noOfGroups = MAX_NO_OF_GROUPS;
+
+  for (i=0; i<MAX_NO_OF_GROUPS; i++) {
+    blockSwitchingControl->groupLen[i] = suggestedGroupingTable[blockSwitchingControl->attackIndex][i];
+  }
+
+>>>>>>> upstream/master
   /* if the samplerate is less than 16000, it should be all the short block, avoid pre&post echo */
   if(sampleRate >= 16000) {
 	  /* Save current window energy as last window energy */
 	  for (w=0; w<BLOCK_SWITCH_WINDOWS; w++) {
+<<<<<<< HEAD
 		  blockSwitchingControl->windowNrg[0][w] = blockSwitchingControl->windowNrg[1][w];             
 		  blockSwitchingControl->windowNrgF[0][w] = blockSwitchingControl->windowNrgF[1][w];           
+=======
+		  blockSwitchingControl->windowNrg[0][w] = blockSwitchingControl->windowNrg[1][w];
+		  blockSwitchingControl->windowNrgF[0][w] = blockSwitchingControl->windowNrgF[1][w];
+>>>>>>> upstream/master
 	  }
 
 
@@ -147,10 +177,17 @@ Word16 BlockSwitching(BLOCK_SWITCHING_CONTROL *blockSwitchingControl,
 	  CalcWindowEnergy(blockSwitchingControl, timeSignal, chIncrement, BLOCK_SWITCH_WINDOW_LEN);
 
 	  /* reset attack */
+<<<<<<< HEAD
 	  blockSwitchingControl->attack = FALSE;                                         
 
 	  enMax = 0;                                                                     
 	  enM1 = blockSwitchingControl->windowNrgF[0][BLOCK_SWITCH_WINDOWS-1];           
+=======
+	  blockSwitchingControl->attack = FALSE;
+
+	  enMax = 0;
+	  enM1 = blockSwitchingControl->windowNrgF[0][BLOCK_SWITCH_WINDOWS-1];
+>>>>>>> upstream/master
 
 	  for (w=0; w<BLOCK_SWITCH_WINDOWS; w++) {
 		  Word32 enM1_Tmp, accWindowNrg_Tmp, windowNrgF_Tmp;
@@ -172,15 +209,26 @@ Word16 BlockSwitching(BLOCK_SWITCHING_CONTROL *blockSwitchingControl,
 		  /* if the energy with the ratio is bigger than the average, and the attack and short block  */
 		  if ((fixmul(windowNrgF_Tmp, blockSwitchingControl->invAttackRatio) >> windowNrgF_Shf) >
 			  blockSwitchingControl->accWindowNrg ) {
+<<<<<<< HEAD
 				  blockSwitchingControl->attack = TRUE;                                      
 				  blockSwitchingControl->lastAttackIndex = w;                                
 		  }
 		  enM1 = blockSwitchingControl->windowNrgF[1][w];                              
+=======
+				  blockSwitchingControl->attack = TRUE;
+				  blockSwitchingControl->lastAttackIndex = w;
+		  }
+		  enM1 = blockSwitchingControl->windowNrgF[1][w];
+>>>>>>> upstream/master
 		  enMax = max(enMax, enM1);
 	  }
 
 	  if (enMax < minAttackNrg) {
+<<<<<<< HEAD
 		  blockSwitchingControl->attack = FALSE;                                       
+=======
+		  blockSwitchingControl->attack = FALSE;
+>>>>>>> upstream/master
 	  }
   }
   else
@@ -188,6 +236,7 @@ Word16 BlockSwitching(BLOCK_SWITCHING_CONTROL *blockSwitchingControl,
 	  blockSwitchingControl->attack = TRUE;
   }
 
+<<<<<<< HEAD
   /* Check if attack spreads over frame border */     
   if ((!blockSwitchingControl->attack) && (blockSwitchingControl->lastattack)) {
      
@@ -204,6 +253,24 @@ Word16 BlockSwitching(BLOCK_SWITCHING_CONTROL *blockSwitchingControl,
   blockSwitchingControl->windowSequence =  blockSwitchingControl->nextwindowSequence;    
 
      
+=======
+  /* Check if attack spreads over frame border */
+  if ((!blockSwitchingControl->attack) && (blockSwitchingControl->lastattack)) {
+
+    if (blockSwitchingControl->attackIndex == TRANS_FAC-1) {
+      blockSwitchingControl->attack = TRUE;
+    }
+
+    blockSwitchingControl->lastattack = FALSE;
+  }
+  else {
+    blockSwitchingControl->lastattack = blockSwitchingControl->attack;
+  }
+
+  blockSwitchingControl->windowSequence =  blockSwitchingControl->nextwindowSequence;
+
+
+>>>>>>> upstream/master
   if (blockSwitchingControl->attack) {
     blockSwitchingControl->nextwindowSequence = SHORT_WINDOW;
   }
@@ -211,6 +278,7 @@ Word16 BlockSwitching(BLOCK_SWITCHING_CONTROL *blockSwitchingControl,
     blockSwitchingControl->nextwindowSequence = LONG_WINDOW;
   }
 
+<<<<<<< HEAD
   /* update short block group */ 
   if (blockSwitchingControl->nextwindowSequence == SHORT_WINDOW) {
      
@@ -232,6 +300,29 @@ Word16 BlockSwitching(BLOCK_SWITCHING_CONTROL *blockSwitchingControl,
      
     if (blockSwitchingControl->windowSequence == SHORT_WINDOW) {
       blockSwitchingControl->nextwindowSequence = STOP_WINDOW;                   
+=======
+  /* update short block group */
+  if (blockSwitchingControl->nextwindowSequence == SHORT_WINDOW) {
+
+    if (blockSwitchingControl->windowSequence== LONG_WINDOW) {
+      blockSwitchingControl->windowSequence = START_WINDOW;
+    }
+
+    if (blockSwitchingControl->windowSequence == STOP_WINDOW) {
+      blockSwitchingControl->windowSequence = SHORT_WINDOW;
+      blockSwitchingControl->noOfGroups = 3;
+      blockSwitchingControl->groupLen[0] = 3;
+      blockSwitchingControl->groupLen[1] = 3;
+      blockSwitchingControl->groupLen[2] = 2;
+    }
+  }
+
+  /* update block type */
+  if (blockSwitchingControl->nextwindowSequence == LONG_WINDOW) {
+
+    if (blockSwitchingControl->windowSequence == SHORT_WINDOW) {
+      blockSwitchingControl->nextwindowSequence = STOP_WINDOW;
+>>>>>>> upstream/master
     }
   }
 
@@ -252,6 +343,7 @@ static Word32 SrchMaxWithIndex(const Word32 in[], Word16 *index, Word16 n)
   Word32 i, idx;
 
   /* Search maximum value in array and return index and value */
+<<<<<<< HEAD
   max = 0;                                                       
   idx = 0;                                                       
 
@@ -263,6 +355,19 @@ static Word32 SrchMaxWithIndex(const Word32 in[], Word16 *index, Word16 n)
     }
   }
   *index = idx;                                                  
+=======
+  max = 0;
+  idx = 0;
+
+  for (i = 0; i < n; i++) {
+
+    if (in[i+1]  > max) {
+      max = in[i+1];
+      idx = i;
+    }
+  }
+  *index = idx;
+>>>>>>> upstream/master
 
   return(max);
 }
@@ -292,11 +397,19 @@ Word32 CalcWindowEnergy(BLOCK_SWITCHING_CONTROL *blockSwitchingControl,
   states1 = blockSwitchingControl->iirStates[1];
   Coeff0 = hiPassCoeff[0];
   Coeff1 = hiPassCoeff[1];
+<<<<<<< HEAD
   tidx = 0;                                                   
   for (w=0; w < BLOCK_SWITCH_WINDOWS; w++) {
 
     accuUE = 0;                                                  
     accuFE = 0;                                                  
+=======
+  tidx = 0;
+  for (w=0; w < BLOCK_SWITCH_WINDOWS; w++) {
+
+    accuUE = 0;
+    accuFE = 0;
+>>>>>>> upstream/master
 
     for(i=0; i<windowLen; i++) {
 	  Word32 accu1, accu2, accu3;
@@ -309,16 +422,28 @@ Word32 CalcWindowEnergy(BLOCK_SWITCHING_CONTROL *blockSwitchingControl,
 	  accu3 = accu1 - states0;
 	  out = accu3 - accu2;
 
+<<<<<<< HEAD
 	  states0 = accu1;             
 	  states1 = out;               
 
       tempFiltered = extract_h(out);	  
+=======
+	  states0 = accu1;
+	  states1 = out;
+
+      tempFiltered = extract_h(out);
+>>>>>>> upstream/master
       accuUE += (tempUnfiltered * tempUnfiltered) >> ENERGY_SHIFT;
       accuFE += (tempFiltered * tempFiltered) >> ENERGY_SHIFT;
     }
 
+<<<<<<< HEAD
     blockSwitchingControl->windowNrg[1][w] = accuUE;             
     blockSwitchingControl->windowNrgF[1][w] = accuFE;            
+=======
+    blockSwitchingControl->windowNrg[1][w] = accuUE;
+    blockSwitchingControl->windowNrgF[1][w] = accuFE;
+>>>>>>> upstream/master
 
   }
 
@@ -346,8 +471,13 @@ static Word16 IIRFilter(const Word16 in, const Word32 coeff[], Word32 states[])
   accu2 = fixmul( coeff[0], states[1] );
   out = accu3 - accu2;
 
+<<<<<<< HEAD
   states[0] = accu1;             
   states[1] = out;               
+=======
+  states[0] = accu1;
+  states[1] = out;
+>>>>>>> upstream/master
 
   return round16(out);
 }
@@ -374,6 +504,7 @@ Word16 SyncBlockSwitching(BLOCK_SWITCHING_CONTROL *blockSwitchingControlLeft,
                           const Word16 nChannels)
 {
   Word16 i;
+<<<<<<< HEAD
   Word16 patchType = LONG_WINDOW;                
 
    
@@ -384,10 +515,23 @@ Word16 SyncBlockSwitching(BLOCK_SWITCHING_CONTROL *blockSwitchingControlLeft,
 
       for (i=1; i<TRANS_FAC; i++) {
         blockSwitchingControlLeft->groupLen[i] = 0;                      
+=======
+  Word16 patchType = LONG_WINDOW;
+
+
+  if (nChannels == 1) { /* Mono */
+    if (blockSwitchingControlLeft->windowSequence != SHORT_WINDOW) {
+      blockSwitchingControlLeft->noOfGroups = 1;
+      blockSwitchingControlLeft->groupLen[0] = 1;
+
+      for (i=1; i<TRANS_FAC; i++) {
+        blockSwitchingControlLeft->groupLen[i] = 0;
+>>>>>>> upstream/master
       }
     }
   }
   else { /* Stereo common Window */
+<<<<<<< HEAD
     patchType = synchronizedBlockTypeTable[patchType][blockSwitchingControlLeft->windowSequence];        
     patchType = synchronizedBlockTypeTable[patchType][blockSwitchingControlRight->windowSequence];       
 
@@ -415,13 +559,48 @@ Word16 SyncBlockSwitching(BLOCK_SWITCHING_CONTROL *blockSwitchingControlLeft,
         blockSwitchingControlRight->noOfGroups = blockSwitchingControlLeft->noOfGroups;          
         for (i=0; i<TRANS_FAC; i++) {
           blockSwitchingControlRight->groupLen[i] = blockSwitchingControlLeft->groupLen[i];      
+=======
+    patchType = synchronizedBlockTypeTable[patchType][blockSwitchingControlLeft->windowSequence];
+    patchType = synchronizedBlockTypeTable[patchType][blockSwitchingControlRight->windowSequence];
+
+    /* Set synchronized Blocktype */
+    blockSwitchingControlLeft->windowSequence = patchType;
+    blockSwitchingControlRight->windowSequence = patchType;
+
+    /* Synchronize grouping info */
+    if(patchType != SHORT_WINDOW) { /* Long Blocks */
+      /* Set grouping info */
+      blockSwitchingControlLeft->noOfGroups = 1;
+      blockSwitchingControlRight->noOfGroups = 1;
+      blockSwitchingControlLeft->groupLen[0] = 1;
+      blockSwitchingControlRight->groupLen[0] = 1;
+
+      for (i=1; i<TRANS_FAC; i++) {
+        blockSwitchingControlLeft->groupLen[i] = 0;
+        blockSwitchingControlRight->groupLen[i] = 0;
+      }
+    }
+    else {
+
+      if (blockSwitchingControlLeft->maxWindowNrg > blockSwitchingControlRight->maxWindowNrg) {
+        /* Left Channel wins */
+        blockSwitchingControlRight->noOfGroups = blockSwitchingControlLeft->noOfGroups;
+        for (i=0; i<TRANS_FAC; i++) {
+          blockSwitchingControlRight->groupLen[i] = blockSwitchingControlLeft->groupLen[i];
+>>>>>>> upstream/master
         }
       }
       else {
         /* Right Channel wins */
+<<<<<<< HEAD
         blockSwitchingControlLeft->noOfGroups = blockSwitchingControlRight->noOfGroups;          
         for (i=0; i<TRANS_FAC; i++) {
           blockSwitchingControlLeft->groupLen[i] = blockSwitchingControlRight->groupLen[i];      
+=======
+        blockSwitchingControlLeft->noOfGroups = blockSwitchingControlRight->noOfGroups;
+        for (i=0; i<TRANS_FAC; i++) {
+          blockSwitchingControlLeft->groupLen[i] = blockSwitchingControlRight->groupLen[i];
+>>>>>>> upstream/master
         }
       }
     }

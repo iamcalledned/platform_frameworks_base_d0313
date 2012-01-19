@@ -174,6 +174,7 @@ public:
         }
         return result != 0;
     }
+<<<<<<< HEAD
 
 #ifdef QCOM_HDMI_OUT
     virtual void enableHDMIOutput(int enable)
@@ -201,6 +202,8 @@ public:
     }
 #endif
 
+=======
+>>>>>>> upstream/master
 };
 
 IMPLEMENT_META_INTERFACE(SurfaceComposer, "android.ui.ISurfaceComposer");
@@ -281,6 +284,7 @@ status_t BnSurfaceComposer::onTransact(
             int32_t result = authenticateSurfaceTexture(surfaceTexture) ? 1 : 0;
             reply->writeInt32(result);
         } break;
+<<<<<<< HEAD
 #ifdef QCOM_HDMI_OUT
         case ENABLE_HDMI_OUTPUT: {
             CHECK_INTERFACE(ISurfaceComposer, data, reply);
@@ -298,6 +302,8 @@ status_t BnSurfaceComposer::onTransact(
             setActionSafeHeightRatio(asHeightRatio);
         } break;
 #endif
+=======
+>>>>>>> upstream/master
         default:
             return BBinder::onTransact(code, data, reply, flags);
     }

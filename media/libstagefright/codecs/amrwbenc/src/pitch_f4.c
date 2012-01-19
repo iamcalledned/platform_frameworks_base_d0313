@@ -90,7 +90,11 @@ Word16 Pitch_fr4(                          /* (o)     : pitch period.           
     Norm_corr_asm(exc, xn, h, L_subfr, t_min, t_max, corr);
 #else
 	Norm_Corr(exc, xn, h, L_subfr, t_min, t_max, corr);
+<<<<<<< HEAD
 #endif 
+=======
+#endif
+>>>>>>> upstream/master
 
 	/* Find integer pitch */
 
@@ -100,8 +104,13 @@ Word16 Pitch_fr4(                          /* (o)     : pitch period.           
 	{
 		if (corr[i] >= max)
 		{
+<<<<<<< HEAD
 			max = corr[i];                 
 			t0 = i;                        
+=======
+			max = corr[i];
+			t0 = i;
+>>>>>>> upstream/master
 		}
 	}
 	/* If first subframe and t0 >= t0_fr1, do not search fractionnal pitch */
@@ -182,7 +191,11 @@ static void Norm_Corr(
 #endif
 
 	/* Compute rounded down 1/sqrt(energy of xn[]) */
+<<<<<<< HEAD
 	L_tmp = 0; 
+=======
+	L_tmp = 0;
+>>>>>>> upstream/master
 	for (i = 0; i < 64; i+=4)
 	{
 		L_tmp += (xn[i] * xn[i]);
@@ -202,7 +215,11 @@ static void Norm_Corr(
 	for (t = t_min; t <= t_max; t++)
 	{
 		/* Compute correlation between xn[] and excf[] */
+<<<<<<< HEAD
 		L_tmp  = 0;  
+=======
+		L_tmp  = 0;
+>>>>>>> upstream/master
 		L_tmp1 = 0;
 		for (i = 0; i < 64; i+=4)
 		{
@@ -246,7 +263,11 @@ static void Norm_Corr(
 			L_tmp = L_tmp << L_tmp2;
 		}
 
+<<<<<<< HEAD
 		corr_norm[t] = vo_round(L_tmp);      
+=======
+		corr_norm[t] = vo_round(L_tmp);
+>>>>>>> upstream/master
 		/* modify the filtered excitation excf[] for the next iteration */
 
 		if(t != t_max)
@@ -310,10 +331,17 @@ static Word16 Interpol_4(                  /* (o)  : interpolated value  */
 	L_sum += vo_mult32(x[1], (*ptr++));
 	L_sum += vo_mult32(x[2], (*ptr++));
 	L_sum += vo_mult32(x[3], (*ptr++));
+<<<<<<< HEAD
 	L_sum += vo_mult32(x[4], (*ptr++));  
 	L_sum += vo_mult32(x[5], (*ptr++));
 	L_sum += vo_mult32(x[6], (*ptr++));
 	L_sum += vo_mult32(x[7], (*ptr++));   
+=======
+	L_sum += vo_mult32(x[4], (*ptr++));
+	L_sum += vo_mult32(x[5], (*ptr++));
+	L_sum += vo_mult32(x[6], (*ptr++));
+	L_sum += vo_mult32(x[7], (*ptr++));
+>>>>>>> upstream/master
 
 	sum = extract_h(L_add(L_shl2(L_sum, 2), 0x8000));
 	return (sum);

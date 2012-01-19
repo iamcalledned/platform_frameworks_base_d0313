@@ -68,18 +68,30 @@ public class DeviceStorageMonitorService extends Binder {
     private static final long DEFAULT_DISK_FREE_CHANGE_REPORTING_THRESHOLD = 2 * 1024 * 1024; // 2MB
     private static final long DEFAULT_CHECK_INTERVAL = MONITOR_INTERVAL*60*1000;
     private static final int DEFAULT_FULL_THRESHOLD_BYTES = 1024*1024; // 1MB
+<<<<<<< HEAD
     private long mFreeMem;  // on /data/data
+=======
+    private long mFreeMem;  // on /data
+>>>>>>> upstream/master
     private long mLastReportedFreeMem;
     private long mLastReportedFreeMemTime;
     private boolean mLowMemFlag=false;
     private boolean mMemFullFlag=false;
     private Context mContext;
     private ContentResolver mContentResolver;
+<<<<<<< HEAD
     private long mTotalMemory;  // on /data/data
     private StatFs mDataFileStats;
     private StatFs mSystemFileStats;
     private StatFs mCacheFileStats;
     private static final String DATA_PATH = "/data/data"; // might not be the same fs as /data
+=======
+    private long mTotalMemory;  // on /data
+    private StatFs mDataFileStats;
+    private StatFs mSystemFileStats;
+    private StatFs mCacheFileStats;
+    private static final String DATA_PATH = "/data";
+>>>>>>> upstream/master
     private static final String SYSTEM_PATH = "/system";
     private static final String CACHE_PATH = "/cache";
     private long mThreadStartTime = -1;

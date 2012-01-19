@@ -48,10 +48,17 @@ Word16 G_pitch(                            /* (o) Q14 : Gain of pitch lag satura
 
 #endif
 
+<<<<<<< HEAD
 	g_coeff[0] = yy;                       
 	g_coeff[1] = exp_yy;                   
 	g_coeff[2] = xy;                       
 	g_coeff[3] = exp_xy;                   
+=======
+	g_coeff[0] = yy;
+	g_coeff[1] = exp_yy;
+	g_coeff[2] = xy;
+	g_coeff[3] = exp_xy;
+>>>>>>> upstream/master
 
 	/* If (xy < 0) gain = 0 */
 	if (xy < 0)
@@ -65,12 +72,20 @@ Word16 G_pitch(                            /* (o) Q14 : Gain of pitch lag satura
 	i = exp_xy;
 	i -= exp_yy;
 
+<<<<<<< HEAD
 	gain = shl(gain, i);                   
+=======
+	gain = shl(gain, i);
+>>>>>>> upstream/master
 
 	/* if (gain > 1.2) gain = 1.2  in Q14 */
 	if(gain > 19661)
 	{
+<<<<<<< HEAD
 		gain = 19661;                      
+=======
+		gain = 19661;
+>>>>>>> upstream/master
 	}
 	return (gain);
 }

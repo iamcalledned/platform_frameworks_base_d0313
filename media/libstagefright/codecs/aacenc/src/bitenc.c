@@ -46,7 +46,11 @@ static Word32 encodeSpectralData(Word16             *sfbOffset,
   Word16 i,sfb;
   Word16 dbgVal;
   SECTION_INFO* psectioninfo;
+<<<<<<< HEAD
   dbgVal = GetBitsAvail(hBitStream);                                     
+=======
+  dbgVal = GetBitsAvail(hBitStream);
+>>>>>>> upstream/master
 
   for(i=0; i<sectionData->noOfSections; i++) {
     psectioninfo = &(sectionData->sectionInfo[i]);
@@ -100,7 +104,11 @@ static void encodeIcsInfo(Word16 blockType,
   WriteBits(hBitStream,blockType,2);
   WriteBits(hBitStream,windowShape,1);
 
+<<<<<<< HEAD
    
+=======
+
+>>>>>>> upstream/master
   switch(blockType){
     case LONG_WINDOW:
     case START_WINDOW:
@@ -137,14 +145,21 @@ static Word32 encodeSectionData(SECTION_DATA *sectionData,
   Word16 sectLen;
   Word16 i;
   Word16 dbgVal=GetBitsAvail(hBitStream);
+<<<<<<< HEAD
        
 
    
+=======
+
+
+
+>>>>>>> upstream/master
   switch(sectionData->blockType)
   {
     case LONG_WINDOW:
     case START_WINDOW:
     case STOP_WINDOW:
+<<<<<<< HEAD
       sectEscapeVal = SECT_ESC_VAL_LONG;                 
       sectLenBits   = SECT_BITS_LONG;                    
       break;
@@ -152,15 +167,31 @@ static Word32 encodeSectionData(SECTION_DATA *sectionData,
     case SHORT_WINDOW:
       sectEscapeVal = SECT_ESC_VAL_SHORT;                
       sectLenBits   = SECT_BITS_SHORT;                   
+=======
+      sectEscapeVal = SECT_ESC_VAL_LONG;
+      sectLenBits   = SECT_BITS_LONG;
+      break;
+
+    case SHORT_WINDOW:
+      sectEscapeVal = SECT_ESC_VAL_SHORT;
+      sectLenBits   = SECT_BITS_SHORT;
+>>>>>>> upstream/master
       break;
   }
 
   for(i=0;i<sectionData->noOfSections;i++) {
     WriteBits(hBitStream,sectionData->sectionInfo[i].codeBook,4);
+<<<<<<< HEAD
     sectLen = sectionData->sectionInfo[i].sfbCnt;        
 
     while(sectLen >= sectEscapeVal) {
        
+=======
+    sectLen = sectionData->sectionInfo[i].sfbCnt;
+
+    while(sectLen >= sectEscapeVal) {
+
+>>>>>>> upstream/master
       WriteBits(hBitStream,sectEscapeVal,sectLenBits);
       sectLen = sectLen - sectEscapeVal;
     }
@@ -183,6 +214,7 @@ static Word32 encodeScaleFactorData(UWord16        *maxValueInSfb,
 {
   Word16 i,j,lastValScf,deltaScf;
   Word16 dbgVal = GetBitsAvail(hBitStream);
+<<<<<<< HEAD
   SECTION_INFO* psectioninfo; 
 
   lastValScf=scalefac[sectionData->firstScf];                    
@@ -201,6 +233,26 @@ static Word32 encodeScaleFactorData(UWord16        *maxValueInSfb,
           lastValScf = scalefac[j];                              
         }
          
+=======
+  SECTION_INFO* psectioninfo;
+
+  lastValScf=scalefac[sectionData->firstScf];
+
+  for(i=0;i<sectionData->noOfSections;i++){
+    psectioninfo = &(sectionData->sectionInfo[i]);
+    if (psectioninfo->codeBook != CODE_BOOK_ZERO_NO){
+      for (j=psectioninfo->sfbStart;
+           j<psectioninfo->sfbStart+psectioninfo->sfbCnt; j++){
+
+        if(maxValueInSfb[j] == 0) {
+          deltaScf = 0;
+        }
+        else {
+          deltaScf = lastValScf - scalefac[j];
+          lastValScf = scalefac[j];
+        }
+
+>>>>>>> upstream/master
         if(codeScalefactorDelta(deltaScf,hBitStream)){
           return(1);
         }
@@ -227,7 +279,11 @@ static void encodeMSInfo(Word16          sfbCnt,
 {
   Word16 sfb, sfbOff;
 
+<<<<<<< HEAD
    
+=======
+
+>>>>>>> upstream/master
   switch(msDigest)
   {
     case MS_NONE:
@@ -242,7 +298,11 @@ static void encodeMSInfo(Word16          sfbCnt,
       WriteBits(hBitStream,SI_MS_MASK_SOME,2);
       for(sfbOff = 0; sfbOff < sfbCnt; sfbOff+=grpSfb) {
         for(sfb=0; sfb<maxSfb; sfb++) {
+<<<<<<< HEAD
              
+=======
+
+>>>>>>> upstream/master
           if(jsFlags[sfbOff+sfb] & MS_ON) {
             WriteBits(hBitStream,1,1);
           }
@@ -272,7 +332,11 @@ static void encodeTnsData(TNS_INFO tnsInfo,
   Word16 coefBits;
   Flag isShort;
 
+<<<<<<< HEAD
        
+=======
+
+>>>>>>> upstream/master
   if (blockType==2) {
     isShort = 1;
     numOfWindows = TRANS_FAC;
@@ -282,6 +346,7 @@ static void encodeTnsData(TNS_INFO tnsInfo,
     numOfWindows = 1;
   }
 
+<<<<<<< HEAD
   tnsPresent=0;                                                  
   for (i=0; i<numOfWindows; i++) {
      
@@ -290,12 +355,23 @@ static void encodeTnsData(TNS_INFO tnsInfo,
     }
   }
    
+=======
+  tnsPresent=0;
+  for (i=0; i<numOfWindows; i++) {
+
+    if (tnsInfo.tnsActive[i]) {
+      tnsPresent=1;
+    }
+  }
+
+>>>>>>> upstream/master
   if (tnsPresent==0) {
     WriteBits(hBitStream,0,1);
   }
   else{ /* there is data to be written*/
     WriteBits(hBitStream,1,1); /*data_present */
     for (i=0; i<numOfWindows; i++) {
+<<<<<<< HEAD
        
       WriteBits(hBitStream,tnsInfo.tnsActive[i],(isShort?1:2));
        
@@ -317,17 +393,49 @@ static void encodeTnsData(TNS_INFO tnsInfo,
               if (tnsInfo.coef[i*TNS_MAX_ORDER_SHORT+k] > 3 ||
                   tnsInfo.coef[i*TNS_MAX_ORDER_SHORT+k] < -4) {
                 coefBits = 4;                                            
+=======
+
+      WriteBits(hBitStream,tnsInfo.tnsActive[i],(isShort?1:2));
+
+      if (tnsInfo.tnsActive[i]) {
+
+        WriteBits(hBitStream,((tnsInfo.coefRes[i] - 4)==0?1:0),1);
+
+        WriteBits(hBitStream,tnsInfo.length[i],(isShort?4:6));
+
+        WriteBits(hBitStream,tnsInfo.order[i],(isShort?3:5));
+
+        if (tnsInfo.order[i]){
+          WriteBits(hBitStream, FILTER_DIRECTION, 1);
+
+          if(tnsInfo.coefRes[i] == 4) {
+            coefBits = 3;
+            for(k=0; k<tnsInfo.order[i]; k++) {
+
+              if (tnsInfo.coef[i*TNS_MAX_ORDER_SHORT+k] > 3 ||
+                  tnsInfo.coef[i*TNS_MAX_ORDER_SHORT+k] < -4) {
+                coefBits = 4;
+>>>>>>> upstream/master
                 break;
               }
             }
           }
           else {
+<<<<<<< HEAD
             coefBits = 2;                                                
             for(k=0; k<tnsInfo.order[i]; k++) {
                  
               if (tnsInfo.coef[i*TNS_MAX_ORDER_SHORT+k] > 1 ||
                   tnsInfo.coef[i*TNS_MAX_ORDER_SHORT+k] < -2) {
                 coefBits = 3;                                            
+=======
+            coefBits = 2;
+            for(k=0; k<tnsInfo.order[i]; k++) {
+
+              if (tnsInfo.coef[i*TNS_MAX_ORDER_SHORT+k] > 1 ||
+                  tnsInfo.coef[i*TNS_MAX_ORDER_SHORT+k] < -2) {
+                coefBits = 3;
+>>>>>>> upstream/master
                 break;
               }
             }
@@ -335,7 +443,11 @@ static void encodeTnsData(TNS_INFO tnsInfo,
           WriteBits(hBitStream, tnsInfo.coefRes[i] - coefBits, 1); /*coef_compres*/
           for (k=0; k<tnsInfo.order[i]; k++ ) {
             static const Word16 rmask[] = {0,1,3,7,15};
+<<<<<<< HEAD
              
+=======
+
+>>>>>>> upstream/master
             WriteBits(hBitStream,tnsInfo.coef[i*TNS_MAX_ORDER_SHORT+k] & rmask[coefBits],coefBits);
           }
         }
@@ -397,7 +509,11 @@ writeIndividualChannelStream(Flag   commonWindow,
 
   encodeGlobalGain(globalGain, logNorm,scf[sectionData->firstScf], hBitStream);
 
+<<<<<<< HEAD
    
+=======
+
+>>>>>>> upstream/master
   if(!commonWindow) {
     encodeIcsInfo(sectionData->blockType, windowShape, groupingMask, sectionData, hBitStream);
   }
@@ -536,7 +652,11 @@ static void writeFillElement( const UWord8 *ancBytes,
     Write fill Element(s):
     amount of a fill element can be 7+X*8 Bits, X element of [0..270]
   */
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> upstream/master
   while(totFillBits >= (3+4)) {
     cnt = min(((totFillBits - (3+4)) >> 3), ((1<<4)-1));
 
@@ -545,7 +665,11 @@ static void writeFillElement( const UWord8 *ancBytes,
 
     totFillBits = totFillBits - (3+4);
 
+<<<<<<< HEAD
      
+=======
+
+>>>>>>> upstream/master
     if ((cnt == (1<<4)-1)) {
 
       esc_count = min( ((totFillBits >> 3) - ((1<<4)-1)), (1<<8)-1);
@@ -555,7 +679,11 @@ static void writeFillElement( const UWord8 *ancBytes,
     }
 
     for(i=0;i<cnt;i++) {
+<<<<<<< HEAD
        
+=======
+
+>>>>>>> upstream/master
       if(ancBytes)
         WriteBits(hBitStream, *ancBytes++,8);
       else
@@ -576,7 +704,11 @@ Word16 WriteBitstream (HANDLE_BIT_BUF hBitStream,
                        ELEMENT_INFO elInfo,
                        QC_OUT *qcOut,
                        PSY_OUT *psyOut,
+<<<<<<< HEAD
                        Word16 *globUsedBits,					   
+=======
+                       Word16 *globUsedBits,
+>>>>>>> upstream/master
                        const UWord8 *ancBytes,
 					   Word16 sampindex
                        ) /* returns error code */
@@ -586,7 +718,11 @@ Word16 WriteBitstream (HANDLE_BIT_BUF hBitStream,
   Word16 frameBits=0;
 
   /*   struct bitbuffer bsWriteCopy; */
+<<<<<<< HEAD
   bitMarkUp = GetBitsAvail(hBitStream); 
+=======
+  bitMarkUp = GetBitsAvail(hBitStream);
+>>>>>>> upstream/master
   if(qcOut->qcElement.adtsUsed)  /*  write adts header*/
   {
 	  WriteBits(hBitStream, 0xFFF, 12); /* 12 bit Syncword */
@@ -601,23 +737,39 @@ Word16 WriteBitstream (HANDLE_BIT_BUF hBitStream,
 									6 channels or less, else a channel
 									configuration should be written */
 	  WriteBits(hBitStream, 0, 1); /* original/copy */
+<<<<<<< HEAD
 	  WriteBits(hBitStream, 0, 1); /* home */	  
 	  
+=======
+	  WriteBits(hBitStream, 0, 1); /* home */
+
+>>>>>>> upstream/master
 	  /* Variable ADTS header */
 	  WriteBits(hBitStream, 0, 1); /* copyr. id. bit */
 	  WriteBits(hBitStream, 0, 1); /* copyr. id. start */
 	  WriteBits(hBitStream, *globUsedBits >> 3, 13);
 	  WriteBits(hBitStream, 0x7FF, 11); /* buffer fullness (0x7FF for VBR) */
+<<<<<<< HEAD
 	  WriteBits(hBitStream, 0, 2); /* raw data blocks (0+1=1) */  
   }
 
   *globUsedBits=0;                                               
+=======
+	  WriteBits(hBitStream, 0, 2); /* raw data blocks (0+1=1) */
+  }
+
+  *globUsedBits=0;
+>>>>>>> upstream/master
 
   {
 
     Word16 *sfbOffset[2];
     TNS_INFO tnsInfo[2];
+<<<<<<< HEAD
     elementUsedBits = 0;                                         
+=======
+    elementUsedBits = 0;
+>>>>>>> upstream/master
 
     switch (elInfo.elType) {
 
@@ -636,7 +788,11 @@ Word16 WriteBitstream (HANDLE_BIT_BUF hBitStream,
         {
           Word16 msDigest;
           Word16 *msFlags = psyOut->psyOutElement.toolsInfo.msMask;
+<<<<<<< HEAD
           msDigest = psyOut->psyOutElement.toolsInfo.msDigest;                        
+=======
+          msDigest = psyOut->psyOutElement.toolsInfo.msDigest;
+>>>>>>> upstream/master
           sfbOffset[0] =
             psyOut->psyOutChannel[elInfo.ChannelIndex[0]].sfbOffsets;
           sfbOffset[1] =
@@ -668,12 +824,17 @@ Word16 WriteBitstream (HANDLE_BIT_BUF hBitStream,
   }
 
   writeFillElement(NULL,
+<<<<<<< HEAD
                    qcOut->totFillBits, 
+=======
+                   qcOut->totFillBits,
+>>>>>>> upstream/master
                    hBitStream);
 
   WriteBits(hBitStream,ID_END,3);
 
   /* byte alignement */
+<<<<<<< HEAD
   WriteBits(hBitStream,0, (8 - (hBitStream->cntBits & 7)) & 7);          
   
   *globUsedBits = *globUsedBits- bitMarkUp;
@@ -682,6 +843,16 @@ Word16 WriteBitstream (HANDLE_BIT_BUF hBitStream,
   frameBits = frameBits + *globUsedBits;
 
    
+=======
+  WriteBits(hBitStream,0, (8 - (hBitStream->cntBits & 7)) & 7);
+
+  *globUsedBits = *globUsedBits- bitMarkUp;
+  bitMarkUp = GetBitsAvail(hBitStream);
+  *globUsedBits = *globUsedBits + bitMarkUp;
+  frameBits = frameBits + *globUsedBits;
+
+
+>>>>>>> upstream/master
   if (frameBits !=  (qcOut->totStaticBitsUsed+qcOut->totDynBitsUsed + qcOut->totAncBitsUsed +
                      qcOut->totFillBits + qcOut->alignBits)) {
     return(-1);

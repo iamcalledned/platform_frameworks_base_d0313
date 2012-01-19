@@ -511,6 +511,7 @@
         <item>@null</item>
     </array>
 
+<<<<<<< HEAD
     <!-- Defines the shutdown options shown in the reboot dialog. -->
     <array name="shutdown_reboot_options" translatable="false">
         <item>@string/reboot_reboot</item>
@@ -526,4 +527,6 @@
         <item>bootloader</item>
     </string-array>
 
+=======
+>>>>>>> upstream/master
 </resources>

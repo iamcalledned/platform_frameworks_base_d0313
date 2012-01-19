@@ -130,6 +130,7 @@ public class UsbDeviceManager {
         }
     };
 
+<<<<<<< HEAD
     // Dummy constructor to use when extending class
     public UsbDeviceManager() {
         mContext = null;
@@ -138,6 +139,8 @@ public class UsbDeviceManager {
         mHasUsbAccessory = false;
     }
 
+=======
+>>>>>>> upstream/master
     public UsbDeviceManager(Context context, UsbSettingsManager settingsManager) {
         mContext = context;
         mContentResolver = context.getContentResolver();

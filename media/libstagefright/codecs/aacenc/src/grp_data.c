@@ -57,6 +57,7 @@ groupShortData(Word32        *mdctSpectrum,
 
   /* for short: regroup and  */
   /* cumulate energies und thresholds group-wise . */
+<<<<<<< HEAD
   
   /* calculate sfbCnt */
   highestSfb = 0;                                        
@@ -67,19 +68,42 @@ groupShortData(Word32        *mdctSpectrum,
         if (mdctSpectrum[wnd*FRAME_LEN_SHORT+line] != 0) break; 
       }
       
+=======
+
+  /* calculate sfbCnt */
+  highestSfb = 0;
+  for (wnd=0; wnd<TRANS_FAC; wnd++) {
+    for (sfb=sfbCnt - 1; sfb>=highestSfb; sfb--) {
+      for (line=(sfbOffset[sfb + 1] - 1); line>=sfbOffset[sfb]; line--) {
+
+        if (mdctSpectrum[wnd*FRAME_LEN_SHORT+line] != 0) break;
+      }
+
+>>>>>>> upstream/master
       if (line >= sfbOffset[sfb]) break;
     }
     highestSfb = max(highestSfb, sfb);
   }
+<<<<<<< HEAD
   
   if (highestSfb < 0) {
     highestSfb = 0;                                      
+=======
+
+  if (highestSfb < 0) {
+    highestSfb = 0;
+>>>>>>> upstream/master
   }
   *maxSfbPerGroup = highestSfb + 1;
 
   /* calculate sfbOffset */
+<<<<<<< HEAD
   i = 0;                                                 
   offset = 0;                                            
+=======
+  i = 0;
+  offset = 0;
+>>>>>>> upstream/master
   for (grp = 0; grp < noOfGroups; grp++) {
     for (sfb = 0; sfb < sfbCnt; sfb++) {
       groupedSfbOffset[i] = offset + sfbOffset[sfb] * groupLen[grp];
@@ -87,6 +111,7 @@ groupShortData(Word32        *mdctSpectrum,
     }
     offset += groupLen[grp] * FRAME_LEN_SHORT;
   }
+<<<<<<< HEAD
   groupedSfbOffset[i] = FRAME_LEN_LONG;                  
   i += 1;
 
@@ -96,6 +121,17 @@ groupShortData(Word32        *mdctSpectrum,
   for (grp = 0; grp < noOfGroups; grp++) {
     for (sfb = 0; sfb < sfbCnt; sfb++) {
       groupedSfbMinSnr[i] = sfbMinSnr[sfb];              
+=======
+  groupedSfbOffset[i] = FRAME_LEN_LONG;
+  i += 1;
+
+  /* calculate minSnr */
+  i = 0;
+  offset = 0;
+  for (grp = 0; grp < noOfGroups; grp++) {
+    for (sfb = 0; sfb < sfbCnt; sfb++) {
+      groupedSfbMinSnr[i] = sfbMinSnr[sfb];
+>>>>>>> upstream/master
       i += 1;
     }
     offset += groupLen[grp] * FRAME_LEN_SHORT;
@@ -103,6 +139,7 @@ groupShortData(Word32        *mdctSpectrum,
 
 
   /* sum up sfbThresholds */
+<<<<<<< HEAD
   wnd = 0;                                                       
   i = 0;                                                         
   for (grp = 0; grp < noOfGroups; grp++) {
@@ -112,12 +149,24 @@ groupShortData(Word32        *mdctSpectrum,
         thresh = L_add(thresh, sfbThreshold->sfbShort[wnd+j][sfb]);
       }
       sfbThreshold->sfbLong[i] = thresh;                         
+=======
+  wnd = 0;
+  i = 0;
+  for (grp = 0; grp < noOfGroups; grp++) {
+    for (sfb = 0; sfb < sfbCnt; sfb++) {
+      Word32 thresh = sfbThreshold->sfbShort[wnd][sfb];
+      for (j=1; j<groupLen[grp]; j++) {
+        thresh = L_add(thresh, sfbThreshold->sfbShort[wnd+j][sfb]);
+      }
+      sfbThreshold->sfbLong[i] = thresh;
+>>>>>>> upstream/master
       i += 1;
     }
     wnd += groupLen[grp];
   }
 
   /* sum up sfbEnergies left/right */
+<<<<<<< HEAD
   wnd = 0;                                                       
   i = 0;                                                         
   for (grp = 0; grp < noOfGroups; grp++) {
@@ -127,12 +176,24 @@ groupShortData(Word32        *mdctSpectrum,
         energy = L_add(energy, sfbEnergy->sfbShort[wnd+j][sfb]);
       }
       sfbEnergy->sfbLong[i] = energy;                            
+=======
+  wnd = 0;
+  i = 0;
+  for (grp = 0; grp < noOfGroups; grp++) {
+    for (sfb = 0; sfb < sfbCnt; sfb++) {
+      Word32 energy = sfbEnergy->sfbShort[wnd][sfb];
+      for (j=1; j<groupLen[grp]; j++) {
+        energy = L_add(energy, sfbEnergy->sfbShort[wnd+j][sfb]);
+      }
+      sfbEnergy->sfbLong[i] = energy;
+>>>>>>> upstream/master
       i += 1;
     }
     wnd += groupLen[grp];
   }
 
   /* sum up sfbEnergies mid/side */
+<<<<<<< HEAD
   wnd = 0;                                                       
   i = 0;                                                         
   for (grp = 0; grp < noOfGroups; grp++) {
@@ -142,12 +203,24 @@ groupShortData(Word32        *mdctSpectrum,
         energy = L_add(energy, sfbEnergyMS->sfbShort[wnd+j][sfb]);
       }
       sfbEnergyMS->sfbLong[i] = energy;                          
+=======
+  wnd = 0;
+  i = 0;
+  for (grp = 0; grp < noOfGroups; grp++) {
+    for (sfb = 0; sfb < sfbCnt; sfb++) {
+      Word32 energy = sfbEnergyMS->sfbShort[wnd][sfb];
+      for (j=1; j<groupLen[grp]; j++) {
+        energy = L_add(energy, sfbEnergyMS->sfbShort[wnd+j][sfb]);
+      }
+      sfbEnergyMS->sfbLong[i] = energy;
+>>>>>>> upstream/master
       i += 1;
     }
     wnd += groupLen[grp];
   }
 
   /* sum up sfbSpreadedEnergies */
+<<<<<<< HEAD
   wnd = 0;                                                       
   i = 0;                                                         
   for (grp = 0; grp < noOfGroups; grp++) {
@@ -157,20 +230,40 @@ groupShortData(Word32        *mdctSpectrum,
         energy = L_add(energy, sfbSpreadedEnergy->sfbShort[wnd+j][sfb]);
       }
       sfbSpreadedEnergy->sfbLong[i] = energy;                    
+=======
+  wnd = 0;
+  i = 0;
+  for (grp = 0; grp < noOfGroups; grp++) {
+    for (sfb = 0; sfb < sfbCnt; sfb++) {
+      Word32 energy = sfbSpreadedEnergy->sfbShort[wnd][sfb];
+      for (j=1; j<groupLen[grp]; j++) {
+        energy = L_add(energy, sfbSpreadedEnergy->sfbShort[wnd+j][sfb]);
+      }
+      sfbSpreadedEnergy->sfbLong[i] = energy;
+>>>>>>> upstream/master
       i += 1;
     }
     wnd += groupLen[grp];
   }
 
   /* re-group spectrum */
+<<<<<<< HEAD
   wnd = 0;                                                       
   i = 0;                                                         
+=======
+  wnd = 0;
+  i = 0;
+>>>>>>> upstream/master
   for (grp = 0; grp < noOfGroups; grp++) {
     for (sfb = 0; sfb < sfbCnt; sfb++) {
       for (j = 0; j < groupLen[grp]; j++) {
         Word16 lineOffset = FRAME_LEN_SHORT * (wnd + j);
         for (line = lineOffset + sfbOffset[sfb]; line < lineOffset + sfbOffset[sfb+1]; line++) {
+<<<<<<< HEAD
           tmpSpectrum[i] = mdctSpectrum[line];                   
+=======
+          tmpSpectrum[i] = mdctSpectrum[line];
+>>>>>>> upstream/master
           i = i + 1;
         }
       }
@@ -179,10 +272,17 @@ groupShortData(Word32        *mdctSpectrum,
   }
 
   for(i=0;i<FRAME_LEN_LONG;i+=4) {
+<<<<<<< HEAD
     mdctSpectrum[i] = tmpSpectrum[i];  
 	mdctSpectrum[i+1] = tmpSpectrum[i+1];  
 	mdctSpectrum[i+2] = tmpSpectrum[i+2];  
 	mdctSpectrum[i+3] = tmpSpectrum[i+3];  	
+=======
+    mdctSpectrum[i] = tmpSpectrum[i];
+	mdctSpectrum[i+1] = tmpSpectrum[i+1];
+	mdctSpectrum[i+2] = tmpSpectrum[i+2];
+	mdctSpectrum[i+3] = tmpSpectrum[i+3];
+>>>>>>> upstream/master
   }
 }
 

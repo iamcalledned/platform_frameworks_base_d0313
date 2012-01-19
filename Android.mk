@@ -123,7 +123,10 @@ LOCAL_SRC_FILES += \
 	core/java/android/os/IHardwareService.aidl \
 	core/java/android/os/IMessenger.aidl \
 	core/java/android/os/INetworkManagementService.aidl \
+<<<<<<< HEAD
 	core/java/android/os/IHDMIService.aidl  \
+=======
+>>>>>>> upstream/master
 	core/java/android/os/IPermissionController.aidl \
 	core/java/android/os/IPowerManager.aidl \
 	core/java/android/os/IRemoteCallback.aidl \

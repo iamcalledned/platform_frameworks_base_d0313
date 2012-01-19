@@ -22,7 +22,11 @@
 *      case occurs                                                        *
 *      a resonance on LPC filter(lp_disp < 60Hz)                          *
 *      a good pitch prediction (lp_gp > 0.95)                             *
+<<<<<<< HEAD
 *                                                                         *   
+=======
+*                                                                         *
+>>>>>>> upstream/master
 ***************************************************************************/
 #include "typedef.h"
 #include "basic_op.h"
@@ -38,8 +42,13 @@ void Init_gp_clip(
 		Word16 mem[]                          /* (o) : memory of gain of pitch clipping algorithm */
 		)
 {
+<<<<<<< HEAD
 	mem[0] = DIST_ISF_MAX;                 
 	mem[1] = GAIN_PIT_MIN;                 
+=======
+	mem[0] = DIST_ISF_MAX;
+	mem[1] = GAIN_PIT_MIN;
+>>>>>>> upstream/master
 }
 
 
@@ -49,7 +58,11 @@ Word16 Gp_clip(
 {
 	Word16 clip = 0;
 	if ((mem[0] < DIST_ISF_THRES) && (mem[1] > GAIN_PIT_THRES))
+<<<<<<< HEAD
 		clip = 1;                          
+=======
+		clip = 1;
+>>>>>>> upstream/master
 
 	return (clip);
 }
@@ -70,7 +83,11 @@ void Gp_clip_test_isf(
 		dist = vo_sub(isf[i], isf[i - 1]);
 		if(dist < dist_min)
 		{
+<<<<<<< HEAD
 			dist_min = dist;               
+=======
+			dist_min = dist;
+>>>>>>> upstream/master
 		}
 	}
 
@@ -78,9 +95,15 @@ void Gp_clip_test_isf(
 
 	if (dist > DIST_ISF_MAX)
 	{
+<<<<<<< HEAD
 		dist = DIST_ISF_MAX;               
 	}
 	mem[0] = dist;                        
+=======
+		dist = DIST_ISF_MAX;
+	}
+	mem[0] = dist;
+>>>>>>> upstream/master
 
 	return;
 }
@@ -100,9 +123,15 @@ void Gp_clip_test_gain_pit(
 
 	if(gain < GAIN_PIT_MIN)
 	{
+<<<<<<< HEAD
 		gain = GAIN_PIT_MIN;              
 	}
 	mem[1] = gain;                         
+=======
+		gain = GAIN_PIT_MIN;
+	}
+	mem[1] = gain;
+>>>>>>> upstream/master
 	return;
 }
 

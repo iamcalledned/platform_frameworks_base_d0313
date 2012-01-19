@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 # 
 # This configure file is just for Linux projects against Android
 #
 
 VOPRJ := 
+=======
+#
+# This configure file is just for Linux projects against Android
+#
+
+VOPRJ :=
+>>>>>>> upstream/master
 VONJ :=
 
 # WARNING:
@@ -20,5 +28,9 @@ endif
 
 VOTEST := 0
 
+<<<<<<< HEAD
 VO_CFLAGS:=-DLINUX 
+=======
+VO_CFLAGS:=-DLINUX
+>>>>>>> upstream/master
 

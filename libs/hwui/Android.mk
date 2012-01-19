@@ -42,10 +42,13 @@ ifeq ($(USE_OPENGL_RENDERER),true)
 	LOCAL_CFLAGS += -fvisibility=hidden
 	LOCAL_MODULE_CLASS := SHARED_LIBRARIES
 	LOCAL_SHARED_LIBRARIES := libcutils libutils libGLESv2 libskia libui
+<<<<<<< HEAD
 
 ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
 LOCAL_CFLAGS += -DQCOM_HARDWARE
 endif
+=======
+>>>>>>> upstream/master
 	LOCAL_MODULE := libhwui
 	LOCAL_MODULE_TAGS := optional
 	

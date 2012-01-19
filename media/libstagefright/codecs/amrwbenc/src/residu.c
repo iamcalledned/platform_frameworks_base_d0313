@@ -56,7 +56,11 @@ void Residu(
 		s += vo_mult32((*p1++), (*p2--));
 		s += vo_mult32((*p1), (*p2));
 
+<<<<<<< HEAD
 		s = L_shl2(s, 5); 
+=======
+		s = L_shl2(s, 5);
+>>>>>>> upstream/master
 		y[i] = extract_h(L_add(s, 0x8000));
 	}
 

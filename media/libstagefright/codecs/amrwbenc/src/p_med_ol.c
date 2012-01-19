@@ -18,7 +18,11 @@
 *      File: p_med_ol.c                                                *
 *                                                                      *
 *      Description: Compute the open loop pitch lag                    *
+<<<<<<< HEAD
 *	            output: open loop pitch lag                        *                            
+=======
+*	            output: open loop pitch lag                        *
+>>>>>>> upstream/master
 ************************************************************************/
 
 #include "typedef.h"
@@ -29,7 +33,11 @@
 #include "p_med_ol.tab"
 
 Word16 Pitch_med_ol(
+<<<<<<< HEAD
 		   Word16      wsp[],        /*   i: signal used to compute the open loop pitch*/  
+=======
+		   Word16      wsp[],        /*   i: signal used to compute the open loop pitch*/
+>>>>>>> upstream/master
                                      /*      wsp[-pit_max] to wsp[-1] should be known */
 		   Coder_State *st,          /* i/o: codec global structure */
 		   Word16      L_frame       /*   i: length of frame to compute pitch */
@@ -52,8 +60,13 @@ Word16 Pitch_med_ol(
 	ww = &corrweight[198];
 	we = &corrweight[98 + L_max - L_0];
 
+<<<<<<< HEAD
 	max = MIN_32;                          
 	Tm = 0;                                
+=======
+	max = MIN_32;
+	Tm = 0;
+>>>>>>> upstream/master
 	for (i = L_max; i > L_min; i--)
 	{
 		/* Compute the correlation */
@@ -65,7 +78,11 @@ Word16 Pitch_med_ol(
 			R0 += vo_L_mult((*p1++), (*p2++));
 			R0 += vo_L_mult((*p1++), (*p2++));
 			R0 += vo_L_mult((*p1++), (*p2++));
+<<<<<<< HEAD
 			R0 += vo_L_mult((*p1++), (*p2++));     
+=======
+			R0 += vo_L_mult((*p1++), (*p2++));
+>>>>>>> upstream/master
 		}
 		/* Weighting of the correlation function.   */
 		hi = R0>>16;
@@ -90,6 +107,7 @@ Word16 Pitch_med_ol(
 	}
 
 	/* Hypass the wsp[] vector */
+<<<<<<< HEAD
 	hp_wsp = old_hp_wsp + L_max;           
 	Hp_wsp(wsp, hp_wsp, L_frame, hp_wsp_mem);
 
@@ -97,6 +115,15 @@ Word16 Pitch_med_ol(
 	R0 = 0;                                
 	R1 = 0;                               
 	R2 = 0; 
+=======
+	hp_wsp = old_hp_wsp + L_max;
+	Hp_wsp(wsp, hp_wsp, L_frame, hp_wsp_mem);
+
+	/* Compute normalize correlation at delay Tm */
+	R0 = 0;
+	R1 = 0;
+	R2 = 0;
+>>>>>>> upstream/master
 	p1 = hp_wsp;
 	p2 = hp_wsp - Tm;
 	for (j = 0; j < L_frame; j+=4)
@@ -174,44 +201,73 @@ Word16 median5(Word16 x[])
 	Word16 x1, x2, x3, x4, x5;
 	Word16 tmp;
 
+<<<<<<< HEAD
 	x1 = x[-2];                            
 	x2 = x[-1];                            
 	x3 = x[0];                             
 	x4 = x[1];                             
 	x5 = x[2];                             
+=======
+	x1 = x[-2];
+	x2 = x[-1];
+	x3 = x[0];
+	x4 = x[1];
+	x5 = x[2];
+>>>>>>> upstream/master
 
 	if (x2 < x1)
 	{
 		tmp = x1;
 		x1 = x2;
+<<<<<<< HEAD
 		x2 = tmp;                          
+=======
+		x2 = tmp;
+>>>>>>> upstream/master
 	}
 	if (x3 < x1)
 	{
 		tmp = x1;
 		x1 = x3;
+<<<<<<< HEAD
 		x3 = tmp;                          
+=======
+		x3 = tmp;
+>>>>>>> upstream/master
 	}
 	if (x4 < x1)
 	{
 		tmp = x1;
 		x1 = x4;
+<<<<<<< HEAD
 		x4 = tmp;                          
 	}
 	if (x5 < x1)
 	{
 		x5 = x1;                           
+=======
+		x4 = tmp;
+	}
+	if (x5 < x1)
+	{
+		x5 = x1;
+>>>>>>> upstream/master
 	}
 	if (x3 < x2)
 	{
 		tmp = x2;
 		x2 = x3;
+<<<<<<< HEAD
 		x3 = tmp;                          
+=======
+		x3 = tmp;
+>>>>>>> upstream/master
 	}
 	if (x4 < x2)
 	{
 		tmp = x2;
 		x2 = x4;
+<<<<<<< HEAD
 		x4 = tmp;                          
 	}
 	if (x5 < x2)
@@ -225,6 +281,21 @@ Word16 median5(Word16 x[])
 	if (x5 < x3)
 	{
 		x3 = x5;                           
+=======
+		x4 = tmp;
+	}
+	if (x5 < x2)
+	{
+		x5 = x2;
+	}
+	if (x4 < x3)
+	{
+		x3 = x4;
+	}
+	if (x5 < x3)
+	{
+		x3 = x5;
+>>>>>>> upstream/master
 	}
 	return (x3);
 }
@@ -241,10 +312,17 @@ Word16 Med_olag(                           /* output : median of  5 previous ope
 
 	for (i = 4; i > 0; i--)
 	{
+<<<<<<< HEAD
 		old_ol_lag[i] = old_ol_lag[i - 1]; 
 	}
 
 	old_ol_lag[0] = prev_ol_lag;           
+=======
+		old_ol_lag[i] = old_ol_lag[i - 1];
+	}
+
+	old_ol_lag[0] = prev_ol_lag;
+>>>>>>> upstream/master
 
 	i = median5(&old_ol_lag[2]);
 

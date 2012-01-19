@@ -52,9 +52,15 @@ static Word16 countMsMaskBits(Word16   sfbCnt,
                               struct TOOLSINFO *toolsInfo)
 {
   Word16 msBits, sfbOff, sfb;
+<<<<<<< HEAD
   msBits = 0;                                            
 
    
+=======
+  msBits = 0;
+
+
+>>>>>>> upstream/master
   switch(toolsInfo->msDigest) {
     case MS_NONE:
     case MS_ALL:
@@ -85,12 +91,18 @@ static Word16 tnsCount(TNS_INFO *tnsInfo, Word16 blockType)
   Word32 coefBits;
   Word16 *ptcoef;
 
+<<<<<<< HEAD
   count = 0;       
   
+=======
+  count = 0;
+
+>>>>>>> upstream/master
   if (blockType == 2)
     numOfWindows = 8;
   else
     numOfWindows = 1;
+<<<<<<< HEAD
   tnsPresent = 0;                                        
 
   for (i=0; i<numOfWindows; i++) {
@@ -100,19 +112,41 @@ static Word16 tnsCount(TNS_INFO *tnsInfo, Word16 blockType)
     }
   }
    
+=======
+  tnsPresent = 0;
+
+  for (i=0; i<numOfWindows; i++) {
+
+    if (tnsInfo->tnsActive[i]!=0) {
+      tnsPresent = 1;
+    }
+  }
+
+>>>>>>> upstream/master
   if (tnsPresent) {
     /* there is data to be written*/
     /*count += 1; */
     for (i=0; i<numOfWindows; i++) {
+<<<<<<< HEAD
        
+=======
+
+>>>>>>> upstream/master
       if (blockType == 2)
         count += 1;
       else
         count += 2;
+<<<<<<< HEAD
        
       if (tnsInfo->tnsActive[i]) {
         count += 1;
          
+=======
+
+      if (tnsInfo->tnsActive[i]) {
+        count += 1;
+
+>>>>>>> upstream/master
         if (blockType == 2) {
           count += 4;
           count += 3;
@@ -121,6 +155,7 @@ static Word16 tnsCount(TNS_INFO *tnsInfo, Word16 blockType)
           count += 6;
           count += 5;
         }
+<<<<<<< HEAD
          
         if (tnsInfo->order[i]) {
           count += 1; /*direction*/
@@ -133,17 +168,40 @@ static Word16 tnsCount(TNS_INFO *tnsInfo, Word16 blockType)
                  
               if ((ptcoef[k] > 3) || (ptcoef[k] < -4)) {
                 coefBits = 4;                                    
+=======
+
+        if (tnsInfo->order[i]) {
+          count += 1; /*direction*/
+          count += 1; /*coef_compression */
+
+          if (tnsInfo->coefRes[i] == 4) {
+            ptcoef = tnsInfo->coef + i*TNS_MAX_ORDER_SHORT;
+			coefBits = 3;
+            for(k=0; k<tnsInfo->order[i]; k++) {
+
+              if ((ptcoef[k] > 3) || (ptcoef[k] < -4)) {
+                coefBits = 4;
+>>>>>>> upstream/master
                 break;
               }
             }
           }
           else {
+<<<<<<< HEAD
             coefBits = 2;                                        
             ptcoef = tnsInfo->coef + i*TNS_MAX_ORDER_SHORT;
 			for(k=0; k<tnsInfo->order[i]; k++) {
                  
               if ((ptcoef[k] > 1) || (ptcoef[k] < -2)) {
                 coefBits = 3;                                    
+=======
+            coefBits = 2;
+            ptcoef = tnsInfo->coef + i*TNS_MAX_ORDER_SHORT;
+			for(k=0; k<tnsInfo->order[i]; k++) {
+
+              if ((ptcoef[k] > 1) || (ptcoef[k] < -2)) {
+                coefBits = 3;
+>>>>>>> upstream/master
                 break;
               }
             }
@@ -155,14 +213,22 @@ static Word16 tnsCount(TNS_INFO *tnsInfo, Word16 blockType)
       }
     }
   }
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> upstream/master
   return count;
 }
 
 /**********************************************************************************
 *
 * function name: countTnsBits
+<<<<<<< HEAD
 * description:   count tns bit demand  
+=======
+* description:   count tns bit demand
+>>>>>>> upstream/master
 *
 **********************************************************************************/
 static Word16 countTnsBits(TNS_INFO *tnsInfo,Word16 blockType)
@@ -173,29 +239,50 @@ static Word16 countTnsBits(TNS_INFO *tnsInfo,Word16 blockType)
 /*********************************************************************************
 *
 * function name: countStaticBitdemand
+<<<<<<< HEAD
 * description:   count static bit demand include tns  
+=======
+* description:   count static bit demand include tns
+>>>>>>> upstream/master
 *
 **********************************************************************************/
 Word16 countStaticBitdemand(PSY_OUT_CHANNEL psyOutChannel[MAX_CHANNELS],
                             PSY_OUT_ELEMENT *psyOutElement,
+<<<<<<< HEAD
                             Word16 channels, 
+=======
+                            Word16 channels,
+>>>>>>> upstream/master
 							Word16 adtsUsed)
 {
   Word32 statBits;
   Word32 ch;
+<<<<<<< HEAD
   
   statBits = 0;                                                  
+=======
+
+  statBits = 0;
+>>>>>>> upstream/master
 
   /* if adts used, add 56 bits */
   if(adtsUsed) statBits += 56;
 
+<<<<<<< HEAD
    
+=======
+
+>>>>>>> upstream/master
   switch (channels) {
     case 1:
       statBits += SI_ID_BITS+SI_SCE_BITS+SI_ICS_BITS;
       statBits += countTnsBits(&(psyOutChannel[0].tnsInfo),
                                psyOutChannel[0].windowSequence);
+<<<<<<< HEAD
        
+=======
+
+>>>>>>> upstream/master
       switch(psyOutChannel[0].windowSequence){
         case LONG_WINDOW:
         case START_WINDOW:
@@ -215,7 +302,11 @@ Word16 countStaticBitdemand(PSY_OUT_CHANNEL psyOutChannel[MAX_CHANNELS],
 								  psyOutChannel[0].sfbPerGroup,
 								  psyOutChannel[0].maxSfbPerGroup,
 								  &psyOutElement->toolsInfo);
+<<<<<<< HEAD
        
+=======
+
+>>>>>>> upstream/master
       switch (psyOutChannel[0].windowSequence) {
         case LONG_WINDOW:
         case START_WINDOW:

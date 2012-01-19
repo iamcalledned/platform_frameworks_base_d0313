@@ -47,7 +47,11 @@ typedef  struct {
 
 
 typedef struct {
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> upstream/master
   AACENC_CONFIG config;     /* Word16 size: 8 */
 
   ELEMENT_INFO elInfo;      /* Word16 size: 4 */

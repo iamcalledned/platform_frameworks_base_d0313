@@ -39,11 +39,19 @@ void Syn_filt(
 	Word16 y_buf[L_SUBFR16k + M16k];
 	Word32 L_tmp;
 	Word16 *yy, *p1, *p2;
+<<<<<<< HEAD
 	yy = &y_buf[0];                        
 	/* copy initial filter states into synthesis buffer */
 	for (i = 0; i < 16; i++)
 	{
 		*yy++ = mem[i];                    
+=======
+	yy = &y_buf[0];
+	/* copy initial filter states into synthesis buffer */
+	for (i = 0; i < 16; i++)
+	{
+		*yy++ = mem[i];
+>>>>>>> upstream/master
 	}
 	a0 = (a[0] >> 1);                     /* input / 2 */
 	/* Do the filtering. */
@@ -70,7 +78,11 @@ void Syn_filt(
 		L_tmp -= vo_mult32((*p1), (*p2));
 
 		L_tmp = L_shl2(L_tmp, 4);
+<<<<<<< HEAD
 		y[i] = yy[i] = extract_h(L_add(L_tmp, 0x8000));  
+=======
+		y[i] = yy[i] = extract_h(L_add(L_tmp, 0x8000));
+>>>>>>> upstream/master
 	}
 	/* Update memory if required */
 	if (update)
@@ -99,7 +111,11 @@ void Syn_filt_32(
 	/* Do the filtering. */
 	for (i = 0; i < lg; i++)
 	{
+<<<<<<< HEAD
 		L_tmp  = 0; 
+=======
+		L_tmp  = 0;
+>>>>>>> upstream/master
 		L_tmp1 = 0;
 		p1 = a;
 		p2 = &sig_lo[i - 1];
@@ -138,18 +154,30 @@ void Syn_filt_32(
 		L_tmp  -= vo_mult32((*p2--), (*p1));
 		L_tmp1 -= vo_mult32((*p3--), (*p1++));
 
+<<<<<<< HEAD
 		L_tmp = L_tmp >> 11;      
+=======
+		L_tmp = L_tmp >> 11;
+>>>>>>> upstream/master
 		L_tmp += vo_L_mult(exc[i], a0);
 
 		/* sig_hi = bit16 to bit31 of synthesis */
 		L_tmp = L_tmp - (L_tmp1<<1);
 
 		L_tmp = L_tmp >> 3;           /* ai in Q12 */
+<<<<<<< HEAD
 		sig_hi[i] = extract_h(L_tmp);      
 
 		/* sig_lo = bit4 to bit15 of synthesis */
 		L_tmp >>= 4;           /* 4 : sig_lo[i] >> 4 */
 		sig_lo[i] = (Word16)((L_tmp - (sig_hi[i] << 13)));  
+=======
+		sig_hi[i] = extract_h(L_tmp);
+
+		/* sig_lo = bit4 to bit15 of synthesis */
+		L_tmp >>= 4;           /* 4 : sig_lo[i] >> 4 */
+		sig_lo[i] = (Word16)((L_tmp - (sig_hi[i] << 13)));
+>>>>>>> upstream/master
 	}
 
 	return;

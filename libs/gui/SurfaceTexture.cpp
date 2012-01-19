@@ -36,10 +36,13 @@
 #include <utils/Log.h>
 #include <utils/String8.h>
 
+<<<<<<< HEAD
 #ifdef QCOM_HARDWARE
 #include <qcom_ui.h>
 #endif
 
+=======
+>>>>>>> upstream/master
 // This compile option causes SurfaceTexture to return the buffer that is currently
 // attached to the GL texture from dequeueBuffer when no other buffers are
 // available.  It requires the drivers (Gralloc, GL, OMX IL, and Camera) to do
@@ -142,9 +145,12 @@ SurfaceTexture::SurfaceTexture(GLuint tex, bool allowSynchronousMode,
     mUseFenceSync(false),
 #endif
     mTexTarget(texTarget),
+<<<<<<< HEAD
 #ifdef QCOM_HARDWARE
     mReqSize(0),
 #endif
+=======
+>>>>>>> upstream/master
     mFrameCounter(0) {
     // Choose a name using the PID and a process-unique ID.
     mName = String8::format("unnamed-%d-%d", getpid(), createProcessUniqueId());
@@ -155,11 +161,14 @@ SurfaceTexture::SurfaceTexture(GLuint tex, bool allowSynchronousMode,
     mNextCrop.makeInvalid();
     memcpy(mCurrentTransformMatrix, mtxIdentity,
             sizeof(mCurrentTransformMatrix));
+<<<<<<< HEAD
 #ifdef QCOM_HARDWARE
     mNextBufferInfo.width = 0;
     mNextBufferInfo.height = 0;
     mNextBufferInfo.format = 0;
 #endif
+=======
+>>>>>>> upstream/master
 }
 
 SurfaceTexture::~SurfaceTexture() {
@@ -305,9 +314,12 @@ status_t SurfaceTexture::dequeueBuffer(int *outBuf, uint32_t w, uint32_t h,
         int foundSync = -1;
         int dequeuedCount = 0;
         bool tryAgain = true;
+<<<<<<< HEAD
 #ifdef MISSING_GRALLOC_BUFFERS
         int dequeueRetries = 5;
 #endif
+=======
+>>>>>>> upstream/master
         while (tryAgain) {
             if (mAbandoned) {
                 ST_LOGE("dequeueBuffer: SurfaceTexture has been abandoned!");
@@ -397,6 +409,7 @@ status_t SurfaceTexture::dequeueBuffer(int *outBuf, uint32_t w, uint32_t h,
             // clients are not allowed to dequeue more than one buffer
             // if they didn't set a buffer count.
             if (!mClientBufferCount && dequeuedCount) {
+<<<<<<< HEAD
 #ifdef MISSING_GRALLOC_BUFFERS
                 if (--dequeueRetries) {
                     LOGD("SurfaceTexture::dequeue: Not allowed to dequeue more "
@@ -413,6 +426,10 @@ status_t SurfaceTexture::dequeueBuffer(int *outBuf, uint32_t w, uint32_t h,
                 ST_LOGE("dequeueBuffer: can't dequeue multiple buffers without "
                         "setting the buffer count");
 #endif
+=======
+                ST_LOGE("dequeueBuffer: can't dequeue multiple buffers without "
+                        "setting the buffer count");
+>>>>>>> upstream/master
                 return -EINVAL;
             }
 
@@ -425,6 +442,7 @@ status_t SurfaceTexture::dequeueBuffer(int *outBuf, uint32_t w, uint32_t h,
                 // than allowed.
                 const int avail = mBufferCount - (dequeuedCount+1);
                 if (avail < (MIN_UNDEQUEUED_BUFFERS-int(mSynchronousMode))) {
+<<<<<<< HEAD
 #ifdef MISSING_GRALLOC_BUFFERS
                     if (mClientBufferCount != 0) {
                         mBufferCount++;
@@ -434,6 +452,8 @@ status_t SurfaceTexture::dequeueBuffer(int *outBuf, uint32_t w, uint32_t h,
                         continue;
                     }
 #endif
+=======
+>>>>>>> upstream/master
                     ST_LOGE("dequeueBuffer: MIN_UNDEQUEUED_BUFFERS=%d exceeded "
                             "(dequeued=%d)",
                             MIN_UNDEQUEUED_BUFFERS-int(mSynchronousMode),
@@ -482,6 +502,7 @@ status_t SurfaceTexture::dequeueBuffer(int *outBuf, uint32_t w, uint32_t h,
         mSlots[buf].mBufferState = BufferSlot::DEQUEUED;
 
         const sp<GraphicBuffer>& buffer(mSlots[buf].mGraphicBuffer);
+<<<<<<< HEAD
 #ifdef QCOM_HARDWARE
 	qBufGeometry currentGeometry;
 	if (buffer != NULL)
@@ -506,6 +527,14 @@ status_t SurfaceTexture::dequeueBuffer(int *outBuf, uint32_t w, uint32_t h,
 #endif
 	   ((uint32_t(buffer->usage) & usage) != usage))
 	{
+=======
+        if ((buffer == NULL) ||
+            (uint32_t(buffer->width)  != w) ||
+            (uint32_t(buffer->height) != h) ||
+            (uint32_t(buffer->format) != format) ||
+            ((uint32_t(buffer->usage) & usage) != usage))
+        {
+>>>>>>> upstream/master
             usage |= GraphicBuffer::USAGE_HW_TEXTURE;
             status_t error;
             sp<GraphicBuffer> graphicBuffer(
@@ -519,9 +548,12 @@ status_t SurfaceTexture::dequeueBuffer(int *outBuf, uint32_t w, uint32_t h,
             if (updateFormat) {
                 mPixelFormat = format;
             }
+<<<<<<< HEAD
 #ifdef QCOM_HARDWARE
 	    checkBuffer((native_handle_t *)graphicBuffer->handle, mReqSize, usage);
 #endif
+=======
+>>>>>>> upstream/master
             mSlots[buf].mGraphicBuffer = graphicBuffer;
             mSlots[buf].mRequestBufferCalled = false;
             mSlots[buf].mFence = EGL_NO_SYNC_KHR;
@@ -656,6 +688,7 @@ status_t SurfaceTexture::queueBuffer(int buf, int64_t timestamp,
         mFrameCounter++;
         mSlots[buf].mFrameNumber = mFrameCounter;
 
+<<<<<<< HEAD
 #ifdef QCOM_HARDWARE
 	// Update the buffer Geometry if required
 	qBufGeometry updatedGeometry;
@@ -664,6 +697,8 @@ status_t SurfaceTexture::queueBuffer(int buf, int64_t timestamp,
 	updateBufferGeometry(mSlots[buf].mGraphicBuffer, updatedGeometry);
 	sp<GraphicBuffer> buffer = mSlots[buf].mGraphicBuffer;
 #endif
+=======
+>>>>>>> upstream/master
         mDequeueCondition.signal();
 
         *outWidth = mDefaultWidth;
@@ -796,6 +831,7 @@ status_t SurfaceTexture::disconnect(int api) {
     return err;
 }
 
+<<<<<<< HEAD
 #ifdef QCOM_HARDWARE
 status_t SurfaceTexture::performQcomOperation(int operation, int arg1, int arg2, int arg3)
 {
@@ -818,6 +854,8 @@ status_t SurfaceTexture::performQcomOperation(int operation, int arg1, int arg2,
 }
 #endif
 
+=======
+>>>>>>> upstream/master
 status_t SurfaceTexture::setScalingMode(int mode) {
     ST_LOGV("setScalingMode: mode=%d", mode);
 
@@ -853,11 +891,14 @@ status_t SurfaceTexture::updateTexImage() {
         // Update the GL texture object.
         EGLImageKHR image = mSlots[buf].mEglImage;
         EGLDisplay dpy = eglGetCurrentDisplay();
+<<<<<<< HEAD
 #ifdef QCOM_HARDWARE
 	if (isGPUSupportedFormat(mSlots[buf].mGraphicBuffer->format)) {
             // Update the GL texture object.
             EGLImageKHR image = mSlots[buf].mEglImage;
 #else
+=======
+>>>>>>> upstream/master
         if (image == EGL_NO_IMAGE_KHR) {
             if (mSlots[buf].mGraphicBuffer == 0) {
                 ST_LOGE("buffer at slot %d is null", buf);
@@ -866,6 +907,7 @@ status_t SurfaceTexture::updateTexImage() {
             image = createImage(dpy, mSlots[buf].mGraphicBuffer);
             mSlots[buf].mEglImage = image;
             mSlots[buf].mEglDisplay = dpy;
+<<<<<<< HEAD
 #endif
             if (image == EGL_NO_IMAGE_KHR) {
 #ifdef QCOM_HARDWARE
@@ -879,6 +921,9 @@ status_t SurfaceTexture::updateTexImage() {
                 mSlots[buf].mEglDisplay = dpy;
                 if (image == EGL_NO_IMAGE_KHR) {
 #endif
+=======
+            if (image == EGL_NO_IMAGE_KHR) {
+>>>>>>> upstream/master
                 // NOTE: if dpy was invalid, createImage() is guaranteed to
                 // fail. so we'd end up here.
                 return -EINVAL;
@@ -902,9 +947,13 @@ status_t SurfaceTexture::updateTexImage() {
         if (failed) {
             return -EINVAL;
         }
+<<<<<<< HEAD
 #ifdef QCOM_HARDWARE
       }
 #endif
+=======
+
+>>>>>>> upstream/master
         if (mCurrentTexture != INVALID_BUFFER_SLOT) {
             if (mUseFenceSync) {
                 EGLSyncKHR fence = eglCreateSyncKHR(dpy, EGL_SYNC_FENCE_KHR,

@@ -54,9 +54,15 @@ Word16 psyMainInit( PSY_KERNEL *hPsy,
                     Word16 bandwidth);
 
 
+<<<<<<< HEAD
 Word16 psyMain(Word16                   nChannels,   /*!< total number of channels */              
                ELEMENT_INFO             *elemInfo,
                Word16                   *timeSignal, /*!< interleaved time signal */ 
+=======
+Word16 psyMain(Word16                   nChannels,   /*!< total number of channels */
+               ELEMENT_INFO             *elemInfo,
+               Word16                   *timeSignal, /*!< interleaved time signal */
+>>>>>>> upstream/master
                PSY_DATA                 psyData[MAX_CHANNELS],
                TNS_DATA                 tnsData[MAX_CHANNELS],
                PSY_CONFIGURATION_LONG*  psyConfLong,

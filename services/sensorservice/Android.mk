@@ -16,6 +16,7 @@ LOCAL_SRC_FILES:= \
 
 LOCAL_CFLAGS:= -DLOG_TAG=\"SensorService\"
 
+<<<<<<< HEAD
 ifeq ($(TARGET_USES_OLD_LIBSENSORS_HAL),true)
     LOCAL_CFLAGS += -DENABLE_SENSORS_COMPAT
 endif
@@ -39,6 +40,8 @@ ifneq ($(filter p990 p999 p970, $(TARGET_BOOTLOADER_BOARD_NAME)),)
     endif
 endif
 
+=======
+>>>>>>> upstream/master
 LOCAL_SHARED_LIBRARIES := \
 	libcutils \
 	libhardware \

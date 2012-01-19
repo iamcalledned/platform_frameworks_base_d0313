@@ -29,11 +29,19 @@ void voAWB_InitFrameBuffer(FrameStream *stream)
 	stream->frame_ptr_bk = stream->frame_ptr;
 	stream->set_len = 0;
 	stream->framebuffer_len = 0;
+<<<<<<< HEAD
 	stream->frame_storelen = 0;	
 }
 
 void voAWB_UpdateFrameBuffer(
 		FrameStream *stream, 
+=======
+	stream->frame_storelen = 0;
+}
+
+void voAWB_UpdateFrameBuffer(
+		FrameStream *stream,
+>>>>>>> upstream/master
 		VO_MEM_OPERATOR *pMemOP
 		)
 {
@@ -53,6 +61,10 @@ void voAWB_FlushFrameBuffer(FrameStream *stream)
 	stream->frame_ptr_bk = stream->frame_ptr;
 	stream->set_len = 0;
 	stream->framebuffer_len = 0;
+<<<<<<< HEAD
 	stream->frame_storelen = 0;	
+=======
+	stream->frame_storelen = 0;
+>>>>>>> upstream/master
 }
 

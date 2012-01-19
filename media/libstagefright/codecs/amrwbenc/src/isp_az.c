@@ -42,7 +42,11 @@ void Isp_Az(
 		                                      /*     1   : adaptive scaling enabled  */
 	   )
 {
+<<<<<<< HEAD
 	Word32 i, j; 
+=======
+	Word32 i, j;
+>>>>>>> upstream/master
 	Word16 hi, lo;
 	Word32 f1[NC16k + 1], f2[NC16k];
 	Word16 nc;
@@ -92,14 +96,22 @@ void Isp_Az(
 		lo = (f1[i] & 0xffff)>>1;
 
 		t0 = Mpy_32_16(hi, lo, isp[m - 1]);
+<<<<<<< HEAD
 		f1[i] = vo_L_add(f1[i], t0); 
+=======
+		f1[i] = vo_L_add(f1[i], t0);
+>>>>>>> upstream/master
 
 		/* f2[i] *= (1.0 - isp[M-1]); */
 
 		hi = f2[i] >> 16;
 		lo = (f2[i] & 0xffff)>>1;
 		t0 = Mpy_32_16(hi, lo, isp[m - 1]);
+<<<<<<< HEAD
 		f2[i] = vo_L_sub(f2[i], t0); 
+=======
+		f2[i] = vo_L_sub(f2[i], t0);
+>>>>>>> upstream/master
 	}
 
 	/*-----------------------------------------------------*
@@ -108,20 +120,33 @@ void Isp_Az(
 	 *-----------------------------------------------------*/
 
 	/* a[0] = 1.0; */
+<<<<<<< HEAD
 	a[0] = 4096;  
 	tmax = 1;                            
+=======
+	a[0] = 4096;
+	tmax = 1;
+>>>>>>> upstream/master
 	for (i = 1, j = m - 1; i < nc; i++, j--)
 	{
 		/* a[i] = 0.5*(f1[i] + f2[i]); */
 
 		t0 = vo_L_add(f1[i], f2[i]);          /* f1[i] + f2[i]             */
+<<<<<<< HEAD
 		tmax |= L_abs(t0);                 
+=======
+		tmax |= L_abs(t0);
+>>>>>>> upstream/master
 		a[i] = (Word16)(vo_L_shr_r(t0, 12)); /* from Q23 to Q12 and * 0.5 */
 
 		/* a[j] = 0.5*(f1[i] - f2[i]); */
 
 		t0 = vo_L_sub(f1[i], f2[i]);          /* f1[i] - f2[i]             */
+<<<<<<< HEAD
 		tmax |= L_abs(t0);                
+=======
+		tmax |= L_abs(t0);
+>>>>>>> upstream/master
 		a[j] = (Word16)(vo_L_shr_r(t0, 12)); /* from Q23 to Q12 and * 0.5 */
 	}
 
@@ -144,12 +169,21 @@ void Isp_Az(
 			t0 = vo_L_sub(f1[i], f2[i]);          /* f1[i] - f2[i]             */
 			a[j] = (Word16)(vo_L_shr_r(t0, q_sug)); /* from Q23 to Q12 and * 0.5 */
 		}
+<<<<<<< HEAD
 		a[0] = shr(a[0], q); 
 	}
 	else
 	{
 		q_sug = 12; 
 		q     = 0; 
+=======
+		a[0] = shr(a[0], q);
+	}
+	else
+	{
+		q_sug = 12;
+		q     = 0;
+>>>>>>> upstream/master
 	}
 	/* a[NC] = 0.5*f1[NC]*(1.0 + isp[M-1]); */
 	hi = f1[nc] >> 16;
@@ -196,7 +230,11 @@ static void Get_isp_pol(Word16 * isp, Word32 * f, Word16 n)
 	isp += 2;                                /* Advance isp pointer        */
 	for (i = 2; i <= n; i++)
 	{
+<<<<<<< HEAD
 		*f = f[-2];                        
+=======
+		*f = f[-2];
+>>>>>>> upstream/master
 		for (j = 1; j < i; j++, f--)
 		{
 			hi = f[-1]>>16;
@@ -228,7 +266,11 @@ static void Get_isp_pol_16kHz(Word16 * isp, Word32 * f, Word16 n)
 
 	for (i = 2; i <= n; i++)
 	{
+<<<<<<< HEAD
 		*f = f[-2];                        
+=======
+		*f = f[-2];
+>>>>>>> upstream/master
 		for (j = 1; j < i; j++, f--)
 		{
 			VO_L_Extract(f[-1], &hi, &lo);

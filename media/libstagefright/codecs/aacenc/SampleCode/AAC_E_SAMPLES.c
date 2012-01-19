@@ -29,11 +29,19 @@
 #include		"cmnMemory.h"
 
 #define  VO_AAC_E_OUTPUT	  1
+<<<<<<< HEAD
 #define READ_SIZE	(1024*8)	
 unsigned char outBuf[1024*8];
 unsigned char inBuf[READ_SIZE];
 
 const char* HelpString = 
+=======
+#define READ_SIZE	(1024*8)
+unsigned char outBuf[1024*8];
+unsigned char inBuf[READ_SIZE];
+
+const char* HelpString =
+>>>>>>> upstream/master
 "VisualOn AAC encoder Usage:\n"
 "voAACEncTest -if <inputfile.pcm> -of <outputfile.aac> -sr <samplerate> -ch <channel> -br <bitrate> -adts <adts> \n"
 "-if input file name \n"
@@ -49,7 +57,11 @@ static int parsecmdline(int argc, char **argv,char  **input_filename, char  **ou
 {
 	// notice that:
 	// bitRate/nChannels > 8000
+<<<<<<< HEAD
 	// bitRate/nChannels < 160000 
+=======
+	// bitRate/nChannels < 160000
+>>>>>>> upstream/master
 	// bitRate/nChannels < sampleRate*6
 	param->adtsUsed = 1;
 	param->bitRate = 0;
@@ -69,7 +81,11 @@ static int parsecmdline(int argc, char **argv,char  **input_filename, char  **ou
 		{
 			argv++;
 			argc--;
+<<<<<<< HEAD
 			*input_filename = *argv; 
+=======
+			*input_filename = *argv;
+>>>>>>> upstream/master
 		}
 		else if (!strcmp(*argv, "-of"))
 		{

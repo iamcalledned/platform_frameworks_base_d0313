@@ -68,8 +68,13 @@ void HP400_12k8(
 	y2_lo = *mem++;
 	y1_hi = *mem++;
 	y1_lo = *mem++;
+<<<<<<< HEAD
 	x0 = *mem++;   
 	x1 = *mem;   
+=======
+	x0 = *mem++;
+	x1 = *mem;
+>>>>>>> upstream/master
 	num = (Word32)lg;
 	do
 	{
@@ -98,7 +103,11 @@ void HP400_12k8(
 	*mem-- = y1_lo;
 	*mem-- = y1_hi;
 	*mem-- = y2_lo;
+<<<<<<< HEAD
 	*mem   = y2_hi;  
+=======
+	*mem   = y2_hi;
+>>>>>>> upstream/master
 	return;
 }
 

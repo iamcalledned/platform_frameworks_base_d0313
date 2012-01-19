@@ -45,6 +45,7 @@ Dot_product12_asm:
 	  VLD1.S16          {Q12, Q13}, [r1]!             @load 16 Word16 y[]
 
           VMULL.S16         Q15, D16, D0
+<<<<<<< HEAD
           VMLAL.S16         Q15, D17, D1               
           VMLAL.S16         Q15, D18, D2
           VMLAL.S16         Q15, D19, D3
@@ -53,6 +54,16 @@ Dot_product12_asm:
           VMLAL.S16         Q15, D21, D5
           VMLAL.S16         Q15, D22, D6
           VMLAL.S16         Q15, D23, D7                                       
+=======
+          VMLAL.S16         Q15, D17, D1
+          VMLAL.S16         Q15, D18, D2
+          VMLAL.S16         Q15, D19, D3
+	  VLD1.S16          {Q0, Q1}, [r1]!               @load 16 Word16 y[]
+          VMLAL.S16         Q15, D20, D4
+          VMLAL.S16         Q15, D21, D5
+          VMLAL.S16         Q15, D22, D6
+          VMLAL.S16         Q15, D23, D7
+>>>>>>> upstream/master
           VMLAL.S16         Q15, D24, D8
           VMLAL.S16         Q15, D25, D9
           VMLAL.S16         Q15, D26, D10
@@ -64,9 +75,15 @@ Dot_product12_asm:
 
           CMP               r2, #64
           BEQ               Lable1
+<<<<<<< HEAD
           VLD1.S16          {Q0, Q1}, [r0]!               @load 16 Word16 x[]  
 	  VLD1.S16          {Q2, Q3}, [r1]! 
           VMLAL.S16         Q15, D4, D0             
+=======
+          VLD1.S16          {Q0, Q1}, [r0]!               @load 16 Word16 x[]
+	  VLD1.S16          {Q2, Q3}, [r1]!
+          VMLAL.S16         Q15, D4, D0
+>>>>>>> upstream/master
           VMLAL.S16         Q15, D5, D1
           VMLAL.S16         Q15, D6, D2
           VMLAL.S16         Q15, D7, D3
@@ -102,11 +119,19 @@ LOOP_EQ:
 	  VMLAL.S16         Q15, D2, D2
 	  VMLAL.S16         Q15, D3, D3
 
+<<<<<<< HEAD
 Lable1: 
 
           VQADD.S32         D30, D30, D31
           VPADD.S32         D30, D30, D30
           VMOV.S32          r12, D30[0]        
+=======
+Lable1:
+
+          VQADD.S32         D30, D30, D31
+          VPADD.S32         D30, D30, D30
+          VMOV.S32          r12, D30[0]
+>>>>>>> upstream/master
 
 	  ADD               r12, r12, r12
           ADD               r12, r12, #1                         @ L_sum = (L_sum << 1)  + 1
@@ -117,11 +142,19 @@ Lable1:
           SUB               r10, r10, #1                         @ sft = norm_l(L_sum)
           MOV               r0, r12, LSL r10                     @ L_sum = L_sum << sft
           RSB               r11, r10, #30                        @ *exp = 30 - sft
+<<<<<<< HEAD
           STRH              r11, [r3]                     
 
 Dot_product12_end:
 		     
           LDMFD   	    r13!, {r4 - r12, r15} 
+=======
+          STRH              r11, [r3]
+
+Dot_product12_end:
+
+          LDMFD   	    r13!, {r4 - r12, r15}
+>>>>>>> upstream/master
 
           .END
 

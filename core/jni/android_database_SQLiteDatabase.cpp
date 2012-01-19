@@ -35,7 +35,10 @@
 #include <ctype.h>
 
 #include <stdio.h>
+<<<<<<< HEAD
 #include <libgen.h>
+=======
+>>>>>>> upstream/master
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -99,6 +102,7 @@ static void registerLoggingFunc(const char *path) {
     loggingFuncSet = true;
 }
 
+<<<<<<< HEAD
 static int use_wal_mode (char const *path8)
 {
     char *temp = basename(path8);
@@ -128,6 +132,8 @@ static int use_wal_mode (char const *path8)
     return 0;
 }
 
+=======
+>>>>>>> upstream/master
 /* public native void dbopen(String path, int flags, String locale); */
 static void dbopen(JNIEnv* env, jobject object, jstring pathString, jint flags)
 {
@@ -136,8 +142,11 @@ static void dbopen(JNIEnv* env, jobject object, jstring pathString, jint flags)
     sqlite3_stmt * statement = NULL;
     char const * path8 = env->GetStringUTFChars(pathString, NULL);
     int sqliteFlags;
+<<<<<<< HEAD
     // Error code handling for SQLite exec
     char* zErrMsg = NULL;
+=======
+>>>>>>> upstream/master
 
     // register the logging func on sqlite. needs to be done BEFORE any sqlite3 func is called.
     registerLoggingFunc(path8);
@@ -158,6 +167,7 @@ static void dbopen(JNIEnv* env, jobject object, jstring pathString, jint flags)
         goto done;
     }
 
+<<<<<<< HEAD
     // WAL is a new rollback method available in SQLite v3.7+. WAL speeds up writes to
     // SQLite databases. WAL cannot be used with Read Only databases or databases opened
     // in read only mode.
@@ -193,6 +203,8 @@ static void dbopen(JNIEnv* env, jobject object, jstring pathString, jint flags)
         }
     }
 
+=======
+>>>>>>> upstream/master
     // The soft heap limit prevents the page cache allocations from growing
     // beyond the given limit, no matter what the max page cache sizes are
     // set to. The limit does not, as of 3.5.0, affect any other allocations.

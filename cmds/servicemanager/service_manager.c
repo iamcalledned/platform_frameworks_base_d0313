@@ -34,12 +34,15 @@ static struct {
     { AID_MEDIA, "media.player" },
     { AID_MEDIA, "media.camera" },
     { AID_MEDIA, "media.audio_policy" },
+<<<<<<< HEAD
 #ifdef YAMAHAPLAYER
     { AID_MEDIA, "media.yamahaplayer" },
 #endif
 #ifdef SECTVOUT
     { AID_MEDIA, "SecTVOutService" },
 #endif
+=======
+>>>>>>> upstream/master
     { AID_DRM,   "drm.drmManager" },
     { AID_NFC,   "nfc" },
     { AID_RADIO, "radio.phone" },

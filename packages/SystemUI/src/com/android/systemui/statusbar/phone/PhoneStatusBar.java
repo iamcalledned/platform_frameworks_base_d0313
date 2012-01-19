@@ -75,8 +75,11 @@ import java.util.ArrayList;
 import com.android.internal.statusbar.StatusBarIcon;
 import com.android.internal.statusbar.StatusBarNotification;
 
+<<<<<<< HEAD
 import com.android.systemui.statusbar.powerwidget.PowerWidget;
 
+=======
+>>>>>>> upstream/master
 import com.android.systemui.R;
 import com.android.systemui.recent.RecentTasksLoader;
 import com.android.systemui.recent.RecentsPanelView;
@@ -195,9 +198,12 @@ public class PhoneStatusBar extends StatusBar {
     int mTrackingPosition; // the position of the top of the tracking view.
     private boolean mPanelSlightlyVisible;
 
+<<<<<<< HEAD
     // the power widget
     PowerWidget mPowerWidget;
 
+=======
+>>>>>>> upstream/master
     // ticker
     private Ticker mTicker;
     private View mTickerView;
@@ -337,6 +343,7 @@ public class PhoneStatusBar extends StatusBar {
         mSettingsButton.setOnClickListener(mSettingsButtonListener);
         mScrollView = (ScrollView)expanded.findViewById(R.id.scroll);
 
+<<<<<<< HEAD
 
         mPowerWidget = (PowerWidget)expanded.findViewById(R.id.exp_power_stat);
         mPowerWidget.setupSettingsObserver(mHandler);
@@ -350,6 +357,8 @@ public class PhoneStatusBar extends StatusBar {
                 });
 
 
+=======
+>>>>>>> upstream/master
         mTicker = new MyTicker(context, sb);
 
         TickerView tickerView = (TickerView)sb.findViewById(R.id.tickerText);
@@ -390,8 +399,11 @@ public class PhoneStatusBar extends StatusBar {
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         context.registerReceiver(mBroadcastReceiver, filter);
 
+<<<<<<< HEAD
 	mPowerWidget.setupWidget();
 
+=======
+>>>>>>> upstream/master
         return sb;
     }
 
@@ -539,7 +551,10 @@ public class PhoneStatusBar extends StatusBar {
         StatusBarIconView view = new StatusBarIconView(mContext, slot, null);
         view.set(icon);
         mStatusIcons.addView(view, viewIndex, new LinearLayout.LayoutParams(mIconSize, mIconSize));
+<<<<<<< HEAD
 	mPowerWidget.updateWidget();
+=======
+>>>>>>> upstream/master
     }
 
     public void updateIcon(String slot, int index, int viewIndex,

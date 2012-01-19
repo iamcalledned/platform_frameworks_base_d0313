@@ -31,7 +31,11 @@
 /*
  * this is the original code from the ETSI file typedef.h
  */
+<<<<<<< HEAD
    
+=======
+
+>>>>>>> upstream/master
 #if defined(__BORLANDC__) || defined(__WATCOMC__) || defined(_MSC_VER) || defined(__ZTC__)
 typedef signed char Word8;
 typedef short Word16;

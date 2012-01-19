@@ -58,7 +58,10 @@
 
 #define CACHE_DIR_POSTFIX      "/cache"
 
+<<<<<<< HEAD
 #define DATA_SUBDIR             "data/" // sub-directory under ANDROID_DATA
+=======
+>>>>>>> upstream/master
 #define APP_SUBDIR             "app/" // sub-directory under ANDROID_DATA
 
 /* other handy constants */
@@ -88,7 +91,10 @@ typedef struct {
 extern dir_rec_t android_app_dir;
 extern dir_rec_t android_app_private_dir;
 extern dir_rec_t android_data_dir;
+<<<<<<< HEAD
 extern dir_rec_t android_datadata_dir;
+=======
+>>>>>>> upstream/master
 extern dir_rec_t android_asec_dir;
 extern dir_rec_array_t android_system_dirs;
 

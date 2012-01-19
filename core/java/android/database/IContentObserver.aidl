@@ -17,8 +17,11 @@
 
 package android.database;
 
+<<<<<<< HEAD
 import android.net.Uri;
 
+=======
+>>>>>>> upstream/master
 /**
  * @hide
  */
@@ -30,5 +33,8 @@ interface IContentObserver
      * commit on the cursor that is being observed.
      */
     oneway void onChange(boolean selfUpdate);
+<<<<<<< HEAD
     oneway void onChangeUri(in Uri uri, boolean selfUpdate);
+=======
+>>>>>>> upstream/master
 }

@@ -59,7 +59,11 @@ LOCAL_MODULE := libstagefright_aacenc
 
 LOCAL_ARM_MODE := arm
 
+<<<<<<< HEAD
 LOCAL_STATIC_LIBRARIES := 
+=======
+LOCAL_STATIC_LIBRARIES :=
+>>>>>>> upstream/master
 
 LOCAL_SHARED_LIBRARIES :=
 

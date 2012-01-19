@@ -16,7 +16,11 @@
 /*******************************************************************************
 	File:		adj_thr_data.h
 
+<<<<<<< HEAD
 	Content:	Threshold compensation parameter 
+=======
+	Content:	Threshold compensation parameter
+>>>>>>> upstream/master
 
 *******************************************************************************/
 

@@ -97,6 +97,7 @@ FramebufferNativeWindow::FramebufferNativeWindow()
         mUpdateOnDemand = (fbDev->setUpdateRect != 0);
         
         // initialize the buffer FIFO
+<<<<<<< HEAD
 #ifdef QCOM_HARDWARE
 	mNumBuffers = fbDev->numFramebuffers;
 	mNumFreeBuffers = mNumBuffers;
@@ -108,6 +109,11 @@ FramebufferNativeWindow::FramebufferNativeWindow()
         mNumFreeBuffers = NUM_FRAME_BUFFERS;
         mBufferHead = mNumBuffers-1;
 #endif
+=======
+        mNumBuffers = NUM_FRAME_BUFFERS;
+        mNumFreeBuffers = NUM_FRAME_BUFFERS;
+        mBufferHead = mNumBuffers-1;
+>>>>>>> upstream/master
 
         for (i = 0; i < mNumBuffers; i++)
         {
@@ -150,14 +156,18 @@ FramebufferNativeWindow::FramebufferNativeWindow()
     ANativeWindow::queueBuffer = queueBuffer;
     ANativeWindow::query = query;
     ANativeWindow::perform = perform;
+<<<<<<< HEAD
 #ifdef QCOM_HARDWARE
     ANativeWindow::cancelBuffer = NULL;
 #endif
+=======
+>>>>>>> upstream/master
 }
 
 FramebufferNativeWindow::~FramebufferNativeWindow() 
 {
     if (grDev) {
+<<<<<<< HEAD
 #ifdef QCOM_HARDWARE
        for(int i = 0; i < mNumBuffers; i++) {
             if (buffers[i] != NULL) {
@@ -165,11 +175,16 @@ FramebufferNativeWindow::~FramebufferNativeWindow()
             }
         }
 #else
+=======
+>>>>>>> upstream/master
         if (buffers[0] != NULL)
             grDev->free(grDev, buffers[0]->handle);
         if (buffers[1] != NULL)
             grDev->free(grDev, buffers[1]->handle);
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> upstream/master
         gralloc_close(grDev);
     }
 
@@ -220,6 +235,7 @@ int FramebufferNativeWindow::getCurrentBufferIndex() const
 }
 
 int FramebufferNativeWindow::dequeueBuffer(ANativeWindow* window, 
+<<<<<<< HEAD
 #ifdef QCOM_HARDWARE
         android_native_buffer_t** buffer)
 #else
@@ -239,10 +255,22 @@ int FramebufferNativeWindow::dequeueBuffer(ANativeWindow* window,
     if (self->mBufferHead >= self->mNumBuffers)
         self->mBufferHead = 0;
 #endif
+=======
+        ANativeWindowBuffer** buffer)
+{
+    FramebufferNativeWindow* self = getSelf(window);
+    Mutex::Autolock _l(self->mutex);
+    framebuffer_device_t* fb = self->fbDev;
+
+    int index = self->mBufferHead++;
+    if (self->mBufferHead >= self->mNumBuffers)
+        self->mBufferHead = 0;
+>>>>>>> upstream/master
 
     GraphicLog& logger(GraphicLog::getInstance());
     logger.log(GraphicLog::SF_FB_DEQUEUE_BEFORE, index);
 
+<<<<<<< HEAD
 #ifdef QCOM_HARDWARE
     /* The buffer is available, return it */
     Mutex::Autolock _l(self->mutex);
@@ -260,6 +288,12 @@ int FramebufferNativeWindow::dequeueBuffer(ANativeWindow* window,
     if (self->mBufferHead >= self->mNumBuffers)
         self->mBufferHead = 0;
 #endif
+=======
+    // wait for a free buffer
+    while (!self->mNumFreeBuffers) {
+        self->mCondition.wait(self->mutex);
+    }
+>>>>>>> upstream/master
     // get this buffer
     self->mNumFreeBuffers--;
     self->mCurrentBufferIndex = index;
@@ -271,6 +305,7 @@ int FramebufferNativeWindow::dequeueBuffer(ANativeWindow* window,
 }
 
 int FramebufferNativeWindow::lockBuffer(ANativeWindow* window, 
+<<<<<<< HEAD
 #ifdef QCOM_HARDWARE
         android_native_buffer_t* buffer)
 #else
@@ -297,11 +332,26 @@ int FramebufferNativeWindow::lockBuffer(ANativeWindow* window,
 #ifdef QCOM_HARDWARE
     fb->lockBuffer(fb, index);
 #else
+=======
+        ANativeWindowBuffer* buffer)
+{
+    FramebufferNativeWindow* self = getSelf(window);
+    Mutex::Autolock _l(self->mutex);
+
+    const int index = self->mCurrentBufferIndex;
+    GraphicLog& logger(GraphicLog::getInstance());
+    logger.log(GraphicLog::SF_FB_LOCK_BEFORE, index);
+
+>>>>>>> upstream/master
     // wait that the buffer we're locking is not front anymore
     while (self->front == buffer) {
         self->mCondition.wait(self->mutex);
     }
+<<<<<<< HEAD
 #endif
+=======
+
+>>>>>>> upstream/master
     logger.log(GraphicLog::SF_FB_LOCK_AFTER, index);
 
     return NO_ERROR;
@@ -348,11 +398,14 @@ int FramebufferNativeWindow::query(const ANativeWindow* window,
         case NATIVE_WINDOW_CONCRETE_TYPE:
             *value = NATIVE_WINDOW_FRAMEBUFFER;
             return NO_ERROR;
+<<<<<<< HEAD
 #ifdef QCOM_HARDWARE
         case NATIVE_WINDOW_NUM_BUFFERS:
             *value = fb->numFramebuffers;
             return NO_ERROR;
 #endif
+=======
+>>>>>>> upstream/master
         case NATIVE_WINDOW_QUEUES_TO_WINDOW_COMPOSER:
             *value = 0;
             return NO_ERROR;

@@ -27,6 +27,7 @@ LOCAL_SHARED_LIBRARIES := \
 	libhardware_legacy \
 	libui \
 	libEGL \
+<<<<<<< HEAD
 	libGLESv2
 
 ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
@@ -38,14 +39,23 @@ ifeq ($(TARGET_QCOM_HDMI_OUT),true)
 LOCAL_CFLAGS += -DQCOM_HDMI_OUT
 endif
 endif
+=======
+	libGLESv2 \
+
+>>>>>>> upstream/master
 
 LOCAL_MODULE:= libgui
 
 ifeq ($(TARGET_BOARD_PLATFORM), tegra)
+<<<<<<< HEAD
 ifneq ($(BOARD_NO_ALLOW_DEQUEUE_CURRENT_BUFFER), true)
 	LOCAL_CFLAGS += -DALLOW_DEQUEUE_CURRENT_BUFFER
 endif
 endif
+=======
+	LOCAL_CFLAGS += -DALLOW_DEQUEUE_CURRENT_BUFFER
+endif
+>>>>>>> upstream/master
 
 include $(BUILD_SHARED_LIBRARY)
 

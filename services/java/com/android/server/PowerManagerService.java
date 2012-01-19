@@ -77,7 +77,10 @@ public class PowerManagerService extends IPowerManager.Stub
         implements LocalPowerManager, Watchdog.Monitor {
 
     private static final String TAG = "PowerManagerService";
+<<<<<<< HEAD
     private static final String TAGF = "LightFilter";
+=======
+>>>>>>> upstream/master
     static final String PARTIAL_NAME = "PowerManagerService";
 
     static final boolean DEBUG_SCREEN_ON = false;
@@ -260,6 +263,7 @@ public class PowerManagerService extends IPowerManager.Stub
     private static final int ANIM_SETTING_ON = 0x01;
     private static final int ANIM_SETTING_OFF = 0x10;
 
+<<<<<<< HEAD
     // Custom light housekeeping
     private long mLightSettingsTag = -1;
 
@@ -290,6 +294,8 @@ public class PowerManagerService extends IPowerManager.Stub
     private int mLightFilterInterval;
     private int mLightFilterReset;
 
+=======
+>>>>>>> upstream/master
     // Used when logging number and duration of touch-down cycles
     private long mTotalTouchDownTime;
     private long mLastTouchDown;
@@ -491,8 +497,11 @@ public class PowerManagerService extends IPowerManager.Stub
                 // DIM_SCREEN
                 //mDimScreen = getInt(DIM_SCREEN) != 0;
 
+<<<<<<< HEAD
                 updateLightSettings();
 
+=======
+>>>>>>> upstream/master
                 // SCREEN_BRIGHTNESS_MODE, default to manual
                 setScreenBrightnessMode(getInt(SCREEN_BRIGHTNESS_MODE,
                         Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL));
@@ -657,11 +666,17 @@ public class PowerManagerService extends IPowerManager.Stub
                         + Settings.System.NAME + "=?) or ("
                         + Settings.System.NAME + "=?) or ("
                         + Settings.System.NAME + "=?) or ("
+<<<<<<< HEAD
                         + Settings.System.NAME + "=?) or ("
                         + Settings.System.NAME + "=?)",
                 new String[]{STAY_ON_WHILE_PLUGGED_IN, SCREEN_OFF_TIMEOUT, DIM_SCREEN,
                         SCREEN_BRIGHTNESS_MODE, WINDOW_ANIMATION_SCALE, TRANSITION_ANIMATION_SCALE,
                         Settings.System.LIGHTS_CHANGED},
+=======
+                        + Settings.System.NAME + "=?)",
+                new String[]{STAY_ON_WHILE_PLUGGED_IN, SCREEN_OFF_TIMEOUT, DIM_SCREEN,
+                        SCREEN_BRIGHTNESS_MODE, WINDOW_ANIMATION_SCALE, TRANSITION_ANIMATION_SCALE},
+>>>>>>> upstream/master
                 null);
         mSettings = new ContentQueryMap(settingsCursor, Settings.System.NAME, true, mHandler);
         SettingsObserver settingsObserver = new SettingsObserver();
@@ -1746,8 +1761,11 @@ public class PowerManagerService extends IPowerManager.Stub
                     mLightSensorValue = -1;
                     // reset our highest light sensor value when the screen turns off
                     mHighestLightSensorValue = -1;
+<<<<<<< HEAD
                     lightFilterStop();
                     resetLastLightValues();
+=======
+>>>>>>> upstream/master
                 }
             }
         }
@@ -1884,9 +1902,12 @@ public class PowerManagerService extends IPowerManager.Stub
                     mHandler.removeCallbacks(mAutoBrightnessTask);
                     mLightSensorPendingDecrease = false;
                     mLightSensorPendingIncrease = false;
+<<<<<<< HEAD
 
                     lightFilterStop();
                     
+=======
+>>>>>>> upstream/master
                     mScreenOffTime = SystemClock.elapsedRealtime();
                     long identity = Binder.clearCallingIdentity();
                     try {
@@ -2026,7 +2047,11 @@ public class PowerManagerService extends IPowerManager.Stub
                         nominalCurrentValue = preferredBrightness;
                         break;
                     case SCREEN_ON_BIT:
+<<<<<<< HEAD
                         nominalCurrentValue = mScreenDim;
+=======
+                        nominalCurrentValue = mScreenBrightnessDim;
+>>>>>>> upstream/master
                         break;
                     case 0:
                         nominalCurrentValue = Power.BRIGHTNESS_OFF;
@@ -2045,7 +2070,11 @@ public class PowerManagerService extends IPowerManager.Stub
                 // the scale is because the brightness ramp isn't linear and this biases
                 // it so the later parts take longer.
                 final float scale = 1.5f;
+<<<<<<< HEAD
                 float ratio = (((float)mScreenDim)/preferredBrightness);
+=======
+                float ratio = (((float)mScreenBrightnessDim)/preferredBrightness);
+>>>>>>> upstream/master
                 if (ratio > 1.0f) ratio = 1.0f;
                 if ((newState & SCREEN_ON_BIT) == 0) {
                     if ((oldState & SCREEN_BRIGHT_BIT) != 0) {
@@ -2071,9 +2100,14 @@ public class PowerManagerService extends IPowerManager.Stub
                         // still have a sense of when it is inactive, we
                         // will then count going dim as turning off.
                         mScreenOffTime = SystemClock.elapsedRealtime();
+<<<<<<< HEAD
                         mAlwaysOnAndDimmed = true;
                     }
                     brightness = mScreenDim;
+=======
+                    }
+                    brightness = mScreenBrightnessDim;
+>>>>>>> upstream/master
                 }
             }
             long identity = Binder.clearCallingIdentity();
@@ -2140,7 +2174,10 @@ public class PowerManagerService extends IPowerManager.Stub
                 Slog.i(TAG, "Set LCD brightness: " + value, e);
             }
             mLcdLight.setBrightness(value, brightnessMode);
+<<<<<<< HEAD
             mLastLcdValue = value;
+=======
+>>>>>>> upstream/master
         }
         if ((mask & BUTTON_BRIGHT_BIT) != 0) {
             mButtonLight.setBrightness(value);
@@ -2287,7 +2324,11 @@ public class PowerManagerService extends IPowerManager.Stub
             final int brightness = Settings.System.getInt(mContext.getContentResolver(),
                                                           SCREEN_BRIGHTNESS);
              // Don't let applications turn the screen all the way off
+<<<<<<< HEAD
             return Math.max(brightness, mScreenDim);
+=======
+            return Math.max(brightness, mScreenBrightnessDim);
+>>>>>>> upstream/master
         } catch (SettingNotFoundException snfe) {
             return Power.BRIGHTNESS_ON;
         }
@@ -2469,7 +2510,10 @@ public class PowerManagerService extends IPowerManager.Stub
                     setPowerState(mUserState | mWakeLockState, noChangeLights,
                             WindowManagerPolicy.OFF_BECAUSE_OF_USER);
                     setTimeoutLocked(time, timeoutOverride, SCREEN_BRIGHT);
+<<<<<<< HEAD
                     mAlwaysOnAndDimmed = false;
+=======
+>>>>>>> upstream/master
                 }
             }
         }
@@ -2479,6 +2523,7 @@ public class PowerManagerService extends IPowerManager.Stub
         }
     }
 
+<<<<<<< HEAD
     private int getAutoBrightnessValue(int current, int last, int[] levels, int[] values) {
         try {
             // If have a last value and sensor value is decreasing
@@ -2514,6 +2559,13 @@ public class PowerManagerService extends IPowerManager.Stub
             int i;
             for (i = 0; i < levels.length; i++) {
                 if (current < levels[i]) {
+=======
+    private int getAutoBrightnessValue(int sensorValue, int[] values) {
+        try {
+            int i;
+            for (i = 0; i < mAutoBrightnessLevels.length; i++) {
+                if (sensorValue < mAutoBrightnessLevels[i]) {
+>>>>>>> upstream/master
                     break;
                 }
             }
@@ -2552,6 +2604,7 @@ public class PowerManagerService extends IPowerManager.Stub
         }
     };
 
+<<<<<<< HEAD
     private Runnable mLightFilterTask = new Runnable() {
         public void run() {
             synchronized (mLocks) {
@@ -2654,20 +2707,29 @@ public class PowerManagerService extends IPowerManager.Stub
         return mLightSensorKeyboardBrightness;
     }
 
+=======
+>>>>>>> upstream/master
     private void dockStateChanged(int state) {
         synchronized (mLocks) {
             mIsDocked = (state != Intent.EXTRA_DOCK_STATE_UNDOCKED);
             if (mIsDocked) {
                 mHighestLightSensorValue = -1;
+<<<<<<< HEAD
                 resetLastLightValues();
+=======
+>>>>>>> upstream/master
             }
             if ((mPowerState & SCREEN_ON_BIT) != 0) {
                 // force lights recalculation
                 int value = (int)mLightSensorValue;
                 mLightSensorValue = -1;
+<<<<<<< HEAD
                 resetLastLightValues();
                 lightSensorChangedLocked(value);
                 lightFilterReset((int)mLightSensorValue);
+=======
+                lightSensorChangedLocked(value);
+>>>>>>> upstream/master
             }
         }
     }
@@ -2685,12 +2747,15 @@ public class PowerManagerService extends IPowerManager.Stub
             return;
         }
 
+<<<<<<< HEAD
         // do not allow light sensor value to decrease unless
         // user has actively permitted it
         if (mLightDecrease) {
             mHighestLightSensorValue = value;
         }
 
+=======
+>>>>>>> upstream/master
         // do not allow light sensor value to decrease
         if (mHighestLightSensorValue < value) {
             mHighestLightSensorValue = value;
@@ -2704,6 +2769,7 @@ public class PowerManagerService extends IPowerManager.Stub
                 // stationary in a dock.
                 int lcdValue = getAutoBrightnessValue(
                         (mIsDocked ? value : mHighestLightSensorValue),
+<<<<<<< HEAD
                         mLastLcdValue,
                         (mCustomLightEnabled ? mCustomLightLevels : mAutoBrightnessLevels),
                         (mCustomLightEnabled ? mCustomLcdValues : mLcdBacklightValues));
@@ -2716,6 +2782,13 @@ public class PowerManagerService extends IPowerManager.Stub
                     keyboardValue = getAutoBrightnessValue(value, mLastKeyboardValue,
                             (mCustomLightEnabled ? mCustomLightLevels : mAutoBrightnessLevels),
                             (mCustomLightEnabled ? mCustomKeyboardValues : mKeyboardBacklightValues));
+=======
+                        mLcdBacklightValues);
+                int buttonValue = getAutoBrightnessValue(value, mButtonBacklightValues);
+                int keyboardValue;
+                if (mKeyboardVisible) {
+                    keyboardValue = getAutoBrightnessValue(value, mKeyboardBacklightValues);
+>>>>>>> upstream/master
                 } else {
                     keyboardValue = 0;
                 }
@@ -2734,7 +2807,10 @@ public class PowerManagerService extends IPowerManager.Stub
                         mScreenBrightness.setTargetLocked(lcdValue, AUTOBRIGHTNESS_ANIM_STEPS,
                                 INITIAL_SCREEN_BRIGHTNESS, (int)mScreenBrightness.curValue);
                     }
+<<<<<<< HEAD
                     mLastLcdValue = value;
+=======
+>>>>>>> upstream/master
                 }
                 if (mButtonBrightnessOverride < 0) {
                     mButtonLight.setBrightness(buttonValue);
@@ -2881,7 +2957,10 @@ public class PowerManagerService extends IPowerManager.Stub
                             int value = (int)mLightSensorValue;
                             mLightSensorValue = -1;
                             lightSensorChangedLocked(value);
+<<<<<<< HEAD
                             lightFilterReset((int)mLightSensorValue);
+=======
+>>>>>>> upstream/master
                         }
                     }
                     userActivity(SystemClock.uptimeMillis(), false, BUTTON_EVENT, true);
@@ -2909,6 +2988,7 @@ public class PowerManagerService extends IPowerManager.Stub
     }
 
     private void setScreenBrightnessMode(int mode) {
+<<<<<<< HEAD
         boolean enabled = (mode == SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
         if (mUseSoftwareAutoBrightness && mAutoBrightessEnabled != enabled) {
             mAutoBrightessEnabled = enabled;
@@ -3054,6 +3134,16 @@ public class PowerManagerService extends IPowerManager.Stub
             }
         }
         return result;
+=======
+        synchronized (mLocks) {
+            boolean enabled = (mode == SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
+            if (mUseSoftwareAutoBrightness && mAutoBrightessEnabled != enabled) {
+                mAutoBrightessEnabled = enabled;
+                // This will get us a new value
+                enableLightSensorLocked(mAutoBrightessEnabled && isScreenOn());
+            }
+        }
+>>>>>>> upstream/master
     }
 
     /** Sets the screen off timeouts:
@@ -3265,7 +3355,11 @@ public class PowerManagerService extends IPowerManager.Stub
         mContext.enforceCallingOrSelfPermission(android.Manifest.permission.DEVICE_POWER, null);
         // Don't let applications turn the screen all the way off
         synchronized (mLocks) {
+<<<<<<< HEAD
             brightness = Math.max(brightness, mScreenDim);
+=======
+            brightness = Math.max(brightness, mScreenBrightnessDim);
+>>>>>>> upstream/master
             mLcdLight.setBrightness(brightness);
             mKeyboardLight.setBrightness(mKeyboardVisible ? brightness : 0);
             mButtonLight.setBrightness(brightness);
@@ -3398,7 +3492,10 @@ public class PowerManagerService extends IPowerManager.Stub
                     mSensorManager.registerListener(mLightListener, mLightSensor,
                             LIGHT_SENSOR_RATE);
                 } else {
+<<<<<<< HEAD
                     lightFilterStop();
+=======
+>>>>>>> upstream/master
                     mSensorManager.unregisterListener(mLightListener);
                     mHandler.removeCallbacks(mAutoBrightnessTask);
                 }
@@ -3465,6 +3562,7 @@ public class PowerManagerService extends IPowerManager.Stub
                 if (mDebugLightSensor) {
                     Slog.d(TAG, "onSensorChanged: light value: " + value);
                 }
+<<<<<<< HEAD
 
                 mLightFilterSample = value;
                 if (mAutoBrightessEnabled && mLightFilterEnabled) {
@@ -3501,6 +3599,8 @@ public class PowerManagerService extends IPowerManager.Stub
                     return;
                 }
 
+=======
+>>>>>>> upstream/master
                 if (mLightSensorValue == -1 ||
                         milliseconds < mLastScreenOnTime + mLightSensorWarmupTime) {
                     // process the value immediately if screen has just turned on
