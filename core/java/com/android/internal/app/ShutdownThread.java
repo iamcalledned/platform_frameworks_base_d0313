@@ -43,7 +43,10 @@ import android.os.storage.IMountShutdownObserver;
 import com.android.internal.telephony.ITelephony;
 import android.util.Log;
 import android.view.WindowManager;
+<<<<<<< HEAD
 import android.view.KeyEvent;
+=======
+>>>>>>> upstream/master
 
 public final class ShutdownThread extends Thread {
     // constants
@@ -108,6 +111,7 @@ public final class ShutdownThread extends Thread {
         Log.d(TAG, "Notifying thread to start shutdown longPressBehavior=" + longPressBehavior);
 
         if (confirm) {
+<<<<<<< HEAD
             final AlertDialog dialog;
             // Set different dialog message based on whether or not we're rebooting
             if (mReboot) {
@@ -163,6 +167,21 @@ public final class ShutdownThread extends Thread {
                         .setNegativeButton(com.android.internal.R.string.no, null)
                         .create();
             }
+=======
+            final CloseDialogReceiver closer = new CloseDialogReceiver(context);
+            final AlertDialog dialog = new AlertDialog.Builder(context)
+                    .setTitle(com.android.internal.R.string.power_off)
+                    .setMessage(resourceId)
+                    .setPositiveButton(com.android.internal.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            beginShutdownSequence(context);
+                        }
+                    })
+                    .setNegativeButton(com.android.internal.R.string.no, null)
+                    .create();
+            closer.dialog = dialog;
+            dialog.setOnDismissListener(closer);
+>>>>>>> upstream/master
             dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
             dialog.show();
         } else {
@@ -218,6 +237,7 @@ public final class ShutdownThread extends Thread {
         // throw up an indeterminate system dialog to indicate radio is
         // shutting down.
         ProgressDialog pd = new ProgressDialog(context);
+<<<<<<< HEAD
         if (mReboot) {
             pd.setTitle(context.getText(com.android.internal.R.string.reboot_system));
             pd.setMessage(context.getText(com.android.internal.R.string.reboot_progress));
@@ -225,6 +245,10 @@ public final class ShutdownThread extends Thread {
             pd.setTitle(context.getText(com.android.internal.R.string.power_off));
             pd.setMessage(context.getText(com.android.internal.R.string.shutdown_progress));
         }
+=======
+        pd.setTitle(context.getText(com.android.internal.R.string.power_off));
+        pd.setMessage(context.getText(com.android.internal.R.string.shutdown_progress));
+>>>>>>> upstream/master
         pd.setIndeterminate(true);
         pd.setCancelable(false);
         pd.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);

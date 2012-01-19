@@ -28,7 +28,11 @@
 
 Word16 countStaticBitdemand(PSY_OUT_CHANNEL psyOutChannel[MAX_CHANNELS],
                             PSY_OUT_ELEMENT *psyOutElement,
+<<<<<<< HEAD
                             Word16 nChannels, 
+=======
+                            Word16 nChannels,
+>>>>>>> upstream/master
 							Word16 adtsUsed);
 
 #endif /* __STAT_BITS_H */

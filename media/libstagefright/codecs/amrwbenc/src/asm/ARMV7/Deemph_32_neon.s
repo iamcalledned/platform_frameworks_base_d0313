@@ -30,10 +30,17 @@
 
            .section  .text
            .global   Deemph_32_asm
+<<<<<<< HEAD
 	   
 Deemph_32_asm:
 
            STMFD   	r13!, {r4 - r12, r14} 
+=======
+
+Deemph_32_asm:
+
+           STMFD   	r13!, {r4 - r12, r14}
+>>>>>>> upstream/master
 	   MOV          r4, #2                   @i=0
 	   LDRSH        r6, [r0], #2             @load x_hi[0]
 	   LDRSH        r7, [r1], #2             @load x_lo[0]
@@ -47,9 +54,15 @@ Deemph_32_asm:
 	   ADD          r12, r10, r7, LSL #4     @L_tmp += x_lo[0] << 4
 	   MOV          r10, r12, LSL #3         @L_tmp <<= 3
 	   MUL          r9, r5, r8
+<<<<<<< HEAD
 	   LDRSH        r6, [r0], #2             @load x_hi[1] 
 	   QDADD        r10, r10, r9
 	   LDRSH        r7, [r1], #2             @load x_lo[1]  
+=======
+	   LDRSH        r6, [r0], #2             @load x_hi[1]
+	   QDADD        r10, r10, r9
+	   LDRSH        r7, [r1], #2             @load x_lo[1]
+>>>>>>> upstream/master
 	   MOV          r12, r10, LSL #1         @L_tmp = L_mac(L_tmp, *mem, fac)
 	   QADD         r10, r12, r11
 	   MOV          r14, r10, ASR #16        @y[0] = round(L_tmp)
@@ -94,9 +107,15 @@ LOOP:
 
            BLT          LOOP
            STR          r14, [r3]
+<<<<<<< HEAD
            STRH         r14, [r2]	   
 
            LDMFD   	r13!, {r4 - r12, r15} 
+=======
+           STRH         r14, [r2]
+
+           LDMFD   	r13!, {r4 - r12, r15}
+>>>>>>> upstream/master
 
 	   .END
 

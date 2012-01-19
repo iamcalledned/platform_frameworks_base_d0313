@@ -254,6 +254,7 @@ class GLES20Canvas extends HardwareCanvas {
         }
     }
 
+<<<<<<< HEAD
     @Override
     void startTileRendering(Rect dirty) {
         if (dirty != null) {
@@ -273,6 +274,11 @@ class GLES20Canvas extends HardwareCanvas {
             boolean opaque);
     private static native void nStartTileRendering(int renderer, int left, int top, int right, int bottom);
     private static native void nEndTileRendering(int renderer);
+=======
+    private static native void nPrepare(int renderer, boolean opaque);
+    private static native void nPrepareDirty(int renderer, int left, int top, int right, int bottom,
+            boolean opaque);
+>>>>>>> upstream/master
 
     @Override
     void onPostDraw() {

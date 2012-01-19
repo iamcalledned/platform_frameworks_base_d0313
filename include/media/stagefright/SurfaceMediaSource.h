@@ -127,6 +127,7 @@ public:
     // modes (S.Encoder vis-a-vis SurfaceTexture)
     virtual status_t setSynchronousMode(bool enabled);
 
+<<<<<<< HEAD
 #ifdef QCOM_HARDWARE
     // performQcomOperation performs Qcom specific operations. The actual
     // operation to be performed depends on the operation specified.
@@ -139,6 +140,8 @@ public:
     virtual status_t performQcomOperation(int operation, int arg1, int arg2, int arg3) {}
 #endif
 
+=======
+>>>>>>> upstream/master
     // connect attempts to connect a client API to the SurfaceMediaSource.  This
     // must be called before any other ISurfaceTexture methods are called except
     // for getAllocator.

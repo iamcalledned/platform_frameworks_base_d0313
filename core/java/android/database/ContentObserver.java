@@ -16,7 +16,10 @@
 
 package android.database;
 
+<<<<<<< HEAD
 import android.net.Uri;
+=======
+>>>>>>> upstream/master
 import android.os.Handler;
 
 /**
@@ -35,12 +38,16 @@ public abstract class ContentObserver {
     private final class NotificationRunnable implements Runnable {
 
         private boolean mSelf;
+<<<<<<< HEAD
 	private Uri mUri = null;
+=======
+>>>>>>> upstream/master
 
         public NotificationRunnable(boolean self) {
             mSelf = self;
         }
 
+<<<<<<< HEAD
 
         public NotificationRunnable(Uri uri, boolean self) {
             mSelf = self;
@@ -53,6 +60,10 @@ public abstract class ContentObserver {
             } else {
                 ContentObserver.this.onChange(mSelf);
             }
+=======
+        public void run() {
+            ContentObserver.this.onChange(mSelf);
+>>>>>>> upstream/master
         }
     }
 
@@ -71,6 +82,7 @@ public abstract class ContentObserver {
             return false;
         }
 
+<<<<<<< HEAD
         public void onChangeUri(Uri uri, boolean selfChange) {
             ContentObserver contentObserver = mContentObserver;
             if (contentObserver != null) {
@@ -78,6 +90,8 @@ public abstract class ContentObserver {
             }
         }
 
+=======
+>>>>>>> upstream/master
         public void onChange(boolean selfChange) {
             ContentObserver contentObserver = mContentObserver;
             if (contentObserver != null) {
@@ -147,9 +161,12 @@ public abstract class ContentObserver {
      */
     public void onChange(boolean selfChange) {}
 
+<<<<<<< HEAD
     /** @hide */
     public void onChangeUri(Uri uri, boolean selfChange) {}
 
+=======
+>>>>>>> upstream/master
     public final void dispatchChange(boolean selfChange) {
         if (mHandler == null) {
             onChange(selfChange);
@@ -157,6 +174,7 @@ public abstract class ContentObserver {
             mHandler.post(new NotificationRunnable(selfChange));
         }
     }
+<<<<<<< HEAD
 
 
     /** @hide */
@@ -168,4 +186,6 @@ public abstract class ContentObserver {
         }
     }
 
+=======
+>>>>>>> upstream/master
 }

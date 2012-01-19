@@ -182,12 +182,18 @@ class ServerThread extends Thread {
                 Slog.e(TAG, "Failure starting Account Manager", e);
             }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream/master
             Slog.i(TAG, "Content Manager");
             ContentService.main(context,
                     factoryTest == SystemServer.FACTORY_TEST_LOW_LEVEL);
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream/master
             Slog.i(TAG, "System Content Providers");
             ActivityManagerService.installSystemProviders();
 
@@ -418,6 +424,7 @@ class ServerThread extends Thread {
                 reportWtf("starting Notification Manager", e);
             }
 
+<<<<<<< HEAD
 	    //QCOM HDMI OUT
             if (SystemProperties.QCOM_HDMI_OUT ) {
                 try {
@@ -428,6 +435,8 @@ class ServerThread extends Thread {
                 }
             }
 
+=======
+>>>>>>> upstream/master
             try {
                 Slog.i(TAG, "Device Storage Monitor");
                 ServiceManager.addService(DeviceStorageMonitorService.SERVICE,

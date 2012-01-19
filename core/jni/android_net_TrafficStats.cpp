@@ -64,9 +64,12 @@ static jlong readNumber(char const* filename) {
 }
 
 static const char* mobile_iface_list[] = {
+<<<<<<< HEAD
 #ifdef MOBILE_IFACE_NAME
     MOBILE_IFACE_NAME,
 #endif
+=======
+>>>>>>> upstream/master
     "rmnet0",
     "rmnet1",
     "rmnet2",

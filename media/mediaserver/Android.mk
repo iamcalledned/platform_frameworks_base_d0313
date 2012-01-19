@@ -11,6 +11,7 @@ LOCAL_SHARED_LIBRARIES := \
 	libutils \
 	libbinder
 
+<<<<<<< HEAD
 ifeq ($(BOARD_USE_YAMAHAPLAYER),true)
     LOCAL_CFLAGS += -DYAMAHAPLAYER
     LOCAL_SHARED_LIBRARIES += libmediayamahaservice
@@ -21,6 +22,8 @@ ifeq ($(BOARD_USE_SECTVOUT),true)
 	LOCAL_SHARED_LIBRARIES += libTVOut
 endif
 
+=======
+>>>>>>> upstream/master
 base := $(LOCAL_PATH)/../..
 
 LOCAL_C_INCLUDES := \

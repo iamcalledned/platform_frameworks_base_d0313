@@ -81,7 +81,11 @@ public class DataCallState {
            .append(" retry=").append(suggestedRetryTime)
            .append(" cid=").append(cid)
            .append(" active=").append(active)
+<<<<<<< HEAD
            .append(" type='").append(type)
+=======
+           .append(" type=").append(type)
+>>>>>>> upstream/master
            .append("' ifname='").append(ifname);
         sb.append("' addresses=[");
         for (String addr : addresses) {

@@ -931,9 +931,12 @@ void InputDevice::process(const RawEvent* rawEvents, size_t count) {
     // have side-effects that must be interleaved.  For example, joystick movement events and
     // gamepad button presses are handled by different mappers but they should be dispatched
     // in the order received.
+<<<<<<< HEAD
 #ifdef LEGACY_TOUCHSCREEN
     static int32_t touched, z_data;
 #endif
+=======
+>>>>>>> upstream/master
     size_t numMappers = mMappers.size();
     for (const RawEvent* rawEvent = rawEvents; count--; rawEvent++) {
 #if DEBUG_RAW_EVENTS
@@ -959,6 +962,7 @@ void InputDevice::process(const RawEvent* rawEvents, size_t count) {
             mDropUntilNextSync = true;
             reset(rawEvent->when);
         } else {
+<<<<<<< HEAD
 
             if (!numMappers) continue;
             InputMapper* mapper = NULL;
@@ -1015,6 +1019,11 @@ void InputDevice::process(const RawEvent* rawEvents, size_t count) {
                      mapper = mMappers[i];
                      mapper->process(rawEvent);
                 }
+=======
+            for (size_t i = 0; i < numMappers; i++) {
+                InputMapper* mapper = mMappers[i];
+                mapper->process(rawEvent);
+>>>>>>> upstream/master
             }
         }
     }
@@ -2226,6 +2235,7 @@ void CursorInputMapper::process(const RawEvent* rawEvent) {
     if (rawEvent->type == EV_SYN && rawEvent->scanCode == SYN_REPORT) {
         sync(rawEvent->when);
     }
+<<<<<<< HEAD
 #ifdef LEGACY_TRACKPAD
     // sync now since BTN_MOUSE is not necessarily followed by SYN_REPORT and
     // we need to ensure that we report the up/down promptly.
@@ -2233,6 +2243,8 @@ void CursorInputMapper::process(const RawEvent* rawEvent) {
         sync(rawEvent->when);
     }
 #endif
+=======
+>>>>>>> upstream/master
 }
 
 void CursorInputMapper::sync(nsecs_t when) {

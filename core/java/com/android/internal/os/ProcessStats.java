@@ -154,7 +154,11 @@ public class ProcessStats {
 
     private boolean mFirst = true;
 
+<<<<<<< HEAD
     private byte[] mBuffer = new byte[512];
+=======
+    private byte[] mBuffer = new byte[256];
+>>>>>>> upstream/master
 
     /**
      * The time in microseconds that the CPU has been running at each speed.

@@ -19,7 +19,10 @@
 
 /* Directory records that are used in execution of commands. */
 dir_rec_t android_data_dir;
+<<<<<<< HEAD
 dir_rec_t android_datadata_dir;
+=======
+>>>>>>> upstream/master
 dir_rec_t android_asec_dir;
 dir_rec_t android_app_dir;
 dir_rec_t android_app_private_dir;
@@ -163,11 +166,15 @@ int delete_cache(const char *pkgname)
 static int64_t disk_free()
 {
     struct statfs sfs;
+<<<<<<< HEAD
     /* Scanning /data/data because on some devices, it's on a different partition
      * and scanning /data will yield the incorrect result. (This function is only
      * used for freeing space on /data/data so it is okay to be more specific.)
      */
     if (statfs(android_datadata_dir.path, &sfs) == 0) {
+=======
+    if (statfs(android_data_dir.path, &sfs) == 0) {
+>>>>>>> upstream/master
         return sfs.f_bavail * sfs.f_bsize;
     } else {
         LOGE("Couldn't statfs %s: %s\n", android_data_dir.path, strerror(errno));

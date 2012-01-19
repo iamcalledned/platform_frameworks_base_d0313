@@ -229,6 +229,7 @@ struct ANativeWindowBuffer;
 #define EGL_NATIVE_BUFFER_ANDROID               0x3140  /* eglCreateImageKHR target */
 #endif
 
+<<<<<<< HEAD
 #ifdef QCOM_HARDWARE
 #ifndef EGL_EGLEXT_PROTOTYPES
 #define EGL_EGLEXT_PROTOTYPES 1
@@ -243,6 +244,8 @@ typedef EGLClientBuffer (EGLAPIENTRYP PFNEGLGETRENDERBUFFERANDROIDPROC) (EGLDisp
 #endif
 #endif // QCOM_HARDWARE
 
+=======
+>>>>>>> upstream/master
 #ifndef EGL_ANDROID_recordable
 #define EGL_ANDROID_recordable 1
 #define EGL_RECORDABLE_ANDROID                  0x3142  /* EGLConfig attribute */

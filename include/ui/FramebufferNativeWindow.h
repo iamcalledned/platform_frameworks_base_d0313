@@ -30,11 +30,15 @@
 
 #include <ui/egl/android_natives.h>
 
+<<<<<<< HEAD
 #ifdef QCOM_HARDWARE
 #define NUM_FRAMEBUFFERS_MAX  3
 #else
 #define NUM_FRAME_BUFFERS  2
 #endif
+=======
+#define NUM_FRAME_BUFFERS  2
+>>>>>>> upstream/master
 
 extern "C" EGLNativeWindowType android_createDisplaySurface(void);
 
@@ -58,6 +62,7 @@ public:
 
     framebuffer_device_t const * getDevice() const { return fbDev; } 
 
+<<<<<<< HEAD
 #ifdef QCOM_HDMI_OUT
     void orientationChanged(int orientation) {
         if (fbDev->orientationChanged)
@@ -73,6 +78,8 @@ public:
     }
 #endif
 
+=======
+>>>>>>> upstream/master
     bool isUpdateOnDemand() const { return mUpdateOnDemand; }
     status_t setUpdateRectangle(const Rect& updateRect);
     status_t compositionComplete();
@@ -95,11 +102,15 @@ private:
     framebuffer_device_t* fbDev;
     alloc_device_t* grDev;
 
+<<<<<<< HEAD
 #ifdef QCOM_HARDWARE
     sp<NativeBuffer> buffers[NUM_FRAMEBUFFERS_MAX];
 #else
     sp<NativeBuffer> buffers[NUM_FRAME_BUFFERS];
 #endif
+=======
+    sp<NativeBuffer> buffers[NUM_FRAME_BUFFERS];
+>>>>>>> upstream/master
     sp<NativeBuffer> front;
     
     mutable Mutex mutex;

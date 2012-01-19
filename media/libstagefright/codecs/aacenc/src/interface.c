@@ -49,43 +49,73 @@ void BuildInterface(Word32                  *groupedMdctSpectrum,
                     PSY_OUT_CHANNEL         *psyOutCh)
 {
   Word32 j;
+<<<<<<< HEAD
   Word32 grp; 
+=======
+  Word32 grp;
+>>>>>>> upstream/master
   Word32 mask;
   Word16 *tmpV;
 
   /*
   copy values to psyOut
   */
+<<<<<<< HEAD
   psyOutCh->maxSfbPerGroup    = maxSfbPerGroup;                             
   psyOutCh->sfbCnt            = groupedSfbCnt;   
+=======
+  psyOutCh->maxSfbPerGroup    = maxSfbPerGroup;
+  psyOutCh->sfbCnt            = groupedSfbCnt;
+>>>>>>> upstream/master
   if(noOfGroups)
 	psyOutCh->sfbPerGroup     = groupedSfbCnt/ noOfGroups;
   else
 	psyOutCh->sfbPerGroup     = 0x7fff;
+<<<<<<< HEAD
   psyOutCh->windowSequence    = windowSequence;                             
   psyOutCh->windowShape       = windowShape;                                
   psyOutCh->mdctScale         = mdctScale;                                  
+=======
+  psyOutCh->windowSequence    = windowSequence;
+  psyOutCh->windowShape       = windowShape;
+  psyOutCh->mdctScale         = mdctScale;
+>>>>>>> upstream/master
   psyOutCh->mdctSpectrum      = groupedMdctSpectrum;
   psyOutCh->sfbEnergy         = groupedSfbEnergy->sfbLong;
   psyOutCh->sfbThreshold      = groupedSfbThreshold->sfbLong;
   psyOutCh->sfbSpreadedEnergy = groupedSfbSpreadedEnergy->sfbLong;
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> upstream/master
   tmpV = psyOutCh->sfbOffsets;
   for(j=0; j<groupedSfbCnt + 1; j++) {
       *tmpV++ = groupedSfbOffset[j];
   }
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> upstream/master
   tmpV = psyOutCh->sfbMinSnr;
   for(j=0;j<groupedSfbCnt; j++) {
 	  *tmpV++ =   groupedSfbMinSnr[j];
   }
+<<<<<<< HEAD
   
   /* generate grouping mask */
   mask = 0;                                                                      
+=======
+
+  /* generate grouping mask */
+  mask = 0;
+>>>>>>> upstream/master
   for (grp = 0; grp < noOfGroups; grp++) {
     mask = mask << 1;
     for (j=1; j<groupLen[grp]; j++) {
       mask = mask << 1;
+<<<<<<< HEAD
       mask |= 1;                                                                 
     }
   }
@@ -94,11 +124,25 @@ void BuildInterface(Word32                  *groupedMdctSpectrum,
   if (windowSequence != SHORT_WINDOW) {
     psyOutCh->sfbEnSumLR =  sfbEnergySumLR.sfbLong;                              
     psyOutCh->sfbEnSumMS =  sfbEnergySumMS.sfbLong;                              
+=======
+      mask |= 1;
+    }
+  }
+  psyOutCh->groupingMask = mask;
+
+  if (windowSequence != SHORT_WINDOW) {
+    psyOutCh->sfbEnSumLR =  sfbEnergySumLR.sfbLong;
+    psyOutCh->sfbEnSumMS =  sfbEnergySumMS.sfbLong;
+>>>>>>> upstream/master
   }
   else {
     Word32 i;
     Word32 accuSumMS=0;
+<<<<<<< HEAD
     Word32 accuSumLR=0;        
+=======
+    Word32 accuSumLR=0;
+>>>>>>> upstream/master
 	Word32 *pSumMS = sfbEnergySumMS.sfbShort;
 	Word32 *pSumLR = sfbEnergySumLR.sfbShort;
 
@@ -106,7 +150,12 @@ void BuildInterface(Word32                  *groupedMdctSpectrum,
       accuSumLR = L_add(accuSumLR, *pSumLR); pSumLR++;
       accuSumMS = L_add(accuSumMS, *pSumMS); pSumMS++;
     }
+<<<<<<< HEAD
     psyOutCh->sfbEnSumMS = accuSumMS;                                            
     psyOutCh->sfbEnSumLR = accuSumLR;                                            
+=======
+    psyOutCh->sfbEnSumMS = accuSumMS;
+    psyOutCh->sfbEnSumLR = accuSumLR;
+>>>>>>> upstream/master
   }
 }

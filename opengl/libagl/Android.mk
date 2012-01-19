@@ -44,12 +44,15 @@ endif
 ifeq ($(TARGET_ARCH)-$(ARCH_ARM_HAVE_TLS_REGISTER),arm-true)
     LOCAL_CFLAGS += -DHAVE_ARM_TLS_REGISTER
 endif
+<<<<<<< HEAD
 ifeq ($(TARGET_HAVE_TEGRA_ERRATA_657451),true)
     LOCAL_CFLAGS += -DHAVE_TEGRA_ERRATA_657451
 endif
 ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
     LOCAL_CFLAGS += -DQCOM_HARDWARE
 endif
+=======
+>>>>>>> upstream/master
 LOCAL_C_INCLUDES += bionic/libc/private
 
 LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)/egl

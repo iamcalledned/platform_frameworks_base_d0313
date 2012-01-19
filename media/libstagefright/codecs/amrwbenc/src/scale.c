@@ -36,8 +36,13 @@ void Scale_sig(
 	{
 		for (i = lg - 1 ; i >= 0; i--)
 		{
+<<<<<<< HEAD
 			L_tmp = L_shl2(x[i], 16 + exp);  
 			x[i] = extract_h(L_add(L_tmp, 0x8000));            
+=======
+			L_tmp = L_shl2(x[i], 16 + exp);
+			x[i] = extract_h(L_add(L_tmp, 0x8000));
+>>>>>>> upstream/master
 		}
 	}
 	else
@@ -46,8 +51,13 @@ void Scale_sig(
 		for (i = lg - 1; i >= 0; i--)
 		{
 			L_tmp = x[i] << 16;
+<<<<<<< HEAD
 			L_tmp >>= exp; 
 			x[i] = (L_tmp + 0x8000)>>16;            
+=======
+			L_tmp >>= exp;
+			x[i] = (L_tmp + 0x8000)>>16;
+>>>>>>> upstream/master
 		}
 	}
 	return;

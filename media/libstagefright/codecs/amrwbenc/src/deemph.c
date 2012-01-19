@@ -39,16 +39,27 @@ void Deemph(
 
 	L_tmp = L_deposit_h(x[0]);
 	L_tmp = L_mac(L_tmp, *mem, mu);
+<<<<<<< HEAD
 	x[0] = vo_round(L_tmp);                   
+=======
+	x[0] = vo_round(L_tmp);
+>>>>>>> upstream/master
 
 	for (i = 1; i < L; i++)
 	{
 		L_tmp = L_deposit_h(x[i]);
 		L_tmp = L_mac(L_tmp, x[i - 1], mu);
+<<<<<<< HEAD
 		x[i] = voround(L_tmp);               
 	}
 
 	*mem = x[L - 1];                       
+=======
+		x[i] = voround(L_tmp);
+	}
+
+	*mem = x[L - 1];
+>>>>>>> upstream/master
 
 	return;
 }
@@ -65,14 +76,24 @@ void Deemph2(
 	Word32 L_tmp;
 	L_tmp = x[0] << 15;
 	L_tmp += ((*mem) * mu)<<1;
+<<<<<<< HEAD
 	x[0] = (L_tmp + 0x8000)>>16;                   
+=======
+	x[0] = (L_tmp + 0x8000)>>16;
+>>>>>>> upstream/master
 	for (i = 1; i < L; i++)
 	{
 		L_tmp = x[i] << 15;
 		L_tmp += (x[i - 1] * mu)<<1;
+<<<<<<< HEAD
 		x[i] = (L_tmp + 0x8000)>>16;               
 	}
 	*mem = x[L - 1];                       
+=======
+		x[i] = (L_tmp + 0x8000)>>16;
+	}
+	*mem = x[L - 1];
+>>>>>>> upstream/master
 	return;
 }
 
@@ -95,8 +116,13 @@ void Deemph_32(
 	L_tmp += (x_lo[0] * 8)<<1;
 	L_tmp = (L_tmp << 3);
 	L_tmp += ((*mem) * fac)<<1;
+<<<<<<< HEAD
 	L_tmp = (L_tmp << 1);               
 	y[0] = (L_tmp + 0x8000)>>16;                  
+=======
+	L_tmp = (L_tmp << 1);
+	y[0] = (L_tmp + 0x8000)>>16;
+>>>>>>> upstream/master
 
 	for (i = 1; i < L; i++)
 	{
@@ -104,11 +130,19 @@ void Deemph_32(
 		L_tmp += (x_lo[i] * 8)<<1;
 		L_tmp = (L_tmp << 3);
 		L_tmp += (y[i - 1] * fac)<<1;
+<<<<<<< HEAD
 		L_tmp = (L_tmp << 1);           
 		y[i] = (L_tmp + 0x8000)>>16;               
 	}
 
 	*mem = y[L - 1];                       
+=======
+		L_tmp = (L_tmp << 1);
+		y[i] = (L_tmp + 0x8000)>>16;
+	}
+
+	*mem = y[L - 1];
+>>>>>>> upstream/master
 
 	return;
 }

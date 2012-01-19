@@ -135,6 +135,7 @@ public:
     status_t linkToComposerDeath(const sp<IBinder::DeathRecipient>& recipient,
             void* cookie = NULL, uint32_t flags = 0);
 
+<<<<<<< HEAD
 #ifdef QCOM_HDMI_OUT
     //HDMI SPecific functions
     static void enableHDMIOutput(int enable);
@@ -142,6 +143,8 @@ public:
     static void setActionSafeHeightRatio(float asHeightRatio);
 #endif
 
+=======
+>>>>>>> upstream/master
     status_t    hide(SurfaceID id);
     status_t    show(SurfaceID id, int32_t layer = -1);
     status_t    freeze(SurfaceID id);

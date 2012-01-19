@@ -24,7 +24,11 @@
 #define __TRANSFORM_H__
 
 #include "typedef.h"
+<<<<<<< HEAD
                   
+=======
+
+>>>>>>> upstream/master
 void Transform_Real(Word16 *mdctDelayBuffer,
                     Word16 *timeSignal,
                     Word16 chIncrement,     /*! channel increment */

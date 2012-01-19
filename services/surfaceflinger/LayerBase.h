@@ -205,12 +205,16 @@ public:
     /** called with the state lock when the surface is removed from the
      *  current list */
     virtual void onRemoved() { };
+<<<<<<< HEAD
 
 #ifdef QCOM_HARDWARE
     /** Called from surfaceFlinger to update the layer */
     virtual void setIsUpdating(bool isUpdating) { };
 #endif
 
+=======
+    
+>>>>>>> upstream/master
     /** always call base class first */
     virtual void dump(String8& result, char* scratch, size_t size) const;
     virtual void shortDump(String8& result, char* scratch, size_t size) const;

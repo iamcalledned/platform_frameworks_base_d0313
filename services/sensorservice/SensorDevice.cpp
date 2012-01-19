@@ -31,11 +31,14 @@
 #include "SensorDevice.h"
 #include "SensorService.h"
 
+<<<<<<< HEAD
 #include "sensors_deprecated.h"
 #ifdef USE_LGE_ALS_DUMMY
 #include <fcntl.h>
 #endif
 
+=======
+>>>>>>> upstream/master
 namespace android {
 // ---------------------------------------------------------------------------
 class BatteryService : public Singleton<BatteryService> {
@@ -103,6 +106,7 @@ ANDROID_SINGLETON_STATIC_INSTANCE(BatteryService)
 
 ANDROID_SINGLETON_STATIC_INSTANCE(SensorDevice)
 
+<<<<<<< HEAD
 #ifdef USE_LGE_ALS_DUMMY
 static ssize_t addDummyLGESensor(sensor_t const **list, ssize_t count) {
     struct sensor_t dummy_light =     {
@@ -128,6 +132,10 @@ SensorDevice::SensorDevice()
     :  mSensorDevice(0),
        mOldSensorsEnabled(0),
        mOldSensorsCompatMode(false),
+=======
+SensorDevice::SensorDevice()
+    :  mSensorDevice(0),
+>>>>>>> upstream/master
        mSensorModule(0)
 {
     status_t err = hw_get_module(SENSORS_HARDWARE_MODULE_ID,
@@ -137,6 +145,7 @@ SensorDevice::SensorDevice()
             SENSORS_HARDWARE_MODULE_ID, strerror(-err));
 
     if (mSensorModule) {
+<<<<<<< HEAD
 #ifdef ENABLE_SENSORS_COMPAT
 #ifdef SENSORS_NO_OPEN_CHECK
         sensors_control_open(&mSensorModule->common, &mSensorControlDevice) ;
@@ -178,15 +187,29 @@ SensorDevice::SensorDevice()
                             mSensorControlDevice->open_data_source(mSensorControlDevice));
             }
 
+=======
+        err = sensors_open(&mSensorModule->common, &mSensorDevice);
+
+        LOGE_IF(err, "couldn't open device for module %s (%s)",
+                SENSORS_HARDWARE_MODULE_ID, strerror(-err));
+
+        if (mSensorDevice) {
+            sensor_t const* list;
+            ssize_t count = mSensorModule->get_sensors_list(mSensorModule, &list);
+>>>>>>> upstream/master
             mActivationCount.setCapacity(count);
             Info model;
             for (size_t i=0 ; i<size_t(count) ; i++) {
                 mActivationCount.add(list[i].handle, model);
+<<<<<<< HEAD
                 if (mOldSensorsCompatMode) {
                     mSensorControlDevice->activate(mSensorControlDevice, list[i].handle, 0);
                 } else {
                     mSensorDevice->activate(mSensorDevice, list[i].handle, 0);
                 }
+=======
+                mSensorDevice->activate(mSensorDevice, list[i].handle, 0);
+>>>>>>> upstream/master
             }
         }
     }
@@ -222,14 +245,18 @@ void SensorDevice::dump(String8& result, char* buffer, size_t SIZE)
 ssize_t SensorDevice::getSensorList(sensor_t const** list) {
     if (!mSensorModule) return NO_INIT;
     ssize_t count = mSensorModule->get_sensors_list(mSensorModule, list);
+<<<<<<< HEAD
 
 #ifdef USE_LGE_ALS_DUMMY
     return addDummyLGESensor(list, count);
 #endif
+=======
+>>>>>>> upstream/master
     return count;
 }
 
 status_t SensorDevice::initCheck() const {
+<<<<<<< HEAD
     return (mSensorDevice || mOldSensorsCompatMode) && mSensorModule ? NO_ERROR : NO_INIT;
 }
 
@@ -307,10 +334,23 @@ ssize_t SensorDevice::poll(sensors_event_t* buffer, size_t count) {
         } while (c == -EINTR);
         return c;
     }
+=======
+    return mSensorDevice && mSensorModule ? NO_ERROR : NO_INIT;
+}
+
+ssize_t SensorDevice::poll(sensors_event_t* buffer, size_t count) {
+    if (!mSensorDevice) return NO_INIT;
+    ssize_t c;
+    do {
+        c = mSensorDevice->poll(mSensorDevice, buffer, count);
+    } while (c == -EINTR);
+    return c;
+>>>>>>> upstream/master
 }
 
 status_t SensorDevice::activate(void* ident, int handle, int enabled)
 {
+<<<<<<< HEAD
     if (!mSensorDevice && !mOldSensorsCompatMode) return NO_INIT;
     status_t err(NO_ERROR);
     bool actuateHardware = false;
@@ -350,6 +390,12 @@ status_t SensorDevice::activate(void* ident, int handle, int enabled)
 
     }
 #endif
+=======
+    if (!mSensorDevice) return NO_INIT;
+    status_t err(NO_ERROR);
+    bool actuateHardware = false;
+
+>>>>>>> upstream/master
     Info& info( mActivationCount.editValueFor(handle) );
 
 
@@ -388,6 +434,7 @@ status_t SensorDevice::activate(void* ident, int handle, int enabled)
     if (actuateHardware) {
         LOGD_IF(DEBUG_CONNECTIONS, "\t>>> actuating h/w");
 
+<<<<<<< HEAD
         if (mOldSensorsCompatMode) {
             if (enabled)
                 mOldSensorsEnabled++;
@@ -402,6 +449,9 @@ status_t SensorDevice::activate(void* ident, int handle, int enabled)
         } else {
             err = mSensorDevice->activate(mSensorDevice, handle, enabled);
         }
+=======
+        err = mSensorDevice->activate(mSensorDevice, handle, enabled);
+>>>>>>> upstream/master
         if (enabled) {
             LOGE_IF(err, "Error activating sensor %d (%s)", handle, strerror(-err));
             if (err == 0) {
@@ -417,11 +467,15 @@ status_t SensorDevice::activate(void* ident, int handle, int enabled)
     { // scope for the lock
         Mutex::Autolock _l(mLock);
         nsecs_t ns = info.selectDelay();
+<<<<<<< HEAD
         if (mOldSensorsCompatMode) {
             mSensorControlDevice->set_delay(mSensorControlDevice, (ns/(1000*1000)));
         } else {
             mSensorDevice->setDelay(mSensorDevice, handle, ns);
         }
+=======
+        mSensorDevice->setDelay(mSensorDevice, handle, ns);
+>>>>>>> upstream/master
     }
 
     return err;
@@ -429,17 +483,25 @@ status_t SensorDevice::activate(void* ident, int handle, int enabled)
 
 status_t SensorDevice::setDelay(void* ident, int handle, int64_t ns)
 {
+<<<<<<< HEAD
     if (!mSensorDevice && !mOldSensorsCompatMode) return NO_INIT;
+=======
+    if (!mSensorDevice) return NO_INIT;
+>>>>>>> upstream/master
     Mutex::Autolock _l(mLock);
     Info& info( mActivationCount.editValueFor(handle) );
     status_t err = info.setDelayForIdent(ident, ns);
     if (err < 0) return err;
     ns = info.selectDelay();
+<<<<<<< HEAD
     if (mOldSensorsCompatMode) {
         return mSensorControlDevice->set_delay(mSensorControlDevice, (ns/(1000*1000)));
     } else {
         return mSensorDevice->setDelay(mSensorDevice, handle, ns);
     }
+=======
+    return mSensorDevice->setDelay(mSensorDevice, handle, ns);
+>>>>>>> upstream/master
 }
 
 // ---------------------------------------------------------------------------

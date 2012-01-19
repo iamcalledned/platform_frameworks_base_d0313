@@ -55,11 +55,19 @@ typedef struct {
   Word16  windowShape;
   Word16  groupingMask;
   Word16  sfbOffsets[MAX_GROUPED_SFB+1];
+<<<<<<< HEAD
   Word16  mdctScale; 
   Word32 *sfbEnergy; 
   Word32 *sfbSpreadedEnergy;
   Word32 *sfbThreshold;       
   Word32 *mdctSpectrum;        
+=======
+  Word16  mdctScale;
+  Word32 *sfbEnergy;
+  Word32 *sfbSpreadedEnergy;
+  Word32 *sfbThreshold;
+  Word32 *mdctSpectrum;
+>>>>>>> upstream/master
   Word32  sfbEnSumLR;
   Word32  sfbEnSumMS;
   Word32 sfbDist[MAX_GROUPED_SFB];

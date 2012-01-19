@@ -49,7 +49,11 @@ void Convolve (
 			s += vo_mult32((*tmpX++), (*tmpH--));
 			i -= 4;
 		}
+<<<<<<< HEAD
 		y[n] = ((s<<1) + 0x8000)>>16;   
+=======
+		y[n] = ((s<<1) + 0x8000)>>16;
+>>>>>>> upstream/master
 		n++;
 
 		tmpH = h+n;
@@ -66,7 +70,11 @@ void Convolve (
 			s += vo_mult32((*tmpX++), (*tmpH--));
 			i -= 4;
 		}
+<<<<<<< HEAD
 		y[n] = ((s<<1) + 0x8000)>>16;    
+=======
+		y[n] = ((s<<1) + 0x8000)>>16;
+>>>>>>> upstream/master
 		n++;
 
 		tmpH = h+n;
@@ -84,7 +92,11 @@ void Convolve (
 			s += vo_mult32((*tmpX++), (*tmpH--));
 			i -= 4;
 		}
+<<<<<<< HEAD
 		y[n] = ((s<<1) + 0x8000)>>16;   
+=======
+		y[n] = ((s<<1) + 0x8000)>>16;
+>>>>>>> upstream/master
 		n++;
 
 		s = 0;
@@ -99,8 +111,13 @@ void Convolve (
 			s += vo_mult32((*tmpX++), (*tmpH--));
 			i -= 4;
 		}
+<<<<<<< HEAD
 		y[n] = ((s<<1) + 0x8000)>>16;   
 		n++;        
+=======
+		y[n] = ((s<<1) + 0x8000)>>16;
+		n++;
+>>>>>>> upstream/master
 	}
 	return;
 }

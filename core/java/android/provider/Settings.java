@@ -55,6 +55,7 @@ public final class Settings {
 
     // Intent actions for Settings
 
+<<<<<<< HEAD
 
    /**
     * Intent actions for Settings
@@ -63,6 +64,8 @@ public final class Settings {
     */
     public static final String SETTINGS_CHANGED = "android.settings.SETTINGS_CHANGED_ACTION";
 
+=======
+>>>>>>> upstream/master
     /**
      * Activity Action: Show system settings.
      * <p>
@@ -1399,6 +1402,7 @@ public final class Settings {
         public static final int SCREEN_BRIGHTNESS_MODE_AUTOMATIC = 1;
 
         /**
+<<<<<<< HEAD
          * Indicates that custom light sensor settings has changed.
          * The value is random and changes reloads light settings.
          *
@@ -1529,6 +1533,8 @@ public final class Settings {
         public static final String LIGHT_FILTER_INTERVAL = "light_filter_interval";
 
         /**
+=======
+>>>>>>> upstream/master
          * Control whether the process CPU usage meter should be shown.
          */
         public static final String SHOW_PROCESSES = "show_processes";
@@ -2012,11 +2018,14 @@ public final class Settings {
         public static final String SIP_ASK_ME_EACH_TIME = "SIP_ASK_ME_EACH_TIME";
 
         /**
+<<<<<<< HEAD
          * Torch state (flashlight)
          * @hide
          */
         public static final String TORCH_STATE = "torch_state";
         /**
+=======
+>>>>>>> upstream/master
          * Pointer speed setting.
          * This is an integer value in a range between -7 and +7, so there are 15 possible values.
          *   -7 = slowest
@@ -2027,6 +2036,7 @@ public final class Settings {
         public static final String POINTER_SPEED = "pointer_speed";
 
         /**
+<<<<<<< HEAD
          * Use the Notification Power Widget? (Who wouldn't!)
          *
          * @hide
@@ -2107,6 +2117,8 @@ public final class Settings {
         public static final String EXPANDED_FLASH_MODE = "expanded_flash_mode";
 
         /**
+=======
+>>>>>>> upstream/master
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
@@ -4070,12 +4082,15 @@ public final class Settings {
         public static final String ANR_SHOW_BACKGROUND = "anr_show_background";
 
         /**
+<<<<<<< HEAD
          * Whether to allow killing of the foreground app by long-pressing the Back button
          * @hide
          */
         public static final String KILL_APP_LONGPRESS_BACK = "kill_app_longpress_back";
 
         /**
+=======
+>>>>>>> upstream/master
          * The {@link ComponentName} string of the service to be used as the voice recognition
          * service.
          *

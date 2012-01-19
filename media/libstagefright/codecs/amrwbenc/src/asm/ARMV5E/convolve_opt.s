@@ -27,6 +27,7 @@
 @  r3 --- L
 
 	.section  .text
+<<<<<<< HEAD
         .global   Convolve_asm 
 
 Convolve_asm:
@@ -36,15 +37,32 @@ Convolve_asm:
 	MOV            r11, #0x8000
         
 LOOP: 
+=======
+        .global   Convolve_asm
+
+Convolve_asm:
+
+        STMFD          r13!, {r4 - r12, r14}
+        MOV            r3,  #0                           @ n
+	MOV            r11, #0x8000
+
+LOOP:
+>>>>>>> upstream/master
         ADD            r4, r1, r3, LSL #1                @ tmpH address
         ADD            r5, r3, #1                        @ i = n + 1
         MOV            r6, r0                            @ tmpX = x
         LDRSH          r9,  [r6], #2                     @ *tmpX++
         LDRSH          r10, [r4], #-2                    @ *tmpH--
         SUB            r5, r5, #1
+<<<<<<< HEAD
         MUL            r8,  r9, r10 
 
 LOOP1:                    
+=======
+        MUL            r8,  r9, r10
+
+LOOP1:
+>>>>>>> upstream/master
         CMP            r5, #0
         BLE            L1
 	LDRSH          r9,  [r6], #2                     @ *tmpX++
@@ -58,12 +76,21 @@ LOOP1:
 	LDRSH          r12, [r6], #2                     @ *tmpX++
 	LDRSH          r14, [r4], #-2                    @ *tmpH--
 	MLA            r8, r9, r10, r8
+<<<<<<< HEAD
         SUBS           r5, r5, #4 
 	MLA            r8, r12, r14, r8
     
         B              LOOP1  
 
 L1:                  
+=======
+        SUBS           r5, r5, #4
+	MLA            r8, r12, r14, r8
+
+        B              LOOP1
+
+L1:
+>>>>>>> upstream/master
 
         ADD            r5, r11, r8, LSL #1
         MOV            r5, r5, LSR #16                   @extract_h(s)
@@ -75,14 +102,22 @@ L1:
         ADD            r5, r3, #1
         MOV            r6, r0
         LDRSH          r9,  [r6], #2                     @ *tmpX++
+<<<<<<< HEAD
         LDRSH          r10, [r4], #-2                     
+=======
+        LDRSH          r10, [r4], #-2
+>>>>>>> upstream/master
         LDRSH          r12, [r6], #2
         LDRSH          r14, [r4], #-2
 
         MUL            r8, r9, r10
         SUB            r5, r5, #2
         MLA            r8, r12, r14, r8
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> upstream/master
 LOOP2:
         CMP            r5, #0
         BLE            L2
@@ -97,14 +132,22 @@ LOOP2:
 	LDRSH          r12, [r6], #2                     @ *tmpX++
 	LDRSH          r14, [r4], #-2                    @ *tmpH--
 	MLA            r8, r9, r10, r8
+<<<<<<< HEAD
         SUBS           r5, r5, #4 
+=======
+        SUBS           r5, r5, #4
+>>>>>>> upstream/master
 	MLA            r8, r12, r14, r8
         B              LOOP2
 
 L2:
         ADD            r8, r11, r8, LSL #1
         MOV            r8, r8, LSR #16                   @extract_h(s)
+<<<<<<< HEAD
         ADD            r3, r3, #1  
+=======
+        ADD            r3, r3, #1
+>>>>>>> upstream/master
         STRH           r8, [r2], #2                      @y[n]
 
         ADD            r4, r1, r3, LSL #1
@@ -117,7 +160,11 @@ L2:
         MUL            r8, r9, r10
         LDRSH          r9,  [r6], #2
         LDRSH          r10, [r4], #-2
+<<<<<<< HEAD
         MLA            r8, r12, r14, r8 
+=======
+        MLA            r8, r12, r14, r8
+>>>>>>> upstream/master
         SUB            r5, r5, #3
         MLA            r8, r9, r10, r8
 
@@ -135,9 +182,15 @@ LOOP3:
 	LDRSH          r12, [r6], #2                     @ *tmpX++
 	LDRSH          r14, [r4], #-2                    @ *tmpH--
 	MLA            r8, r9, r10, r8
+<<<<<<< HEAD
         SUBS           r5, r5, #4 
 	MLA            r8, r12, r14, r8 
         B              LOOP3   
+=======
+        SUBS           r5, r5, #4
+	MLA            r8, r12, r14, r8
+        B              LOOP3
+>>>>>>> upstream/master
 
 L3:
         ADD            r8, r11, r8, LSL #1
@@ -150,7 +203,11 @@ L3:
         MOV            r6, r0
         MOV            r8, #0
 
+<<<<<<< HEAD
 LOOP4:                    
+=======
+LOOP4:
+>>>>>>> upstream/master
         CMP            r5, #0
         BLE            L4
 	LDRSH          r9,  [r6], #2                     @ *tmpX++
@@ -164,14 +221,22 @@ LOOP4:
 	LDRSH          r12, [r6], #2                     @ *tmpX++
 	LDRSH          r14, [r4], #-2                    @ *tmpH--
 	MLA            r8, r9, r10, r8
+<<<<<<< HEAD
         SUBS           r5, r5, #4 
 	MLA            r8, r12, r14, r8        
         B              LOOP4    
 L4:                  
+=======
+        SUBS           r5, r5, #4
+	MLA            r8, r12, r14, r8
+        B              LOOP4
+L4:
+>>>>>>> upstream/master
         ADD            r5, r11, r8, LSL #1
         MOV            r5, r5, LSR #16                   @extract_h(s)
         ADD            r3, r3, #1
         STRH           r5, [r2], #2                      @y[n]
+<<<<<<< HEAD
         
         CMP            r3, #64
         BLT            LOOP
@@ -180,6 +245,16 @@ Convolve_asm_end:
  
         LDMFD      r13!, {r4 - r12, r15}
     
+=======
+
+        CMP            r3, #64
+        BLT            LOOP
+
+Convolve_asm_end:
+
+        LDMFD      r13!, {r4 - r12, r15}
+
+>>>>>>> upstream/master
         @ENDFUNC
         .END
 

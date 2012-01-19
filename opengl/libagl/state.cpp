@@ -191,11 +191,17 @@ static void enable_disable(ogles_context_t* c, GLenum cap, int enabled)
         // these need to fall through into the rasterizer
         c->rasterizer.procs.enableDisable(c, cap, enabled);
         break;
+<<<<<<< HEAD
 #ifndef MISSING_EGL_EXTERNAL_IMAGE
     case GL_TEXTURE_EXTERNAL_OES:
         c->rasterizer.procs.enableDisable(c, GL_TEXTURE_2D, enabled);
         break;
 #endif
+=======
+    case GL_TEXTURE_EXTERNAL_OES:
+        c->rasterizer.procs.enableDisable(c, GL_TEXTURE_2D, enabled);
+        break;
+>>>>>>> upstream/master
 
     case GL_MULTISAMPLE:
     case GL_SAMPLE_ALPHA_TO_COVERAGE:

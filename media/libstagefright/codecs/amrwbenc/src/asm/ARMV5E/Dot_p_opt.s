@@ -31,7 +31,11 @@
 
 Dot_product12_asm:
 
+<<<<<<< HEAD
           STMFD   	    r13!, {r4 - r12, r14} 
+=======
+          STMFD   	    r13!, {r4 - r12, r14}
+>>>>>>> upstream/master
           MOV               r4, #0                                 @ L_sum = 0
           MOV               r5, #0                                 @ i = 0
 
@@ -41,13 +45,21 @@ LOOP:
           LDR           r8, [r0], #4
           SMLABB        r4, r6, r7, r4
           LDR           r9, [r1], #4
+<<<<<<< HEAD
 	  SMLATT        r4, r6, r7, r4 
+=======
+	  SMLATT        r4, r6, r7, r4
+>>>>>>> upstream/master
 
 	  LDR           r6, [r0], #4
 	  SMLABB        r4, r8, r9, r4
 
 	  LDR           r7, [r1], #4
+<<<<<<< HEAD
 	  SMLATT        r4, r8, r9, r4	  
+=======
+	  SMLATT        r4, r8, r9, r4
+>>>>>>> upstream/master
 	  LDR           r8, [r0], #4
 
 	  SMLABB        r4, r6, r7, r4
@@ -58,7 +70,11 @@ LOOP:
 	  CMP           r5, r2
 	  SMLATT        r4, r8, r9, r4
 	  BLT           LOOP
+<<<<<<< HEAD
               
+=======
+
+>>>>>>> upstream/master
           MOV           r12, r4, LSL #1
           ADD           r12, r12, #1                         @ L_sum = (L_sum << 1)  + 1
 	  MOV           r4, r12
@@ -69,6 +85,7 @@ LOOP:
           SUB           r10, r10, #1                         @ sft = norm_l(L_sum)
           MOV           r0, r12, LSL r10                     @ L_sum = L_sum << sft
           RSB           r11, r10, #30                        @ *exp = 30 - sft
+<<<<<<< HEAD
           STRH          r11, [r3]                     
 
 Dot_product12_end:
@@ -77,4 +94,14 @@ Dot_product12_end:
           @ENDFUNC
           .END
  
+=======
+          STRH          r11, [r3]
+
+Dot_product12_end:
+
+          LDMFD   	    r13!, {r4 - r12, r15}
+          @ENDFUNC
+          .END
+
+>>>>>>> upstream/master
 
