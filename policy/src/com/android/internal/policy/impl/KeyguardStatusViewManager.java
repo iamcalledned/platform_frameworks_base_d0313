@@ -77,7 +77,7 @@ class KeyguardStatusViewManager implements OnClickListener {
     private View mContainer;
 
     // are we showing battery information?
-    private boolean mShowingBatteryInfo = false;
+    private boolean mShowingBatteryInfo = true;
 
     // last known plugged in state
     private boolean mPluggedIn = false;
@@ -405,7 +405,7 @@ class KeyguardStatusViewManager implements OnClickListener {
             }
         } else if (!inWidgetMode() && mOwnerInfoView == null && mOwnerInfoText != null) {
             // OwnerInfo shows in status if we don't have a dedicated widget
-            string = mOwnerInfoText;
+           string = getContext().getString(R.string.lockscreen_discharging, mBatteryLevel);
         }
         return string;
     }
