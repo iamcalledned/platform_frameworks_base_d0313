@@ -377,7 +377,7 @@ class KeyguardStatusViewManager implements OnClickListener {
                 icon.value = BATTERY_LOW_ICON;
             }
         } else {
-            string = getContext().getString(R.string.lockscreen_discharging; mBatteryLevel);
+            string = getContext().getString(R.string.lockscreen_discharging, mBatteryLevel);
         }
         return string;
     }
