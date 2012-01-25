@@ -77,7 +77,7 @@ class KeyguardStatusViewManager implements OnClickListener {
     private View mContainer;
 
     // are we showing battery information?
-    private boolean mShowingBatteryInfo = true;
+    private boolean mShowingBatteryInfo = false;
 
     // last known plugged in state
     private boolean mPluggedIn = false;
