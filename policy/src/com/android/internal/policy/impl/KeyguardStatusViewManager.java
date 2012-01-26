@@ -379,7 +379,7 @@ class KeyguardStatusViewManager implements OnClickListener {
 
             }
         } else {
-            string = getContext().getString(R.string.lockscreen_discharging, mBatteryLevel);
+            string = mCarrierText;
         }
         return string;
     }
@@ -393,7 +393,7 @@ class KeyguardStatusViewManager implements OnClickListener {
         }  else if (!mShowingBatteryInfo) {
             // battery stats when not plugged in
             string = getContext().getString(R.string.lockscreen_discharging, mBatteryLevel);
-        }
+        
         }  else if (mShowingBatteryInfo) {
             // Battery status
             if (mPluggedIn) {
@@ -413,7 +413,7 @@ class KeyguardStatusViewManager implements OnClickListener {
             }
         } else if (!inWidgetMode() && mOwnerInfoView == null && mOwnerInfoText != null) {
             // OwnerInfo shows in status if we don't have a dedicated widget
-           string = getContext().getString(R.string.lockscreen_discharging, mBatteryLevel);
+           string = mOwnerInfoText;
         }
         return string;
     }
