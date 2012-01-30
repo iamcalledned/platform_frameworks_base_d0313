@@ -379,7 +379,7 @@ class KeyguardStatusViewManager implements OnClickListener {
 
             }
         } else {
-            string = mCarrierText;
+            string = getContext().getString(R.string.lockscreen_discharging, mBatteryLevel);
         }
         return string;
     }
