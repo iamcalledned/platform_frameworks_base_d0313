@@ -35,6 +35,7 @@
 #include <ctype.h>
 
 #include <stdio.h>
+#include <libgen.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -79,7 +80,7 @@ static void sqlLogger(void *databaseName, int iErrCode, const char *zMsg) {
     // skip printing this message if it is due to certain types of errors
     if (iErrCode == 0 || iErrCode == SQLITE_CONSTRAINT) return;
     // print databasename, errorcode and msg
-    ALOGI("sqlite returned: error code = %d, msg = %s, db=%s\n", iErrCode, zMsg, databaseName);
+    LOGI("sqlite returned: error code = %d, msg = %s, db=%s\n", iErrCode, zMsg, databaseName);
 }
 
 // register the logging func on sqlite. needs to be done BEFORE any sqlite3 func is called.
@@ -89,13 +90,42 @@ static void registerLoggingFunc(const char *path) {
         return;
     }
 
-    ALOGV("Registering sqlite logging func \n");
+    LOGV("Registering sqlite logging func \n");
     int err = sqlite3_config(SQLITE_CONFIG_LOG, &sqlLogger, (void *)createStr(path, 0));
     if (err != SQLITE_OK) {
-        ALOGW("sqlite returned error = %d when trying to register logging func.\n", err);
+        LOGW("sqlite returned error = %d when trying to register logging func.\n", err);
         return;
     }
     loggingFuncSet = true;
+}
+
+static int use_wal_mode (char const *path8)
+{
+    char *temp = basename(path8);
+    int i;
+    const char *wal_dbs[] = {
+         "database_test.db","contacts2.db","calendar.db",\
+         "telephony.db","launcher.db","user_dict.db",\
+         "downloads.db", "mmssms.db", "internal.db", \
+         "EmailProvider.db","alarms.db","EmailProviderBody.db",\
+         "btopp.db","picasa.db",\
+         "webviewCache.db","browser.db", NULL};
+
+    const char *wal_dbs_nosync[] = {
+         "webview.db", "quadrant.db", \
+         "MyDatabase.db", NULL};
+
+    for (i = 0 ; wal_dbs[i]!= NULL ; i++) {
+        if(strcmp(temp, wal_dbs[i]) == 0)
+            return 1;
+    }
+
+    for (i = 0 ; wal_dbs_nosync[i]!= NULL ; i++) {
+        if(strcmp(temp, wal_dbs_nosync[i]) == 0)
+            return 2;
+    }
+
+    return 0;
 }
 
 /* public native void dbopen(String path, int flags, String locale); */
@@ -106,6 +136,8 @@ static void dbopen(JNIEnv* env, jobject object, jstring pathString, jint flags)
     sqlite3_stmt * statement = NULL;
     char const * path8 = env->GetStringUTFChars(pathString, NULL);
     int sqliteFlags;
+    // Error code handling for SQLite exec
+    char* zErrMsg = NULL;
 
     // register the logging func on sqlite. needs to be done BEFORE any sqlite3 func is called.
     registerLoggingFunc(path8);
@@ -121,9 +153,44 @@ static void dbopen(JNIEnv* env, jobject object, jstring pathString, jint flags)
 
     err = sqlite3_open_v2(path8, &handle, sqliteFlags, NULL);
     if (err != SQLITE_OK) {
-        ALOGE("sqlite3_open_v2(\"%s\", &handle, %d, NULL) failed\n", path8, sqliteFlags);
+        LOGE("sqlite3_open_v2(\"%s\", &handle, %d, NULL) failed\n", path8, sqliteFlags);
         throw_sqlite3_exception(env, handle);
         goto done;
+    }
+
+    // WAL is a new rollback method available in SQLite v3.7+. WAL speeds up writes to
+    // SQLite databases. WAL cannot be used with Read Only databases or databases opened
+    // in read only mode.
+
+    // Check if DB can use WAL mode; Open in WAL mode for non-ReadOnly DBs
+    if(!(flags & OPEN_READONLY) && (use_wal_mode(path8))) {
+        // Configure databases to run in WAL mode.
+        err = sqlite3_exec(handle,"PRAGMA journal_mode = WAL;",
+                           NULL, NULL,&zErrMsg);
+        if (SQLITE_OK != err) {
+           LOGE("sqlite3_exec - Failed to set WAL mode for [%s] \n", path8);
+           err = sqlite3_exec(handle,"PRAGMA journal_mode = DELETE;",
+                           NULL, NULL,&zErrMsg);
+           if(SQLITE_OK != err) {
+               LOGE("sqlite3_exec - Failed to set DELETE mode for [%s] \n", path8);
+               throw_sqlite3_exception(env, handle);
+               goto done;
+           }
+        }
+        else {
+            // Set autocheckpoint = 100 pages
+            err = sqlite3_wal_autocheckpoint(handle,
+                                             100);
+            if (SQLITE_OK != err) {
+               LOGE("sqlite3_exec to set WAL autocheckpoint failed\n");
+               throw_sqlite3_exception(env, handle);
+               goto done;
+            } else if (use_wal_mode(path8) == 2) {
+                /* Try to disable fsyncs. We don't care if it fails */
+                sqlite3_exec(handle,"PRAGMA synchronous = OFF;",
+                           NULL, NULL,&zErrMsg);
+            }
+        }
     }
 
     // The soft heap limit prevents the page cache allocations from growing
@@ -134,7 +201,7 @@ static void dbopen(JNIEnv* env, jobject object, jstring pathString, jint flags)
     // Set the default busy handler to retry for 1000ms and then return SQLITE_BUSY
     err = sqlite3_busy_timeout(handle, 1000 /* ms */);
     if (err != SQLITE_OK) {
-        ALOGE("sqlite3_busy_timeout(handle, 1000) failed for \"%s\"\n", path8);
+        LOGE("sqlite3_busy_timeout(handle, 1000) failed for \"%s\"\n", path8);
         throw_sqlite3_exception(env, handle);
         goto done;
     }
@@ -143,7 +210,7 @@ static void dbopen(JNIEnv* env, jobject object, jstring pathString, jint flags)
     static const char* integritySql = "pragma integrity_check(1);";
     err = sqlite3_prepare_v2(handle, integritySql, -1, &statement, NULL);
     if (err != SQLITE_OK) {
-        ALOGE("sqlite_prepare_v2(handle, \"%s\") failed for \"%s\"\n", integritySql, path8);
+        LOGE("sqlite_prepare_v2(handle, \"%s\") failed for \"%s\"\n", integritySql, path8);
         throw_sqlite3_exception(env, handle);
         goto done;
     }
@@ -151,13 +218,13 @@ static void dbopen(JNIEnv* env, jobject object, jstring pathString, jint flags)
     // first is OK or error message
     err = sqlite3_step(statement);
     if (err != SQLITE_ROW) {
-        ALOGE("integrity check failed for \"%s\"\n", integritySql, path8);
+        LOGE("integrity check failed for \"%s\"\n", integritySql, path8);
         throw_sqlite3_exception(env, handle);
         goto done;
     } else {
         const char *text = (const char*)sqlite3_column_text(statement, 0);
         if (strcmp(text, "ok") != 0) {
-            ALOGE("integrity check failed for \"%s\": %s\n", integritySql, path8, text);
+            LOGE("integrity check failed for \"%s\": %s\n", integritySql, path8, text);
             jniThrowException(env, "android/database/sqlite/SQLiteDatabaseCorruptException", text);
             goto done;
         }
@@ -170,7 +237,7 @@ static void dbopen(JNIEnv* env, jobject object, jstring pathString, jint flags)
         goto done;
     }
 
-    ALOGV("Opened '%s' - %p\n", path8, handle);
+    LOGV("Opened '%s' - %p\n", path8, handle);
     env->SetIntField(object, offset_db_handle, (int) handle);
     handle = NULL;  // The caller owns the handle now.
 
@@ -184,7 +251,7 @@ done:
 static char *getDatabaseName(JNIEnv* env, sqlite3 * handle, jstring databaseName, short connNum) {
     char const *path = env->GetStringUTFChars(databaseName, NULL);
     if (path == NULL) {
-        ALOGE("Failure in getDatabaseName(). VM ran out of memory?\n");
+        LOGE("Failure in getDatabaseName(). VM ran out of memory?\n");
         return NULL; // VM would have thrown OutOfMemoryError
     }
     char *dbNameStr = createStr(path, 4);
@@ -197,7 +264,7 @@ static char *getDatabaseName(JNIEnv* env, sqlite3 * handle, jstring databaseName
 }
 
 static void sqlTrace(void *databaseName, const char *sql) {
-    ALOGI("sql_statement|%s|%s\n", (char *)databaseName, sql);
+    LOGI("sql_statement|%s|%s\n", (char *)databaseName, sql);
 }
 
 /* public native void enableSqlTracing(); */
@@ -209,7 +276,7 @@ static void enableSqlTracing(JNIEnv* env, jobject object, jstring databaseName, 
 
 static void sqlProfile(void *databaseName, const char *sql, sqlite3_uint64 tm) {
     double d = tm/1000000.0;
-    ALOGI("elapsedTime4Sql|%s|%.3f ms|%s\n", (char *)databaseName, d, sql);
+    LOGI("elapsedTime4Sql|%s|%.3f ms|%s\n", (char *)databaseName, d, sql);
 }
 
 /* public native void enableSqlProfiling(); */
@@ -236,15 +303,15 @@ static void dbclose(JNIEnv* env, jobject object)
         if (traceFuncArg != NULL) {
             free(traceFuncArg);
         }
-        ALOGV("Closing database: handle=%p\n", handle);
+        LOGV("Closing database: handle=%p\n", handle);
         int result = sqlite3_close(handle);
         if (result == SQLITE_OK) {
-            ALOGV("Closed %p\n", handle);
+            LOGV("Closed %p\n", handle);
             env->SetIntField(object, offset_db_handle, 0);
         } else {
             // This can happen if sub-objects aren't closed first.  Make sure the caller knows.
             throw_sqlite3_exception(env, handle);
-            ALOGE("sqlite3_close(%p) failed: %d\n", handle, result);
+            LOGE("sqlite3_close(%p) failed: %d\n", handle, result);
         }
     }
 }
@@ -277,7 +344,7 @@ static void native_setLocale(JNIEnv* env, jobject object, jstring localeString, 
         static const char *createSql ="CREATE TABLE IF NOT EXISTS " ANDROID_TABLE " (locale TEXT)";
         err = sqlite3_exec(handle, createSql, NULL, NULL, NULL);
         if (err != SQLITE_OK) {
-            ALOGE("CREATE TABLE " ANDROID_TABLE " failed\n");
+            LOGE("CREATE TABLE " ANDROID_TABLE " failed\n");
             throw_sqlite3_exception(env, handle);
             goto done;
         }
@@ -287,7 +354,7 @@ static void native_setLocale(JNIEnv* env, jobject object, jstring localeString, 
     static const char *selectSql = "SELECT locale FROM " ANDROID_TABLE " LIMIT 1";
     err = sqlite3_get_table(handle, selectSql, &meta, &rowCount, &colCount, NULL);
     if (err != SQLITE_OK) {
-        ALOGE("SELECT locale FROM " ANDROID_TABLE " failed\n");
+        LOGE("SELECT locale FROM " ANDROID_TABLE " failed\n");
         throw_sqlite3_exception(env, handle);
         goto done;
     }
@@ -312,21 +379,21 @@ static void native_setLocale(JNIEnv* env, jobject object, jstring localeString, 
     // need to update android_metadata and indexes atomically, so use a transaction...
     err = sqlite3_exec(handle, "BEGIN TRANSACTION", NULL, NULL, NULL);
     if (err != SQLITE_OK) {
-        ALOGE("BEGIN TRANSACTION failed setting locale\n");
+        LOGE("BEGIN TRANSACTION failed setting locale\n");
         throw_sqlite3_exception(env, handle);
         goto done;
     }
 
     err = register_localized_collators(handle, locale8, UTF16_STORAGE);
     if (err != SQLITE_OK) {
-        ALOGE("register_localized_collators() failed setting locale\n");
+        LOGE("register_localized_collators() failed setting locale\n");
         throw_sqlite3_exception(env, handle);
         goto rollback;
     }
 
     err = sqlite3_exec(handle, "DELETE FROM " ANDROID_TABLE, NULL, NULL, NULL);
     if (err != SQLITE_OK) {
-        ALOGE("DELETE failed setting locale\n");
+        LOGE("DELETE failed setting locale\n");
         throw_sqlite3_exception(env, handle);
         goto rollback;
     }
@@ -334,28 +401,28 @@ static void native_setLocale(JNIEnv* env, jobject object, jstring localeString, 
     static const char *sql = "INSERT INTO " ANDROID_TABLE " (locale) VALUES(?);";
     err = sqlite3_prepare_v2(handle, sql, -1, &stmt, NULL);
     if (err != SQLITE_OK) {
-        ALOGE("sqlite3_prepare_v2(\"%s\") failed\n", sql);
+        LOGE("sqlite3_prepare_v2(\"%s\") failed\n", sql);
         throw_sqlite3_exception(env, handle);
         goto rollback;
     }
 
     err = sqlite3_bind_text(stmt, 1, locale8, -1, SQLITE_TRANSIENT);
     if (err != SQLITE_OK) {
-        ALOGE("sqlite3_bind_text() failed setting locale\n");
+        LOGE("sqlite3_bind_text() failed setting locale\n");
         throw_sqlite3_exception(env, handle);
         goto rollback;
     }
 
     err = sqlite3_step(stmt);
     if (err != SQLITE_OK && err != SQLITE_DONE) {
-        ALOGE("sqlite3_step(\"%s\") failed setting locale\n", sql);
+        LOGE("sqlite3_step(\"%s\") failed setting locale\n", sql);
         throw_sqlite3_exception(env, handle);
         goto rollback;
     }
 
     err = sqlite3_exec(handle, "REINDEX LOCALIZED", NULL, NULL, NULL);
     if (err != SQLITE_OK) {
-        ALOGE("REINDEX LOCALIZED failed\n");
+        LOGE("REINDEX LOCALIZED failed\n");
         throw_sqlite3_exception(env, handle);
         goto rollback;
     }
@@ -363,7 +430,7 @@ static void native_setLocale(JNIEnv* env, jobject object, jstring localeString, 
     // all done, yay!
     err = sqlite3_exec(handle, "COMMIT TRANSACTION", NULL, NULL, NULL);
     if (err != SQLITE_OK) {
-        ALOGE("COMMIT TRANSACTION failed setting locale\n");
+        LOGE("COMMIT TRANSACTION failed setting locale\n");
         throw_sqlite3_exception(env, handle);
         goto done;
     }
@@ -399,7 +466,7 @@ static void native_finalize(JNIEnv* env, jobject object, jint statementId)
 static void custom_function_callback(sqlite3_context * context, int argc, sqlite3_value ** argv) {
     JNIEnv* env = AndroidRuntime::getJNIEnv();
     if (!env) {
-        ALOGE("custom_function_callback cannot call into Java on this thread");
+        LOGE("custom_function_callback cannot call into Java on this thread");
         return;
     }
     // get global ref to CustomFunction object from our user data
@@ -412,7 +479,7 @@ static void custom_function_callback(sqlite3_context * context, int argc, sqlite
     for (int i = 0; i < argc; i++) {
         char* arg = (char *)sqlite3_value_text(argv[i]);
         if (!arg) {
-            ALOGE("NULL argument in custom_function_callback.  This should not happen.");
+            LOGE("NULL argument in custom_function_callback.  This should not happen.");
             return;
         }
         jobject obj = env->NewStringUTF(arg);
@@ -427,7 +494,7 @@ static void custom_function_callback(sqlite3_context * context, int argc, sqlite
 
 done:
     if (env->ExceptionCheck()) {
-        ALOGE("An exception was thrown by custom sqlite3 function.");
+        LOGE("An exception was thrown by custom sqlite3 function.");
         LOGE_EX(env);
         env->ExceptionClear();
     }
@@ -439,7 +506,7 @@ static jint native_addCustomFunction(JNIEnv* env, jobject object,
     sqlite3 * handle = (sqlite3 *)env->GetIntField(object, offset_db_handle);
     char const *nameStr = env->GetStringUTFChars(name, NULL);
     jobject ref = env->NewGlobalRef(function);
-    ALOGD_IF(DEBUG_JNI, "native_addCustomFunction %s ref: %p", nameStr, ref);
+    LOGD_IF(DEBUG_JNI, "native_addCustomFunction %s ref: %p", nameStr, ref);
     int err = sqlite3_create_function(handle, nameStr, numArgs, SQLITE_UTF8,
             (void *)ref, custom_function_callback, NULL, NULL);
     env->ReleaseStringUTFChars(name, nameStr);
@@ -447,7 +514,7 @@ static jint native_addCustomFunction(JNIEnv* env, jobject object,
     if (err == SQLITE_OK)
         return (int)ref;
     else {
-        ALOGE("sqlite3_create_function returned %d", err);
+        LOGE("sqlite3_create_function returned %d", err);
         env->DeleteGlobalRef(ref);
         throw_sqlite3_exception(env, handle);
         return 0;
@@ -456,7 +523,7 @@ static jint native_addCustomFunction(JNIEnv* env, jobject object,
 
 static void native_releaseCustomFunction(JNIEnv* env, jobject object, jint ref)
 {
-    ALOGD_IF(DEBUG_JNI, "native_releaseCustomFunction %d", ref);
+    LOGD_IF(DEBUG_JNI, "native_releaseCustomFunction %d", ref);
     env->DeleteGlobalRef((jobject)ref);
 }
 
@@ -484,30 +551,30 @@ int register_android_database_SQLiteDatabase(JNIEnv *env)
 
     clazz = env->FindClass("android/database/sqlite/SQLiteDatabase");
     if (clazz == NULL) {
-        ALOGE("Can't find android/database/sqlite/SQLiteDatabase\n");
+        LOGE("Can't find android/database/sqlite/SQLiteDatabase\n");
         return -1;
     }
 
     string_class = (jclass)env->NewGlobalRef(env->FindClass("java/lang/String"));
     if (string_class == NULL) {
-        ALOGE("Can't find java/lang/String\n");
+        LOGE("Can't find java/lang/String\n");
         return -1;
     }
 
     offset_db_handle = env->GetFieldID(clazz, "mNativeHandle", "I");
     if (offset_db_handle == NULL) {
-        ALOGE("Can't find SQLiteDatabase.mNativeHandle\n");
+        LOGE("Can't find SQLiteDatabase.mNativeHandle\n");
         return -1;
     }
 
     clazz = env->FindClass("android/database/sqlite/SQLiteDatabase$CustomFunction");
     if (clazz == NULL) {
-        ALOGE("Can't find android/database/sqlite/SQLiteDatabase$CustomFunction\n");
+        LOGE("Can't find android/database/sqlite/SQLiteDatabase$CustomFunction\n");
         return -1;
     }
     method_custom_function_callback = env->GetMethodID(clazz, "callback", "([Ljava/lang/String;)V");
     if (method_custom_function_callback == NULL) {
-        ALOGE("Can't find method SQLiteDatabase.CustomFunction.callback\n");
+        LOGE("Can't find method SQLiteDatabase.CustomFunction.callback\n");
         return -1;
     }
 

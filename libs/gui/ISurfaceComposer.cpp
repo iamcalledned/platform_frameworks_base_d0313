@@ -148,32 +148,59 @@ public:
         err = data.writeInterfaceToken(
                 ISurfaceComposer::getInterfaceDescriptor());
         if (err != NO_ERROR) {
-            ALOGE("ISurfaceComposer::authenticateSurfaceTexture: error writing "
+            LOGE("ISurfaceComposer::authenticateSurfaceTexture: error writing "
                     "interface descriptor: %s (%d)", strerror(-err), -err);
             return false;
         }
         err = data.writeStrongBinder(surfaceTexture->asBinder());
         if (err != NO_ERROR) {
-            ALOGE("ISurfaceComposer::authenticateSurfaceTexture: error writing "
+            LOGE("ISurfaceComposer::authenticateSurfaceTexture: error writing "
                     "strong binder to parcel: %s (%d)", strerror(-err), -err);
             return false;
         }
         err = remote()->transact(BnSurfaceComposer::AUTHENTICATE_SURFACE, data,
                 &reply);
         if (err != NO_ERROR) {
-            ALOGE("ISurfaceComposer::authenticateSurfaceTexture: error "
+            LOGE("ISurfaceComposer::authenticateSurfaceTexture: error "
                     "performing transaction: %s (%d)", strerror(-err), -err);
             return false;
         }
         int32_t result = 0;
         err = reply.readInt32(&result);
         if (err != NO_ERROR) {
-            ALOGE("ISurfaceComposer::authenticateSurfaceTexture: error "
+            LOGE("ISurfaceComposer::authenticateSurfaceTexture: error "
                     "retrieving result: %s (%d)", strerror(-err), -err);
             return false;
         }
         return result != 0;
     }
+
+#ifdef QCOM_HDMI_OUT
+    virtual void enableHDMIOutput(int enable)
+    {
+        Parcel data, reply;
+        data.writeInterfaceToken(ISurfaceComposer::getInterfaceDescriptor());
+        data.writeInt32(enable);
+        remote()->transact(BnSurfaceComposer::ENABLE_HDMI_OUTPUT, data, &reply);
+    }
+
+    virtual void setActionSafeWidthRatio(float asWidthRatio)
+    {
+        Parcel data, reply;
+        data.writeInterfaceToken(ISurfaceComposer::getInterfaceDescriptor());
+        data.writeFloat(asWidthRatio);
+        remote()->transact(BnSurfaceComposer::SET_ACTIONSAFE_WIDTH_RATIO, data, &reply);
+    }
+
+    virtual void setActionSafeHeightRatio(float asHeightRatio)
+    {
+        Parcel data, reply;
+        data.writeInterfaceToken(ISurfaceComposer::getInterfaceDescriptor());
+        data.writeFloat(asHeightRatio);
+        remote()->transact(BnSurfaceComposer::SET_ACTIONSAFE_HEIGHT_RATIO, data, &reply);
+    }
+#endif
+
 };
 
 IMPLEMENT_META_INTERFACE(SurfaceComposer, "android.ui.ISurfaceComposer");
@@ -254,6 +281,23 @@ status_t BnSurfaceComposer::onTransact(
             int32_t result = authenticateSurfaceTexture(surfaceTexture) ? 1 : 0;
             reply->writeInt32(result);
         } break;
+#ifdef QCOM_HDMI_OUT
+        case ENABLE_HDMI_OUTPUT: {
+            CHECK_INTERFACE(ISurfaceComposer, data, reply);
+            int enable = data.readInt32();
+            enableHDMIOutput(enable);
+        } break;
+        case SET_ACTIONSAFE_WIDTH_RATIO: {
+            CHECK_INTERFACE(ISurfaceComposer, data, reply);
+            float asWidthRatio = data.readFloat();
+            setActionSafeWidthRatio(asWidthRatio);
+        } break;
+        case SET_ACTIONSAFE_HEIGHT_RATIO: {
+            CHECK_INTERFACE(ISurfaceComposer, data, reply);
+            float asHeightRatio = data.readFloat();
+            setActionSafeHeightRatio(asHeightRatio);
+        } break;
+#endif
         default:
             return BBinder::onTransact(code, data, reply, flags);
     }

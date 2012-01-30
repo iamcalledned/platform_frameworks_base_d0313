@@ -38,7 +38,7 @@ GraphicBufferMapper::GraphicBufferMapper()
 {
     hw_module_t const* module;
     int err = hw_get_module(GRALLOC_HARDWARE_MODULE_ID, &module);
-    ALOGE_IF(err, "FATAL: can't find the %s module", GRALLOC_HARDWARE_MODULE_ID);
+    LOGE_IF(err, "FATAL: can't find the %s module", GRALLOC_HARDWARE_MODULE_ID);
     if (err == 0) {
         mAllocMod = (gralloc_module_t const *)module;
     }
@@ -50,7 +50,7 @@ status_t GraphicBufferMapper::registerBuffer(buffer_handle_t handle)
 
     err = mAllocMod->registerBuffer(mAllocMod, handle);
 
-    ALOGW_IF(err, "registerBuffer(%p) failed %d (%s)",
+    LOGW_IF(err, "registerBuffer(%p) failed %d (%s)",
             handle, err, strerror(-err));
     return err;
 }
@@ -61,7 +61,7 @@ status_t GraphicBufferMapper::unregisterBuffer(buffer_handle_t handle)
 
     err = mAllocMod->unregisterBuffer(mAllocMod, handle);
 
-    ALOGW_IF(err, "unregisterBuffer(%p) failed %d (%s)",
+    LOGW_IF(err, "unregisterBuffer(%p) failed %d (%s)",
             handle, err, strerror(-err));
     return err;
 }
@@ -70,12 +70,25 @@ status_t GraphicBufferMapper::lock(buffer_handle_t handle,
         int usage, const Rect& bounds, void** vaddr)
 {
     status_t err;
+#ifdef MISSING_GRALLOC_BUFFERS
+    int tries=5;
+#endif
 
     err = mAllocMod->lock(mAllocMod, handle, usage,
             bounds.left, bounds.top, bounds.width(), bounds.height(),
             vaddr);
+#ifdef MISSING_GRALLOC_BUFFERS
+    while (err && tries) {
+	usleep(1000);
+        err = mAllocMod->unlock(mAllocMod, handle);
+        err = mAllocMod->lock(mAllocMod, handle, usage,
+            bounds.left, bounds.top, bounds.width(), bounds.height(),
+            vaddr);
+	tries--;
+    }
+#endif
 
-    ALOGW_IF(err, "lock(...) failed %d (%s)", err, strerror(-err));
+    LOGW_IF(err, "lock(...) failed %d (%s)", err, strerror(-err));
     return err;
 }
 
@@ -85,7 +98,7 @@ status_t GraphicBufferMapper::unlock(buffer_handle_t handle)
 
     err = mAllocMod->unlock(mAllocMod, handle);
 
-    ALOGW_IF(err, "unlock(...) failed %d (%s)", err, strerror(-err));
+    LOGW_IF(err, "unlock(...) failed %d (%s)", err, strerror(-err));
     return err;
 }
 

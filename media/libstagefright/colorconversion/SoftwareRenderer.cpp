@@ -62,6 +62,7 @@ SoftwareRenderer::SoftwareRenderer(
     size_t bufWidth, bufHeight;
 
     switch (mColorFormat) {
+#ifndef MISSING_EGL_PIXEL_FORMAT_YV12
         case OMX_COLOR_FormatYUV420Planar:
         case OMX_TI_COLOR_FormatYUV420PackedSemiPlanar:
         {
@@ -70,6 +71,7 @@ SoftwareRenderer::SoftwareRenderer(
             bufHeight = (mCropHeight + 1) & ~1;
             break;
         }
+#endif
 
         default:
             halFormat = HAL_PIXEL_FORMAT_RGB_565;
@@ -135,7 +137,7 @@ void SoftwareRenderer::render(
     ANativeWindowBuffer *buf;
     int err;
     if ((err = mNativeWindow->dequeueBuffer(mNativeWindow.get(), &buf)) != 0) {
-        ALOGW("Surface::dequeueBuffer returned error %d", err);
+        LOGW("Surface::dequeueBuffer returned error %d", err);
         return;
     }
 
@@ -225,7 +227,7 @@ void SoftwareRenderer::render(
     CHECK_EQ(0, mapper.unlock(buf->handle));
 
     if ((err = mNativeWindow->queueBuffer(mNativeWindow.get(), buf)) != 0) {
-        ALOGW("Surface::queueBuffer returned error %d", err);
+        LOGW("Surface::queueBuffer returned error %d", err);
     }
     buf = NULL;
 }

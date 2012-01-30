@@ -165,6 +165,9 @@ struct egl_surface_t
     virtual     EGLint      getSwapBehavior() const;
     virtual     EGLBoolean  swapBuffers();
     virtual     EGLBoolean  setSwapRectangle(EGLint l, EGLint t, EGLint w, EGLint h);
+#ifdef QCOM_HARDWARE
+    virtual     EGLClientBuffer getRenderBuffer() const;
+#endif
 protected:
     GGLSurface              depth;
 };
@@ -184,7 +187,7 @@ egl_surface_t::~egl_surface_t()
     free(depth.data);
 }
 bool egl_surface_t::isValid() const {
-    ALOGE_IF(magic != MAGIC, "invalid EGLSurface (%p)", this);
+    LOGE_IF(magic != MAGIC, "invalid EGLSurface (%p)", this);
     return magic == MAGIC; 
 }
 
@@ -208,6 +211,11 @@ EGLBoolean egl_surface_t::setSwapRectangle(
 {
     return EGL_FALSE;
 }
+#ifdef QCOM_HARDWARE
+EGLClientBuffer egl_surface_t::getRenderBuffer() const {
+    return 0;
+}
+#endif
 
 // ----------------------------------------------------------------------------
 
@@ -233,6 +241,9 @@ struct egl_window_surface_v2_t : public egl_surface_t
     virtual     EGLint      getRefreshRate() const;
     virtual     EGLint      getSwapBehavior() const;
     virtual     EGLBoolean  setSwapRectangle(EGLint l, EGLint t, EGLint w, EGLint h);
+#ifdef QCOM_HARDWARE
+    virtual     EGLClientBuffer  getRenderBuffer() const;
+#endif
     
 private:
     status_t lock(ANativeWindowBuffer* buf, int usage, void** vaddr);
@@ -263,7 +274,7 @@ private:
             return (left>=right || top>=bottom);
         }
         void dump(char const* what) {
-            ALOGD("%s { %5d, %5d, w=%5d, h=%5d }",
+            LOGD("%s { %5d, %5d, w=%5d, h=%5d }", 
                     what, left, top, right-left, bottom-top);
         }
         
@@ -397,7 +408,7 @@ EGLBoolean egl_window_surface_v2_t::connect()
     // pin the buffer down
     if (lock(buffer, GRALLOC_USAGE_SW_READ_OFTEN | 
             GRALLOC_USAGE_SW_WRITE_OFTEN, &bits) != NO_ERROR) {
-        ALOGE("connect() failed to lock buffer %p (%ux%u)",
+        LOGE("connect() failed to lock buffer %p (%ux%u)",
                 buffer, buffer->width, buffer->height);
         return setError(EGL_BAD_ACCESS, EGL_FALSE);
         // FIXME: we should make sure we're not accessing the buffer anymore
@@ -552,7 +563,7 @@ EGLBoolean egl_window_surface_v2_t::swapBuffers()
         // finally pin the buffer down
         if (lock(buffer, GRALLOC_USAGE_SW_READ_OFTEN |
                 GRALLOC_USAGE_SW_WRITE_OFTEN, &bits) != NO_ERROR) {
-            ALOGE("eglSwapBuffers() failed to lock buffer %p (%ux%u)",
+            LOGE("eglSwapBuffers() failed to lock buffer %p (%ux%u)",
                     buffer, buffer->width, buffer->height);
             return setError(EGL_BAD_ACCESS, EGL_FALSE);
             // FIXME: we should make sure we're not accessing the buffer anymore
@@ -570,6 +581,13 @@ EGLBoolean egl_window_surface_v2_t::setSwapRectangle(
     dirtyRegion = Rect(l, t, l+w, t+h);
     return EGL_TRUE;
 }
+
+#ifdef QCOM_HARDWARE
+EGLClientBuffer egl_window_surface_v2_t::getRenderBuffer() const
+{
+    return buffer;
+}
+#endif
 
 EGLBoolean egl_window_surface_v2_t::bindDrawSurface(ogles_context_t* gl)
 {
@@ -721,7 +739,7 @@ egl_pbuffer_surface_t::egl_pbuffer_surface_t(EGLDisplay dpy,
         case GGL_PIXEL_FORMAT_RGBA_8888:    size *= 4; break;
         case GGL_PIXEL_FORMAT_RGBX_8888:    size *= 4; break;
         default:
-            ALOGE("incompatible pixel format for pbuffer (format=%d)", f);
+            LOGE("incompatible pixel format for pbuffer (format=%d)", f);
             pbuffer.data = 0;
             break;
     }
@@ -800,6 +818,9 @@ static char const * const gExtensionsString =
         // "KHR_image_pixmap "
         "EGL_ANDROID_image_native_buffer "
         "EGL_ANDROID_swap_rectangle "
+#ifdef QCOM_HARDWARE
+        "EGL_ANDROID_get_render_buffer "
+#endif
         ;
 
 // ----------------------------------------------------------------------------
@@ -852,6 +873,10 @@ static const extention_map_t gExtentionMap[] = {
             (__eglMustCastToProperFunctionPointerType)&eglDestroyImageKHR }, 
     { "eglSetSwapRectangleANDROID", 
             (__eglMustCastToProperFunctionPointerType)&eglSetSwapRectangleANDROID }, 
+#ifdef QCOM_HARDWARE
+    { "eglGetRenderBufferANDROID",
+            (__eglMustCastToProperFunctionPointerType)&eglGetRenderBufferANDROID },
+#endif
 };
 
 /*
@@ -2077,3 +2102,20 @@ EGLBoolean eglSetSwapRectangleANDROID(EGLDisplay dpy, EGLSurface draw,
 
     return EGL_TRUE;
 }
+
+#ifdef QCOM_HARDWARE
+EGLClientBuffer eglGetRenderBufferANDROID(EGLDisplay dpy, EGLSurface draw)
+{
+    if (egl_display_t::is_valid(dpy) == EGL_FALSE)
+        return setError(EGL_BAD_DISPLAY, (EGLClientBuffer)0);
+
+    egl_surface_t* d = static_cast<egl_surface_t*>(draw);
+    if (!d->isValid())
+        return setError(EGL_BAD_SURFACE, (EGLClientBuffer)0);
+    if (d->dpy != dpy)
+        return setError(EGL_BAD_DISPLAY, (EGLClientBuffer)0);
+
+    // post the surface
+    return d->getRenderBuffer();
+}
+#endif
