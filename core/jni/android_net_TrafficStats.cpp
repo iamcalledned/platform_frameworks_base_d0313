@@ -47,13 +47,13 @@ static jlong readNumber(char const* filename) {
     char buf[80];
     int fd = open(filename, O_RDONLY);
     if (fd < 0) {
-        if (errno != ENOENT) LOGE("Can't open %s: %s", filename, strerror(errno));
+        if (errno != ENOENT) ALOGE("Can't open %s: %s", filename, strerror(errno));
         return -1;
     }
 
     int len = read(fd, buf, sizeof(buf) - 1);
     if (len < 0) {
-        LOGE("Can't read %s: %s", filename, strerror(errno));
+        ALOGE("Can't read %s: %s", filename, strerror(errno));
         close(fd);
         return -1;
     }
@@ -64,9 +64,6 @@ static jlong readNumber(char const* filename) {
 }
 
 static const char* mobile_iface_list[] = {
-#ifdef MOBILE_IFACE_NAME
-    MOBILE_IFACE_NAME,
-#endif
     "rmnet0",
     "rmnet1",
     "rmnet2",
@@ -104,7 +101,7 @@ static jlong readTotal(char const* suffix) {
     char filename[PATH_MAX] = "/sys/class/net/";
     DIR *dir = opendir(filename);
     if (dir == NULL) {
-        LOGE("Can't list %s: %s", filename, strerror(errno));
+        ALOGE("Can't list %s: %s", filename, strerror(errno));
         return -1;
     }
 

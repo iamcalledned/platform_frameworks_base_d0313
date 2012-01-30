@@ -131,14 +131,6 @@ public:
      */
     virtual bool authenticateSurfaceTexture(
             const sp<ISurfaceTexture>& surface) const = 0;
-
-#ifdef QCOM_HDMI_OUT
-    //HDMI SPecific functions
-    virtual void enableHDMIOutput(int enable) = 0;
-    virtual void setActionSafeWidthRatio(float asWidthRatio) = 0;
-    virtual void setActionSafeHeightRatio(float asHeightRatio) = 0;
-#endif
-
 };
 
 // ----------------------------------------------------------------------------
@@ -159,11 +151,6 @@ public:
         TURN_ELECTRON_BEAM_OFF,
         TURN_ELECTRON_BEAM_ON,
         AUTHENTICATE_SURFACE,
-#ifdef QCOM_HDMI_OUT
-        ENABLE_HDMI_OUTPUT,
-        SET_ACTIONSAFE_WIDTH_RATIO,
-        SET_ACTIONSAFE_HEIGHT_RATIO
-#endif
     };
 
     virtual status_t    onTransact( uint32_t code,
