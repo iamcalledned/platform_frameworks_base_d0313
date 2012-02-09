@@ -16355,6 +16355,7 @@ package android.provider {
   }
 
   protected static abstract interface ContactsContract.BaseSyncColumns {
+    field public static final java.lang.String IS_RESTRICTED = "is_restricted";
     field public static final java.lang.String SYNC1 = "sync1";
     field public static final java.lang.String SYNC2 = "sync2";
     field public static final java.lang.String SYNC3 = "sync3";
