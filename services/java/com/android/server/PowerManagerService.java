@@ -102,7 +102,7 @@ public class PowerManagerService extends IPowerManager.Stub
     private static final int LONG_DIM_TIME = 7000;              // t+N-5 sec
 
     // How long to wait to debounce light sensor changes in milliseconds
-    private static int LIGHT_SENSOR_DELAY = 2000;
+    private static final int LIGHT_SENSOR_DELAY = 2000;
 
     // light sensor events rate in microseconds
     private static final int LIGHT_SENSOR_RATE = 1000000;
@@ -255,8 +255,6 @@ public class PowerManagerService extends IPowerManager.Stub
     private int mWarningSpewThrottleCount;
     private long mWarningSpewThrottleTime;
     private int mAnimationSetting = ANIM_SETTING_OFF;
-    private boolean mAllowBrightnessDecrease = false;
-    private BrightnessSettingsObserver mBrightnessSettingsObserver; 
 
     // Must match with the ISurfaceComposer constants in C++.
     private static final int ANIM_SETTING_ON = 0x01;
@@ -604,12 +602,6 @@ public class PowerManagerService extends IPowerManager.Stub
             forceUserActivityLocked();
             mInitialized = true;
         }
-         handleAllowBrightnessDecrease();
-	 mBrightnessSettingsObserver = new BrightnessSettingsObserver(
-	    new AllowBrightnessDecreaseHandler(), 0);
-         mContext.getContentResolver().registerContentObserver(
-	    Settings.System.getUriFor(Settings.System.SCREEN_BRIGHTNESS_AUTO_DIM),
-	    true, mBrightnessSettingsObserver);
     }
 
     void initInThread() {
@@ -2710,13 +2702,7 @@ public class PowerManagerService extends IPowerManager.Stub
                 // use maximum light sensor value seen since screen went on for LCD to avoid flicker
                 // we only do this if we are undocked, since lighting should be stable when
                 // stationary in a dock.
-
-		int lcdValue;
-		if (mAllowBrightnessDecrease) {
-			lcdValue = getAutoBrightnessValue(value, mLcdBacklightValues);
-		} else {
-
-                lcdValue = getAutoBrightnessValue(
+                int lcdValue = getAutoBrightnessValue(
                         (mIsDocked ? value : mHighestLightSensorValue),
                         mLastLcdValue,
                         (mCustomLightEnabled ? mCustomLightLevels : mAutoBrightnessLevels),
@@ -3533,15 +3519,6 @@ public class PowerManagerService extends IPowerManager.Stub
                         mLightSensorPendingIncrease = (value > mLightSensorValue);
                         if (mLightSensorPendingDecrease || mLightSensorPendingIncrease) {
                             mLightSensorPendingValue = value;
-			// when allowing backlight to auto-dim, sensor delay should be longer
-			if (mAllowBrightnessDecrease) {
-				LIGHT_SENSOR_DELAY = 5000;
-			} else {
-				LIGHT_SENSOR_DELAY = 2000;
-			}
-
-
-
                             mHandler.postDelayed(mAutoBrightnessTask, LIGHT_SENSOR_DELAY);
                         }
                     } else {
@@ -3555,25 +3532,4 @@ public class PowerManagerService extends IPowerManager.Stub
             // ignore
         }
     };
-	private void handleAllowBrightnessDecrease() {
-	mAllowBrightnessDecrease = (Settings.System.getInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_AUTO_DIM, 0) == 1);
-}
-	private class AllowBrightnessDecreaseHandler extends Handler {
-		public void handleMessage (Message m){
-			handleAllowBrightnessDecrease();
-		}
-	}
-	private class BrightnessSettingsObserver extends ContentObserver {
-		Handler handler;
-		int message;
-
-	public BrightnessSettingsObserver(Handler handler, int message) {
-		super(handler);
-		this.handler = handler;
-		this.message = message;
-	}
-	public void onChange(boolean selfChange){
-		handler.sendEmptyMessage(message);
-	}
-	}
 }
