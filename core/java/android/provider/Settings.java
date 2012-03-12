@@ -590,6 +590,15 @@ public final class Settings {
     public static final String ACTION_NFCSHARING_SETTINGS =
         "android.settings.NFCSHARING_SETTINGS";
 
+
+     /**
+     * Activity Action: Show Ned settings.
+     */
+ 
+    @SdkConstant(SdkConstantType.ACTIVITY_INTENT_ACTION)
+    public static final String ACTION_NED_SETTINGS =
+        "android.settings.NED_SETTINGS";
+
     // End of Intent actions for Settings
 
     /**
@@ -2026,6 +2035,22 @@ public final class Settings {
          */
         public static final String POINTER_SPEED = "pointer_speed";
 
+         /**
+          * Pulse light color setting.
+          * This is an int value which represents the color of the pulse light
+          * 
+          * @hide
+          */
+         public static final String NOTIFICATION_PULSE_COLOR = "notification_pulse_color";
+        
+         /**
+          * Pulse light color fallback setting.
+          * This is an int value which represents the color of the pulse light if no setting is found
+          * 
+          * @hide
+          */
+         public static final int NOTIFICATION_PULSE_COLOR_FALLBACK = -65536;  // fallback to red if no other color set
+
         /**
          * Use the Notification Power Widget? (Who wouldn't!)
          *
@@ -2124,7 +2149,40 @@ public final class Settings {
          *
          * @hide
          */
-        public static final String[] SETTINGS_TO_BACKUP = {
+
+         /**  
+          * Pulse light duration setting.  
+          * This is an int value which represents the milliseconds the pulse should flash  
+          *   
+          * @hide  
+          */  
+         public static final String NOTIFICATION_PULSE_DURATION = "notification_pulse_duration";  
+
+         /**
+          * Pulse light duration fallback setting.  
+          * This is an int value which represents the milliseconds the pulse should flash
+          *   
+          * @hide  
+          */  
+         public static final int NOTIFICATION_PULSE_DURATION_FALLBACK = 500;  // fallback to 500ms  
+         
+         /**  
+          * Pulse light frequency setting.
+          * This is an int value which represents the milliseconds between pulses  
+          *   
+          * @hide
+          */  
+         public static final String NOTIFICATION_PULSE_FREQUENCY = "notification_pulse_frequency";  
+         
+         /**
+          * Pulse light duration fallback setting.
+          * This is an int value which represents the milliseconds between pulses
+          * 
+          * @hide
+          */
+         public static final int NOTIFICATION_PULSE_FREQUENCY_FALLBACK = 7000;  // fallback to 7000ms
+         
+         public static final String[] SETTINGS_TO_BACKUP = {
             STAY_ON_WHILE_PLUGGED_IN,
             WIFI_USE_STATIC_IP,
             WIFI_STATIC_IP,
@@ -2183,6 +2241,7 @@ public final class Settings {
             SIP_CALL_OPTIONS,
             SIP_RECEIVE_CALLS,
             POINTER_SPEED,
+  	    NOTIFICATION_PULSE_COLOR,
         };
 
         // Settings moved to Settings.Secure
