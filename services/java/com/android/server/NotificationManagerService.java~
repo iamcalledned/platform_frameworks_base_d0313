@@ -390,10 +390,47 @@ public class NotificationManagerService extends INotificationManager.Stub
 
         public void update() {
             ContentResolver resolver = mContext.getContentResolver();
+
+	    boolean updatePulse = false;	
             boolean pulseEnabled = Settings.System.getInt(resolver,
                         Settings.System.NOTIFICATION_LIGHT_PULSE, 0) != 0;
+             int pulseColor = Settings.System.getInt(resolver,   
+                             Settings.System.NOTIFICATION_PULSE_COLOR, 
+                             Settings.System.NOTIFICATION_PULSE_COLOR_FALLBACK);
+             
+             int pulseDuration = Settings.System.getInt(resolver, 
+                             Settings.System.NOTIFICATION_PULSE_DURATION, 
+                             Settings.System.NOTIFICATION_PULSE_DURATION_FALLBACK);
+             
+             int pulseFrequency = Settings.System.getInt(resolver, 
+                             Settings.System.NOTIFICATION_PULSE_FREQUENCY, 
+                             Settings.System.NOTIFICATION_PULSE_FREQUENCY_FALLBACK);
+
             if (mNotificationPulseEnabled != pulseEnabled) {
                 mNotificationPulseEnabled = pulseEnabled;
+
+                 updatePulse = true;  
+             }  
+               
+             if (mDefaultNotificationColor != pulseColor) {  
+               mDefaultNotificationColor = pulseColor;  
+               updatePulse = true;
+             }
+             
+             if (mDefaultNotificationLedOn != pulseDuration) {
+               mDefaultNotificationLedOn = pulseDuration;
+               updatePulse = true;
+             }
+             
+             if (mDefaultNotificationLedOff != pulseFrequency) {
+               mDefaultNotificationLedOff = pulseFrequency;
+               updatePulse = true;
+             }
+             
+             if (updatePulse) {
+               updateNotificationPulse();
+
+
                 updateNotificationPulse();
             }
         }
@@ -417,12 +454,17 @@ public class NotificationManagerService extends INotificationManager.Stub
         mAttentionLight = lights.getLight(LightsService.LIGHT_ID_ATTENTION);
 
         Resources resources = mContext.getResources();
-        mDefaultNotificationColor = resources.getColor(
-                com.android.internal.R.color.config_defaultNotificationColor);
-        mDefaultNotificationLedOn = resources.getInteger(
-                com.android.internal.R.integer.config_defaultNotificationLedOn);
-        mDefaultNotificationLedOff = resources.getInteger(
-                com.android.internal.R.integer.config_defaultNotificationLedOff);
+
+         mDefaultNotificationColor = Settings.System.getInt(mContext.getContentResolver(), 
+                                 Settings.System.NOTIFICATION_PULSE_COLOR, 
+                                 Settings.System.NOTIFICATION_PULSE_COLOR_FALLBACK);
+ 
+ 
+         mDefaultNotificationLedOff = Settings.System.getInt(mContext.getContentResolver(), 
+                                Settings.System.NOTIFICATION_PULSE_FREQUENCY, 
+                                Settings.System.NOTIFICATION_PULSE_FREQUENCY_FALLBACK);
+
+
 
         // Don't start allowing notifications until the setup wizard has run once.
         // After that, including subsequent boots, init with notifications turned on.
